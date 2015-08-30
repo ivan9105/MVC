@@ -59,4 +59,12 @@ public class MainController {
 //		model.addAttribute("id", book.getId());
 		return "editBook";
 	}
+
+	@RequestMapping(value = "books/edit", method = RequestMethod.POST)
+	public String saveEdit(
+			@ModelAttribute("bookAttribute") Book book,
+			@RequestParam(value = "id", required = true) UUID id,
+			Model model) {
+		return "editedBook";
+	}
 }

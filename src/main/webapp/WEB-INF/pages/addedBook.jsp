@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Иван
@@ -8,9 +9,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <title>Added page</title>
 </head>
 <body>
+  <h1>Books</h1>
+  <p>You have added a new book at <%= new java.util.Date() %></p>
 
+  <c:url var="mainUrl" value="/books" />
+  <p>Return to <a href="${mainUrl}">Main List</a></p>
 </body>
 </html>

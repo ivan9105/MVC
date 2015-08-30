@@ -1,5 +1,6 @@
 package com.springapp.mvc.model;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -15,7 +16,8 @@ public class Book implements Serializable{
     @Id
     @Type(type="uuid-char")
     @Column(name="id")
-    @GeneratedValue
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private UUID id;
 
     @Column(name="name")
