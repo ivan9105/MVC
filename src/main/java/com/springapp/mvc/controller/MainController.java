@@ -47,16 +47,14 @@ public class MainController {
 
 	@RequestMapping(value = "books/delete", method = RequestMethod.GET)
 	public String deleteBook(@RequestParam(value="id", required=true) UUID id, Model model) {
-
-//		bookService.deleteBook(book);
+		bookService.deleteBook(bookService.getBook(id));
+		model.addAttribute("id", id);
 		return "deletedBook";
 	}
 
 	@RequestMapping(value = "books/edit", method = RequestMethod.GET)
 	public String editBook(@RequestParam(value="id", required=true) UUID id, Model model) {
-
-//		bookService.updateBook(book);
-//		model.addAttribute("id", book.getId());
+		model.addAttribute("bookAttribute", bookService.getBook(id));
 		return "editBook";
 	}
 
@@ -65,6 +63,8 @@ public class MainController {
 			@ModelAttribute("bookAttribute") Book book,
 			@RequestParam(value = "id", required = true) UUID id,
 			Model model) {
+		bookService.updateBook(book);
+		model.addAttribute("id", id);
 		return "editedBook";
 	}
 }

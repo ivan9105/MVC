@@ -10,9 +10,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
- * Created by Иван on 30.07.2015.
+ * Created by пїЅпїЅпїЅпїЅ on 30.07.2015.
  */
 @Component
 @Repository
@@ -39,12 +40,19 @@ public class BookDaoImpl implements BookDao {
     @SuppressWarnings("unchecked")
     @Override
     public void updateBook(Book book) {
-        getCurrentSession().save(book);
+        getCurrentSession().update(book);
     }
 
     @Override
     public void deleteBook(Book book) {
         getCurrentSession().delete(book);
+    }
+
+    @Override
+    public Book getBook(UUID id) {
+        Query query = getCurrentSession().createQuery("from Book b where b.id = :id");
+        query.setParameter("id", id);
+        return (Book) query.list().get(0);
     }
 
     private Session getCurrentSession() {

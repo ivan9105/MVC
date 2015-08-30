@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Иван on 30.07.2015.
@@ -36,5 +37,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(Book book) {
         bookDao.deleteBook(book);
+    }
+
+    @Override
+    public Book getBook(UUID id) {
+        return bookDao.getBook(id);
     }
 }
