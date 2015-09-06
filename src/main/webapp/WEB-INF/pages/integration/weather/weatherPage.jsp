@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: Иван
@@ -11,6 +12,25 @@
     <title></title>
 </head>
 <body>
-${weatherResponse}
+<h1>Country</h1>
+Select country:
+<form:form method="POST" modelAttribute="table" action="">
+    <table>
+        <tbody>
+        <tr>
+            <td>
+                <ul>
+                    <form:select path="city" items="${data}">
+                    </form:select></ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="Submit">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form:form>
 </body>
 </html>
