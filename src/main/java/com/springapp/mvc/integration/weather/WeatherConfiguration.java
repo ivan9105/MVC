@@ -18,6 +18,13 @@ public class WeatherConfiguration {
     }
 
     @Bean
+    public Jaxb2Marshaller countryMarshaller() {
+        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        marshaller.setContextPath("com.springapp.mvc.integration.weather.schema.country");
+        return marshaller;
+    }
+
+    @Bean
     public WeatherClient weatherClient(Jaxb2Marshaller marshaller) {
         WeatherClient client = new WeatherClient();
         client.setDefaultUri("http://www.webservicex.net/globalweather.asmx");
