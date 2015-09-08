@@ -1,15 +1,13 @@
 package com.springapp.mvc.integration.weather;
 
-import com.springapp.mvc.integration.weather.schema.GetCitiesByCountry;
-import com.springapp.mvc.integration.weather.schema.GetCitiesByCountryResponse;
-import com.springapp.mvc.integration.weather.schema.ObjectFactory;
+import com.springapp.mvc.integration.weather.schema.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 /**
- * Created by Иван on 01.09.2015.
+ * Created by пїЅпїЅпїЅпїЅ on 01.09.2015.
  */
 public class WeatherClient extends WebServiceGatewaySupport{
     private static Log log = LogFactory.getLog(WeatherClient.class);
@@ -26,5 +24,15 @@ public class WeatherClient extends WebServiceGatewaySupport{
 
         return (GetCitiesByCountryResponse) getWebServiceTemplate().
                 marshalSendAndReceive(request, new SoapActionCallback("http://www.webserviceX.NET/GetCitiesByCountry"));
+    }
+
+    public GetWeatherResponse getWeatherByCity(String cityName, String countryNameLat) {
+        GetWeather request = factory.createGetWeather();
+        request.setCityName(cityName);
+        request.setCountryName(countryNameLat);
+        log.debug(String.format("Request forecat for: %s, %s", countryNameLat, cityName));
+
+        return (GetWeatherResponse) getWebServiceTemplate()
+                .marshalSendAndReceive(request, new SoapActionCallback("http://www.webserviceX.NET/GetWeather"));
     }
 }
