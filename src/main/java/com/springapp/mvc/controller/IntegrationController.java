@@ -45,6 +45,11 @@ public class IntegrationController {
         return view;
     }
 
+    @RequestMapping(value = "messages", method = RequestMethod.GET)
+    public String getMessages() {
+        return "localization/messages";
+    }
+
     @RequestMapping(value = "weather", method = RequestMethod.POST)
     public String getWeather(@ModelAttribute("table") NewDataSet.Table table, Model model) {
         GetWeatherResponse response = weatherClient.getWeatherByCity(table.getCity(), COUNTRY_NAME_LAT);

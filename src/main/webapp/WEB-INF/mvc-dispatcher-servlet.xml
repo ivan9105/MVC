@@ -11,6 +11,7 @@
         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
     <context:component-scan base-package="com.springapp.mvc"/>
+    <import resource="messages_conf/messages.xml"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/pages/"/>
@@ -47,4 +48,6 @@
     </bean>
 
     <bean id="bookDao" class="com.springapp.mvc.dao.impl.BookDaoImpl"/>
+
+
 </beans>
