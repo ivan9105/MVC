@@ -1,16 +1,48 @@
 table.book {
-    border: 1px solid black;
+    border: 1px solid #979797;
     border-collapse: collapse;
+    width: 70%;
+    font-family: "Arial", Times, serif;
 }
 
 th.book {
-    border: 1px solid black;
+    border-bottom: 1px solid #979797;
+    height: 25px;
+    padding: 15px;
+    text-align: left;
+    background-color:#4CAF50;
+    color: white;
 }
 
 td.book {
-    border: 1px solid black;
+    border-bottom: 1px solid #979797;
+    text-align: left;
+    vertical-align: bottom;
+    padding: 15px;
 }
 
-table, th, td {
-    border: 1px solid black;
+td.action {
+    width: 1px;
+    white-space: nowrap;
+    border-bottom: 1px solid #979797;
+    text-align: left;
+    vertical-align: bottom;
+    padding: 15px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+a:link.book, a:visited.book {
+    background-color: #4CAF50;
+    color: white;
+    padding: 7px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+a:hover.book, a:active.book {
+    background-color: green;
 }

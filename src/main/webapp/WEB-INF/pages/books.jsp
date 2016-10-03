@@ -17,12 +17,12 @@
     <link href="${jspCSS}" rel="stylesheet" />
 </head>
 <body>
-<h1>Books</h1>
+<h1>Книги</h1>
 <c:url var="addUrl" value="books/add"/>
 <table class="book">
     <tr>
-        <th class="book">Name</th>
-        <th class="book">Year</th>
+        <th class="book">Наименование</th>
+        <th class="book">Год</th>
         <th colspan="3" class="book"></th>
     </tr>
     <tbody>
@@ -32,9 +32,9 @@
         <tr>
             <td class="book"><c:out value="${book.name}"/></td>
             <td class="book"><c:out value="${book.year}"/></td>
-            <td class="book"><a href="${editUrl}">Edit</a></td>
-            <td class="book"><a href="${deleteUrl}">Delete</a></td>
-            <td class="book"><a href="${addUrl}">Add</a></td>
+            <td class="action"><a class="book" href="${editUrl}">Edit</a></td>
+            <td class="action"><a class="book" href="${deleteUrl}">Delete</a></td>
+            <td class="action"><a class="book" href="${addUrl}">Add</a></td>
         </tr>
     </c:forEach>
     </tbody>
