@@ -22,7 +22,7 @@ public class MainController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String printWelcome(ModelMap model) {
-		model.addAttribute("message", "Main page");
+		model.addAttribute("message", "Spring samples");
 		return "index";
 	}
 

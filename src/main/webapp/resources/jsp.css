@@ -10,7 +10,7 @@ th.book {
     height: 25px;
     padding: 15px;
     text-align: left;
-    background-color:#4CAF50;
+    background-color: #4CAF50;
     color: white;
 }
 
@@ -37,7 +37,7 @@ tr:nth-child(even) {
 a:link.book, a:visited.book {
     background-color: #4CAF50;
     color: white;
-    padding: 7px 15px;
+    padding: 9px 16px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -45,4 +45,35 @@ a:link.book, a:visited.book {
 
 a:hover.book, a:active.book {
     background-color: green;
+}
+
+a:link.index, a:visited.index {
+    color: #3a3a3a;
+    display: inline-block;
+    outline: 0;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none !important;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+a:hover.index, a:active.index {
+    color: #000000;
+    font-weight: bold;
+}
+
+h2.book {
+    color: #4CAF50;
+    font-family: "Arial", Times, serif;
+    font-size: 35px;
+}
+
+.content {
+    padding-left: 15px;
+}
+
+.info {
+    font-family: "Arial", Times, serif;
 }
