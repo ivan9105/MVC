@@ -29,6 +29,11 @@ public class MainController {
 	@RequestMapping(value = "books", method = RequestMethod.GET)
 	public String getBooks(Model model) {
 		List<Book> books = bookService.getBooks();
+		for (Book book : books) {
+			if (book.getName() != null && book.getName().length() > 50) {
+				book.setName(book.getName().substring(0, 47) + "...");
+			}
+		}
 		model.addAttribute("books", books);
 		return "books";
 	}

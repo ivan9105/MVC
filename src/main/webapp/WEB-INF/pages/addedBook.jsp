@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Иван
@@ -9,13 +10,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <spring:url value="/resources/jsp.css" var="jspCSS"/>
+    <link href="${jspCSS}" rel="stylesheet"/>
     <title>Added page</title>
 </head>
 <body>
-  <h1>Books</h1>
-  <p>You have added a new book at <%= new java.util.Date() %></p>
-
-  <c:url var="mainUrl" value="/books" />
-  <p>Return to <a href="${mainUrl}">Main List</a></p>
+<h2 class="book">Книги</h2>
+<div class="content">
+    <p>You have added a new book at <%= new java.util.Date() %>
+    </p>
+    <c:url var="mainUrl" value="/books"/>
+    <p>Return to <a href="${mainUrl}">Main List</a></p>
+</div>
 </body>
 </html>
