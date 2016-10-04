@@ -82,6 +82,11 @@ h2.book {
     font-family: "Arial", Times, serif;
 }
 
+.error {
+    font-family: "Arial", Times, serif;
+    color: indianred;
+}
+
 input[type=text].bookInput {
     width: 70%;
     padding: 9px 16px;

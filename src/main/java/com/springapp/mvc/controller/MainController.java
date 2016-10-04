@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -49,8 +51,11 @@ public class MainController {
     }
 
     @RequestMapping(value = "books/add", method = RequestMethod.POST)
-    public String addBook(@ModelAttribute("bookAttribute") Book book,
-                          Model model) {
+    public String addBook(@Valid @ModelAttribute("bookAttribute") Book book,
+                          BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "addBook";
+        }
         bookService.saveBook(book);
         model.addAttribute("date", new SimpleDateFormat(TIMESTAMP_PATTERN).format(new Date()));
         return "addedBook";

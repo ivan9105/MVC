@@ -4,6 +4,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -20,9 +24,14 @@ public class Book implements Serializable{
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private UUID id;
 
+    @NotNull()
+    @Size(min=3, max=50)
     @Column(name="name")
     private String name;
 
+    @NotNull()
+    @Min(value = 1970)
+    @Max(value = 2100)
     @Column(name = "year")
     private Integer year;
 
