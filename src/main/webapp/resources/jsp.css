@@ -110,3 +110,22 @@ input[type=submit].book {
 input[type=submit]:focus.book {
     background-color: green;
 }
+
+a:link.small, a:visited.small {
+    color: #3a3a3a;
+    display: inline-block;
+    outline: 0;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none !important;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px;
+    font-family: "Arial", Times, serif;
+    font-weight: bold;
+}
+
+a:hover.small, a:active.small {
+    color: #000000;
+}

@@ -18,10 +18,10 @@
 <body>
 <div class="content">
     <h2 class="book">Книги</h2>
-    <p>Вы добавили новую книгу <%= new java.util.Date() %>
+    <p>Вы добавили новую книгу, текущая дата ${date}
     </p>
     <c:url var="mainUrl" value="/books"/>
-    <p>Вернуться к <a href="${mainUrl}">Список книг</a></p>
+    <p>Вернуться к <a class="small" href="${mainUrl}">списку книг</a></p>
 </div>
 </body>
 </html>
