@@ -1,4 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Иван
@@ -6,15 +9,20 @@
   Time: 8:43
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <spring:url value="/resources/jsp.css" var="jspCSS"/>
+    <link href="${jspCSS}" rel="stylesheet"/>
     <title>Deleted page</title>
 </head>
 <body>
-  <h1>Books</h1>
-  <p>You have deleted a book with id ${id} at <%= new java.util.Date() %></p>
-  <c:url var="mainUrl" value="/books" />
-  <p>Return to <a href="${mainUrl}">Main List</a></p>
+<div class="content">
+    <h2 class="book">Книги</h2>
+
+    <p>Вы удалили книгу id ${id} at <%= new java.util.Date() %>
+    </p>
+    <c:url var="mainUrl" value="/books"/>
+    <p>Вернуться к <a href="${mainUrl}">Список книг</a></p>
+</div>
 </body>
 </html>

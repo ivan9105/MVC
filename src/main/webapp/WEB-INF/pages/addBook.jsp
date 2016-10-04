@@ -16,7 +16,8 @@
         <form:label path="name" cssClass="info">Наименование:</form:label><br/>
         <form:input path="name" cssClass="bookInput"/><br/>
         <form:label path="year" cssClass="info">Год:</form:label><br/>
-        <form:input path="year" cssClass="bookInput"/><br/>
+        <form:input path="year" cssClass="bookInput"/>
+        <div style="height: 30px"></div>
         <input type="submit" value="Сохранить" class="book">
     </form:form>
 </div>

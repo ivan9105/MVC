@@ -41,6 +41,7 @@ a:link.book, a:visited.book {
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    font-family: "Arial", Times, serif;
 }
 
 a:hover.book, a:active.book {
@@ -58,6 +59,7 @@ a:link.index, a:visited.index {
     cursor: pointer;
     white-space: nowrap;
     font-size: 20px;
+    font-family: "Arial", Times, serif;
 }
 
 a:hover.index, a:active.index {
@@ -73,6 +75,7 @@ h2.book {
 
 .content {
     padding-left: 15px;
+    padding-top: 1px;
 }
 
 .info {
@@ -85,6 +88,7 @@ input[type=text].bookInput {
     margin: 8px 0;
     box-sizing: border-box;
     border: 1px solid #3a3a3a;
+    font-family: "Arial", Times, serif;
 }
 
 input[type=text]:focus.bookInput {
@@ -99,6 +103,8 @@ input[type=submit].book {
     text-decoration: none;
     display: inline-block;
     border-style: none;
+    font-family: "Arial", Times, serif;
+    font-size: 16px;
 }
 
 input[type=submit]:focus.book {
