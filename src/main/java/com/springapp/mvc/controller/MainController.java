@@ -77,9 +77,13 @@ public class MainController {
 
     @RequestMapping(value = "books/edit", method = RequestMethod.POST)
     public String saveEdit(
-            @ModelAttribute("bookAttribute") Book book,
+            @Valid @ModelAttribute("bookAttribute") Book book,
             @RequestParam(value = "id", required = true) UUID id,
-            Model model) {
+            BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "editBook";
+        }
+
         bookService.updateBook(book);
         model.addAttribute("id", id);
         model.addAttribute("date", new SimpleDateFormat(TIMESTAMP_PATTERN).format(new Date()));

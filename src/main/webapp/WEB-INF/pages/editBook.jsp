@@ -23,8 +23,10 @@
     <h2 class="book">Редактор книги</h2>
     <c:url var="saveUrl" value="/books/edit?id=${bookAttribute.id}"/>
     <form:form method="post" modelAttribute="bookAttribute" action="${saveUrl}">
-        <form:label path="name" cssClass="info">Наименование:</form:label><br/>
-        <form:input path="name" cssClass="bookInput"/><br/>
+        <form:label path="name" cssClass="info">Наименование:</form:label>
+        <form:errors path="name" cssClass="error"/><br/>
+        <form:input path="name" cssClass="bookInput"/>
+        <form:errors path="year" cssClass="error"/><br/>
         <form:label path="year" cssClass="info">Год:</form:label><br/>
         <form:input path="year" cssClass="bookInput"/>
         <div style="height: 30px"></div>

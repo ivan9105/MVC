@@ -10,9 +10,11 @@
 <body>
 <div class="content">
     <h2 class="book">${message}</h2>
-    <a class="index" href="${pageContext.request.contextPath}/books">JDBC CRUD example</a><br/>
-    <%--<a href="${pageContext.request.contextPath}/weather">Weather</a><br />--%>
-    <%--<a href="${pageContext.request.contextPath}/messages">Messages</a>--%>
+    <ul class="index">
+        <li><a class="index" href="${pageContext.request.contextPath}/books">JDBC CRUD example</a></li>
+        <li><a class="index" href="${pageContext.request.contextPath}/weather">GlobalWeather Web Service (http://www.webservicex.net/globalweather.asmx)</a></li>
+        <%--<a href="${pageContext.request.contextPath}/messages">Messages</a>--%>
+    </ul>
 </div>
 </body>
 </html>

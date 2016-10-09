@@ -96,6 +96,15 @@ input[type=text].bookInput {
     font-family: "Arial", Times, serif;
 }
 
+select.bookInput {
+    width: 70%;
+    padding: 9px 16px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #3a3a3a;
+    font-family: "Arial", Times, serif;
+}
+
 input[type=text]:focus.bookInput {
     border: 1px solid dodgerblue;
 }
@@ -133,4 +142,8 @@ a:link.small, a:visited.small {
 
 a:hover.small, a:active.small {
     color: #000000;
+}
+
+ul.index li{
+    margin: 10px;
 }
