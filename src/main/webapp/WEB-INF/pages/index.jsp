@@ -12,7 +12,7 @@
     <h2 class="book">${message}</h2>
     <ul class="index">
         <li><a class="index" href="${pageContext.request.contextPath}/books">JDBC CRUD example</a></li>
-        <li><a class="index" href="${pageContext.request.contextPath}/weather">GlobalWeather Web Service (http://www.webservicex.net/globalweather.asmx)</a></li>
+        <li><a class="index" href="${pageContext.request.contextPath}/api/weather/weather">GlobalWeather Web Service (http://www.webservicex.net/globalweather.asmx)</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/swagger-ui.html">Swagger</a></li>
     </ul>
 </div>
