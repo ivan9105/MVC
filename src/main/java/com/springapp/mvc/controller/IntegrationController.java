@@ -24,8 +24,10 @@ import java.util.Map;
  * Created by ivan on 05.09.2015.
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping(value = IntegrationController.ROOT_PATH)
 public class IntegrationController {
+    public static final String ROOT_PATH = "/api/weather";
+
     public static final String COUNTRY_NAME_LAT = "Russia";
     @Autowired
     private WeatherClient weatherClient;
