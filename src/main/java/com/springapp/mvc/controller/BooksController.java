@@ -7,12 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import javax.xml.validation.Validator;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -20,11 +22,14 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/")
-public class MainController {
+public class BooksController {
     public static final String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm";
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private LocalValidatorFactoryBean validator;
 
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
@@ -76,10 +81,11 @@ public class MainController {
     }
 
     @RequestMapping(value = "books/edit", method = RequestMethod.POST)
-    public String saveEdit(
-            @Valid @ModelAttribute("bookAttribute") Book book,
+    public String saveEdit(@ModelAttribute("bookAttribute") Book book,
             @RequestParam(value = "id", required = true) UUID id,
             BindingResult result, Model model) {
+        validator.validate(book, result);
+
         if (result.hasErrors()) {
             return "editBook";
         }

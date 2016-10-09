@@ -25,9 +25,9 @@
     <form:form method="post" modelAttribute="bookAttribute" action="${saveUrl}">
         <form:label path="name" cssClass="info">Наименование:</form:label>
         <form:errors path="name" cssClass="error"/><br/>
-        <form:input path="name" cssClass="bookInput"/>
+        <form:input path="name" cssClass="bookInput"/><br/>
+        <form:label path="year" cssClass="info">Год:</form:label>
         <form:errors path="year" cssClass="error"/><br/>
-        <form:label path="year" cssClass="info">Год:</form:label><br/>
         <form:input path="year" cssClass="bookInput"/>
         <div style="height: 30px"></div>
         <input type="submit" value="Сохранить" class="book">

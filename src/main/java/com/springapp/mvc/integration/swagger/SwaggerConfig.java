@@ -29,10 +29,10 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("MVC Project API")
-                .description("WORK IN PROGRESS")
-                .version("1")
+                .description("work in progress...")
+                .version("0.1")
                 .termsOfServiceUrl("")
-                .license("LICENSE")
+                .license("license")
                 .licenseUrl("")
                 .build();
     }
