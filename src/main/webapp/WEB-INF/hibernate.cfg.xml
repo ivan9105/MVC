@@ -6,5 +6,6 @@
 <hibernate-configuration>
     <session-factory>
         <mapping class="com.springapp.mvc.model.Book"/>
+        <mapping class="com.springapp.mvc.model.Author"/>
     </session-factory>
 </hibernate-configuration>

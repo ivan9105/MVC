@@ -44,7 +44,8 @@
 
     <div class="info">
         <c:if test="${empty books}">
-            There are currently no books in the list. <a href="${addUrl}">Add</a> a book.
+            <br />
+            There are currently no books in the list. <a class="index" href="${addUrl}">Add</a> a book.
         </c:if>
     </div>
 

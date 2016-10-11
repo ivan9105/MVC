@@ -28,6 +28,10 @@ public class Book extends StandardEntity {
     @Column(name = "year")
     protected Integer year;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
+    protected Author author;
+
     public String getName() {
         return name;
     }
@@ -42,5 +46,13 @@ public class Book extends StandardEntity {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 }
