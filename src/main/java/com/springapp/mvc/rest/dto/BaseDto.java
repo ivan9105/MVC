@@ -4,13 +4,13 @@ package com.springapp.mvc.rest.dto;
  * Created by Иван on 10.10.2016.
  */
 public class BaseDto {
-    private String url;
+    private LinkDto link;
 
-    public String getUrl() {
-        return url;
+    public LinkDto getLinkDto() {
+        return link;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setLinkDto(LinkDto link) {
+        this.link = link;
     }
 }
