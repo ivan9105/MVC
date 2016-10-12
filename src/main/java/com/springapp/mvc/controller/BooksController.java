@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import javax.xml.validation.Validator;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -46,24 +45,24 @@ public class BooksController {
             }
         }
         model.addAttribute("books", books);
-        return "books";
+        return "books/books";
     }
 
     @RequestMapping(value = "books/add", method = RequestMethod.GET)
     public String getAddBook(Model model) {
         model.addAttribute("bookAttribute", new Book());
-        return "addBook";
+        return "books/addBook";
     }
 
     @RequestMapping(value = "books/add", method = RequestMethod.POST)
     public String addBook(@Valid @ModelAttribute("bookAttribute") Book book,
                           BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "addBook";
+            return "books/addBook";
         }
         bookService.saveBook(book);
         model.addAttribute("date", new SimpleDateFormat(TIMESTAMP_PATTERN).format(new Date()));
-        return "addedBook";
+        return "books/addedBook";
     }
 
     @RequestMapping(value = "books/delete", method = RequestMethod.GET)
@@ -71,13 +70,13 @@ public class BooksController {
         bookService.deleteBook(bookService.getBook(id));
         model.addAttribute("id", id);
         model.addAttribute("date", new SimpleDateFormat(TIMESTAMP_PATTERN).format(new Date()));
-        return "deletedBook";
+        return "books/deletedBook";
     }
 
     @RequestMapping(value = "books/edit", method = RequestMethod.GET)
     public String editBook(@RequestParam(value = "id", required = true) UUID id, Model model) {
         model.addAttribute("bookAttribute", bookService.getBook(id));
-        return "editBook";
+        return "books/editBook";
     }
 
     @RequestMapping(value = "books/edit", method = RequestMethod.POST)
@@ -87,12 +86,12 @@ public class BooksController {
         validator.validate(book, result);
 
         if (result.hasErrors()) {
-            return "editBook";
+            return "books/editBook";
         }
 
         bookService.updateBook(book);
         model.addAttribute("id", id);
         model.addAttribute("date", new SimpleDateFormat(TIMESTAMP_PATTERN).format(new Date()));
-        return "editedBook";
+        return "books/editedBook";
     }
 }
