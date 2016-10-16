@@ -3,12 +3,12 @@ package com.springapp.mvc.dao.impl;
 import com.springapp.mvc.dao.BookDao;
 import com.springapp.mvc.model.Book;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,43 +19,81 @@ import java.util.UUID;
 @Repository
 public class BookDaoImpl implements BookDao {
     @Autowired
-    private SessionFactory sessionFactory;
+    private EntityManagerFactory entityManagerFactory;
 
     @Override
     public boolean saveBook(Book book) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
         try {
-            getCurrentSession().save(book);
-            return true;
+            em.persist(book);
+            em.getTransaction().commit();
         } catch (Exception ignored) {
             return false;
+        } finally {
+            em.close();
         }
+        return true;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<Book> getBooks() {
-        return getCurrentSession().createQuery("from Book").list();
+        List<Book> res;
+
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            res = em.createQuery("from Book").getResultList();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return res;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void updateBook(Book book) {
-        getCurrentSession().update(book);
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.merge(book);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public void deleteBook(Book book) {
-        getCurrentSession().delete(book);
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            Book deleted = em.find(Book.class, book.getId());
+            em.remove(deleted);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public Book getBook(UUID id) {
-        Query query = getCurrentSession().createQuery("from Book b where b.id = :id");
-        query.setParameter("id", id);
-        return (Book) query.list().get(0);
+        Book res;
+
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            res = (Book) em.createQuery("from Book b where b.id = :id").setParameter("id", id).getSingleResult();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return res;
     }
 
-    private Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
+    private EntityManager getEntityManager() {
+        return entityManagerFactory.createEntityManager();
     }
 }

@@ -44,17 +44,19 @@ public class AuthorsController {
 
     @RequestMapping(value = "authors/add", method = RequestMethod.POST)
     public String addAuthor(@Valid @ModelAttribute("authorAttribute") Author author,
-                            BindingResult result) {
+                            BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "authors/addAuthor";
         }
         authorRepository.save(author);
+        model.addAttribute("authors", Lists.newArrayList(authorRepository.findAll()));
         return "authors/authors";
     }
 
     @RequestMapping(value = "authors/delete", method = RequestMethod.GET)
-    public String deleteAuthor(@RequestParam(value = "id", required = true) UUID id) {
+    public String deleteAuthor(@RequestParam(value = "id", required = true) UUID id, Model model) {
         authorRepository.delete(id);
+        model.addAttribute("authors", Lists.newArrayList(authorRepository.findAll()));
         return "authors/authors";
     }
 
@@ -66,12 +68,13 @@ public class AuthorsController {
 
     @RequestMapping(value = "authors/edit", method = RequestMethod.POST)
     public String saveEdit(@ModelAttribute("authorAttribute") Author author,
-                           BindingResult result) {
+                           BindingResult result, Model model) {
         validator.validate(author, result);
         if (result.hasErrors()) {
             return "authors/editAuthor";
         }
         authorRepository.save(author);
+        model.addAttribute("authors", Lists.newArrayList(authorRepository.findAll()));
         return "authors/authors";
     }
 }
