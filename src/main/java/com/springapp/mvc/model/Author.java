@@ -1,5 +1,6 @@
 package com.springapp.mvc.model;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -18,17 +19,17 @@ import java.util.List;
 @Table(name = "test_authors")
 public class Author extends StandardEntity {
     @NotNull()
-    @Size(min=3, max=50)
-    @Column(name="name")
+    @Size(min = 3, max = 50)
+    @Column(name = "name")
     private String name;
 
     @NotNull()
-    @Size(min=3, max=50)
-    @Column(name="middleName")
+    @Size(min = 3, max = 50)
+    @Column(name = "middleName")
     private String middleName;
 
-    @Size(min=3, max=50)
-    @Column(name="lastName")
+    @Size(min = 3, max = 50)
+    @Column(name = "lastName")
     private String lastName;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -65,5 +66,23 @@ public class Author extends StandardEntity {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public String getInstanceName() {
+        StringBuilder sb = new StringBuilder();
+        if (StringUtils.isNotEmpty(name)) {
+            sb.append(name.substring(0, 1).toUpperCase()).append(".");
+        }
+        if (StringUtils.isNotEmpty(middleName)) {
+            sb.append(middleName.substring(0, 1).toUpperCase()).append(".");
+        }
+        if (StringUtils.isNotEmpty(lastName)) {
+            if (sb.length() == 0) {
+                sb.append(lastName);
+            } else {
+                sb.append(" ").append(lastName);
+            }
+        }
+        return sb.toString();
     }
 }

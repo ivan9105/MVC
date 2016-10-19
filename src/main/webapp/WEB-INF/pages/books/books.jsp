@@ -26,6 +26,7 @@
             <tr>
                 <th class="book">Наименование</th>
                 <th class="book">Год</th>
+                <th class="book">Автор</th>
                 <th colspan="3" class="book"></th>
             </tr>
             <tbody>
@@ -35,6 +36,11 @@
                 <tr>
                     <td class="book"><c:out value="${book.name}"/></td>
                     <td class="book"><c:out value="${book.year}"/></td>
+                    <td class="book">
+                        <c:if test="${!empty book.author}">
+                            <c:out value="${book.author.instanceName}"/>
+                        </c:if>
+                    </td>
                     <td class="action"><a class="book" href="${editUrl}">Редактировать</a></td>
                     <td class="action"><a class="book" href="${deleteUrl}">Удалить</a></td>
                     <td class="action"><a class="book" href="${addUrl}">Добавить</a></td>

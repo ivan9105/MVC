@@ -50,10 +50,17 @@
 
     <bean id="bookDao" class="com.springapp.mvc.dao.impl.BookDaoImpl"/>
 
-    <mvc:annotation-driven />
-    <mvc:resources location="/resources/" mapping="/resources/**" />
+    <bean id="conversionService"
+          class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <bean class="com.springapp.mvc.converters.IdToAuthorConverter"/>
+        </property>
+    </bean>
+
+    <mvc:annotation-driven conversion-service="conversionService"/>
+    <mvc:resources location="/resources/" mapping="/resources/**"/>
     <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
 
-    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 </beans>

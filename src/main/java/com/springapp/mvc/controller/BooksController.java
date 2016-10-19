@@ -1,5 +1,8 @@
 package com.springapp.mvc.controller;
 
+import com.google.common.collect.Lists;
+import com.springapp.mvc.data.AuthorRepository;
+import com.springapp.mvc.model.Author;
 import com.springapp.mvc.model.Book;
 import com.springapp.mvc.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
@@ -29,6 +30,9 @@ public class BooksController {
 
     @Autowired
     private LocalValidatorFactoryBean validator;
+
+    @Autowired
+    private AuthorRepository authorRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
@@ -51,13 +55,21 @@ public class BooksController {
     @RequestMapping(value = "books/add", method = RequestMethod.GET)
     public String getAddBook(Model model) {
         model.addAttribute("bookAttribute", new Book());
+        setAuthorList(model);
         return "books/addBook";
+    }
+
+    private void setAuthorList(Model model) {
+        ArrayList<Author> authors = Lists.newArrayList(authorRepository.findAll());
+        authors.add(0, new Author());
+        model.addAttribute("authorList", authors);
     }
 
     @RequestMapping(value = "books/add", method = RequestMethod.POST)
     public String addBook(@Valid @ModelAttribute("bookAttribute") Book book,
                           BindingResult result, Model model) {
         if (result.hasErrors()) {
+            setAuthorList(model);
             return "books/addBook";
         }
         bookService.saveBook(book);
@@ -76,6 +88,7 @@ public class BooksController {
     @RequestMapping(value = "books/edit", method = RequestMethod.GET)
     public String editBook(@RequestParam(value = "id", required = true) UUID id, Model model) {
         model.addAttribute("bookAttribute", bookService.getBook(id));
+        setAuthorList(model);
         return "books/editBook";
     }
 
@@ -86,6 +99,7 @@ public class BooksController {
         validator.validate(book, result);
 
         if (result.hasErrors()) {
+            setAuthorList(model);
             return "books/editBook";
         }
 

@@ -28,6 +28,7 @@ public class Book extends StandardEntity {
     @Column(name = "year")
     protected Integer year;
 
+    @NotNull()
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     protected Author author;
