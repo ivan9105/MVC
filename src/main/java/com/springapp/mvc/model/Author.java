@@ -4,10 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -23,7 +20,6 @@ public class Author extends StandardEntity {
     @Column(name = "name")
     private String name;
 
-    @NotNull()
     @Size(min = 3, max = 50)
     @Column(name = "middleName")
     private String middleName;
@@ -32,8 +28,7 @@ public class Author extends StandardEntity {
     @Column(name = "lastName")
     private String lastName;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     protected List<Book> books;
 
     public String getName() {

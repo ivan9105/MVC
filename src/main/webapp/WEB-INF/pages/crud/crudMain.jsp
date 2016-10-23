@@ -20,6 +20,7 @@
     <c:url var="back" value="/"/>
     <h2 class="book">Справочники авторов и книг</h2>
     <ul class="index">
+        <li><a class="index" href="${pageContext.request.contextPath}/generateTestData">Сгенерировать данные</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/books">Книги</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/authors">Авторы</a></li>
     </ul>
