@@ -66,10 +66,18 @@ public class Author extends StandardEntity {
     public String getInstanceName() {
         StringBuilder sb = new StringBuilder();
         if (StringUtils.isNotEmpty(name)) {
-            sb.append(name.substring(0, 1).toUpperCase()).append(".");
+            if (middleName != null && lastName != null) {
+                sb.append(name.substring(0, 1).toUpperCase()).append(".");
+            } else {
+                sb.append(name).append(" ");
+            }
         }
         if (StringUtils.isNotEmpty(middleName)) {
-            sb.append(middleName.substring(0, 1).toUpperCase()).append(".");
+            if (name != null && lastName != null) {
+                sb.append(middleName.substring(0, 1).toUpperCase()).append(".");
+            } else {
+                sb.append(name).append(" ");
+            }
         }
         if (StringUtils.isNotEmpty(lastName)) {
             if (sb.length() == 0) {

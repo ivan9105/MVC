@@ -61,7 +61,6 @@ public class BooksController {
 
     private void setAuthorList(Model model) {
         ArrayList<Author> authors = Lists.newArrayList(authorRepository.findAll());
-        authors.add(0, new Author());
         model.addAttribute("authorList", authors);
     }
 

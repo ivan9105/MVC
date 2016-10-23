@@ -32,24 +32,23 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public void generateTestData() {
+        authorRepository.deleteAll();
         String result = readFile();
         Map<String, Set<String>> authorsMap = getData(result);
 
-//        EntityManager em = entityManagerFactory.createEntityManager();
-//        em.getTransaction().begin();
-//        try {
-//            authorRepository.deleteAll();
-//
-//            Random random = new Random();
-//
-//            for (Map.Entry<String, Set<String>> entry : authorsMap.entrySet()) {
-//                Author author = createAuthor(em, entry);
-//                createBooks(em, random, entry, author);
-//            }
-//            em.getTransaction().commit();
-//        } finally {
-//            em.close();
-//        }
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            Random random = new Random();
+
+            for (Map.Entry<String, Set<String>> entry : authorsMap.entrySet()) {
+                Author author = createAuthor(em, entry);
+                createBooks(em, random, entry, author);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     private Map<String, Set<String>> getData(String result) {
