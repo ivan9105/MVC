@@ -2,10 +2,12 @@ package com.springapp.mvc.controller;
 
 import com.google.common.collect.Lists;
 import com.springapp.mvc.data.AuthorRepository;
+import com.springapp.mvc.dto.PageableInfo;
 import com.springapp.mvc.model.Author;
 import com.springapp.mvc.model.Book;
 import com.springapp.mvc.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -41,14 +43,31 @@ public class BooksController {
     }
 
     @RequestMapping(value = "books", method = RequestMethod.GET)
-    public String getBooks(Model model) {
-        List<Book> books = bookService.getBooks();
+    public String getBooks(@RequestParam(value = "size", required = false) Integer size,
+                           @RequestParam(value = "page", required = false) Integer page,
+                           Model model) {
+        long count = bookService.getCount();
+        if (size == null || size == 0) {
+            size = 10;
+        }
+        if (page == null) {
+            page = 1;
+        }
+        int pageCount = (int) Math.ceil((double) count / size);
+        PageableInfo pageableInfo = new PageableInfo();
+        pageableInfo.setSize(size);
+        pageableInfo.setPage(page);
+        pageableInfo.setLastValue(pageCount);
+        pageableInfo.setCurrentValue(page);
+
+        List<Book> books = bookService.getBooks(new PageRequest(page - 1, size));
         for (Book book : books) {
             if (book.getName() != null && book.getName().length() > 50) {
                 book.setName(book.getName().substring(0, 47) + "...");
             }
         }
         model.addAttribute("books", books);
+        model.addAttribute("pageableInfo", pageableInfo);
         return "books/books";
     }
 
@@ -93,8 +112,8 @@ public class BooksController {
 
     @RequestMapping(value = "books/edit", method = RequestMethod.POST)
     public String saveEdit(@ModelAttribute("bookAttribute") Book book,
-            @RequestParam(value = "id", required = true) UUID id,
-            BindingResult result, Model model) {
+                           @RequestParam(value = "id", required = true) UUID id,
+                           BindingResult result, Model model) {
         validator.validate(book, result);
 
         if (result.hasErrors()) {

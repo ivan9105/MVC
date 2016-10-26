@@ -2,8 +2,11 @@ package com.springapp.mvc.controller;
 
 import com.google.common.collect.Lists;
 import com.springapp.mvc.data.AuthorRepository;
+import com.springapp.mvc.dto.PageableInfo;
 import com.springapp.mvc.model.Author;
+import com.springapp.mvc.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,10 +33,31 @@ public class AuthorsController {
     private LocalValidatorFactoryBean validator;
 
     @RequestMapping(value = "authors", method = RequestMethod.GET)
-    public String getAuthors(Model model) {
-        List<Author> authors = Lists.newArrayList(authorRepository.findAll());
+    public String getAuthors(@RequestParam(value = "size", required = false) Integer size,
+                             @RequestParam(value = "page", required = false) Integer page,
+                             Model model) {
+        long count = authorRepository.count();
+        if (size == null || size == 0) {
+            size = 10;
+        }
+        if (page == null) {
+            page = 1;
+        }
+        PageableInfo pageableInfo = getPageableInfo(size, page, count);
+        List<Author> authors = authorRepository.findAll(new PageRequest(page - 1, size)).getContent();
         model.addAttribute("authors", authors);
+        model.addAttribute("pageableInfo", pageableInfo);
         return "authors/authors";
+    }
+
+    private PageableInfo getPageableInfo(Integer size, Integer page, double count) {
+        int pageCount = (int) Math.ceil(count / size);
+        PageableInfo pageableInfo = new PageableInfo();
+        pageableInfo.setSize(size);
+        pageableInfo.setPage(page);
+        pageableInfo.setLastValue(pageCount);
+        pageableInfo.setCurrentValue(page);
+        return pageableInfo;
     }
 
     @RequestMapping(value = "authors/add", method = RequestMethod.GET)
@@ -56,7 +80,10 @@ public class AuthorsController {
     @RequestMapping(value = "authors/delete", method = RequestMethod.GET)
     public String deleteAuthor(@RequestParam(value = "id", required = true) UUID id, Model model) {
         authorRepository.delete(id);
-        model.addAttribute("authors", Lists.newArrayList(authorRepository.findAll()));
+        PageableInfo pageableInfo = getPageableInfo(10, 1, authorRepository.count());
+        List<Author> authors = authorRepository.findAll(new PageRequest(0, 10)).getContent();
+        model.addAttribute("authors", authors);
+        model.addAttribute("pageableInfo", pageableInfo);
         return "authors/authors";
     }
 
@@ -74,7 +101,10 @@ public class AuthorsController {
             return "authors/editAuthor";
         }
         authorRepository.save(author);
-        model.addAttribute("authors", Lists.newArrayList(authorRepository.findAll()));
+        PageableInfo pageableInfo = getPageableInfo(10, 1, authorRepository.count());
+        List<Author> authors = authorRepository.findAll(new PageRequest(0, 10)).getContent();
+        model.addAttribute("authors", authors);
+        model.addAttribute("pageableInfo", pageableInfo);
         return "authors/authors";
     }
 }

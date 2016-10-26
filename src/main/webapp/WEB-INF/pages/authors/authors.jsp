@@ -46,6 +46,21 @@
         </table>
     </c:if>
 
+    <c:if test="${pageableInfo.lastValue > 1}">
+        <br/>
+        <c:url var="authorsUrl" value="/authors"/>
+        <c:forEach begin="1" end="${pageableInfo.lastValue}" var="i">
+            <c:if test="${i eq pageableInfo.currentValue}">
+                <a href="${authorsUrl}?page=${i}&size=${pageableInfo.size}" class="pagination_"><c:out
+                        value="${i}"/></a>
+            </c:if>
+            <c:if test="${i ne pageableInfo.currentValue}">
+                <a href="${authorsUrl}?page=${i}&size=${pageableInfo.size}" class="pagination"><c:out
+                        value="${i}"/></a>
+            </c:if>
+        </c:forEach>
+    </c:if>
+
     <div class="info">
         <c:if test="${empty authors}">
             <br/>

@@ -48,6 +48,21 @@
             </c:forEach>
             </tbody>
         </table>
+
+        <c:if test="${pageableInfo.lastValue > 1}">
+            <br/>
+            <c:url var="booksUrl" value="/books"/>
+            <c:forEach begin="1" end="${pageableInfo.lastValue}" var="i">
+                <c:if test="${i eq pageableInfo.currentValue}">
+                    <a href="${booksUrl}?page=${i}&size=${pageableInfo.size}" class="pagination_"><c:out
+                            value="${i}"/></a>
+                </c:if>
+                <c:if test="${i ne pageableInfo.currentValue}">
+                    <a href="${booksUrl}?page=${i}&size=${pageableInfo.size}" class="pagination"><c:out
+                            value="${i}"/></a>
+                </c:if>
+            </c:forEach>
+        </c:if>
     </c:if>
     <div class="info">
         <c:if test="${empty books}">

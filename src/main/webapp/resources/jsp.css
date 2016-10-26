@@ -147,3 +147,41 @@ a:hover.small, a:active.small {
 ul.index li{
     margin: 10px;
 }
+
+a:link.pagination, a:visited.pagination {
+    color: #1caf11;
+    display: inline-block;
+    outline: 0;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none !important;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px;
+    font-family: "Arial", Times, serif;
+    font-weight: bold;
+}
+
+a:hover.pagination, a:active.pagination {
+    color: #4faf0e;
+}
+
+a:link.pagination_, a:visited.pagination_ {
+    color: #af112c;
+    display: inline-block;
+    outline: 0;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none !important;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px;
+    font-family: "Arial", Times, serif;
+    font-weight: bold;
+}
+
+a:hover.pagination_, a:active.pagination_ {
+    color: #af574d;
+}
