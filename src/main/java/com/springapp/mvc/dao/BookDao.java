@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by Иван on 30.07.2015.
+ * Created by пїЅпїЅпїЅпїЅ on 30.07.2015.
  */
 public interface BookDao {
     boolean saveBook(Book book);
@@ -14,4 +14,6 @@ public interface BookDao {
     void updateBook(Book book);
     void deleteBook(Book book);
     Book getBook(UUID id);
+    void indexBooks();
+    List<Book> searchForBook(String searchText);
 }

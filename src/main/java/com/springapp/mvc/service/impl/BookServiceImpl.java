@@ -58,4 +58,9 @@ public class BookServiceImpl implements BookService {
     public long getCount() {
         return bookPagingRepository.count();
     }
+
+    @Override
+    public List<Book> searchForBook(String searchText) {
+        return bookDao.searchForBook(searchText);
+    }
 }

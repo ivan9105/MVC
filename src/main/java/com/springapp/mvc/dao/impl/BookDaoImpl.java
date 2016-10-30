@@ -3,12 +3,17 @@ package com.springapp.mvc.dao.impl;
 import com.springapp.mvc.dao.BookDao;
 import com.springapp.mvc.model.Book;
 import org.hibernate.Query;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -90,6 +95,46 @@ public class BookDaoImpl implements BookDao {
         } finally {
             em.close();
         }
+        return res;
+    }
+
+    @Override
+    public void indexBooks() {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            FullTextEntityManager fullTextEm = Search.getFullTextEntityManager(em);
+            try {
+                fullTextEm.createIndexer(Book.class).startAndWait();
+            } catch (InterruptedException ignore) {
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Book> searchForBook(String searchText) {
+        List<Book> res = null;
+
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            FullTextEntityManager fullTextEm = Search.getFullTextEntityManager(em);
+            QueryBuilder qb = fullTextEm.getSearchFactory().buildQueryBuilder().forEntity(Book.class).get();
+            org.apache.lucene.search.Query q = qb.keyword().onFields("name", "year", "author").matching(searchText).createQuery();
+            FullTextQuery fullTextQuery = fullTextEm.createFullTextQuery(q, Book.class);
+            List list = fullTextQuery.getResultList();
+            res = new ArrayList<>();
+            for (Object object : list) {
+                res.add((Book) object);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
         return res;
     }
 

@@ -19,4 +19,5 @@ public interface BookService {
     void deleteBook(Book book);
     Book getBook(UUID id);
     long getCount();
+    List<Book> searchForBook(String searchText);
 }
