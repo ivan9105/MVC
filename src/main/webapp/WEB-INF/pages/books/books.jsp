@@ -7,6 +7,7 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -22,6 +23,13 @@
     <c:url var="addUrl" value="books/add"/>
     <c:url var="back" value="/crudMain"/>
     <c:if test="${!empty books}">
+        <form:form method="post"  action="${pageContext.request.contextPath}/books">
+            <p class="index">Фильтр: </p>
+            <input type="text" name="searchText" value="" class="bookInput" title="">
+            <input type="submit" value="Поиск" class="book"/>
+        </form:form>
+        <div style="height: 15px"></div>
+
         <table class="book">
             <tr>
                 <th class="book">Наименование</th>

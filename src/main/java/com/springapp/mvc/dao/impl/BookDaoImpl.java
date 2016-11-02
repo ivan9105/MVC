@@ -8,6 +8,8 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -107,11 +109,62 @@ public class BookDaoImpl implements BookDao {
             try {
                 fullTextEm.createIndexer(Book.class).startAndWait();
             } catch (InterruptedException ignore) {
+                System.out.print("ERROR");
             }
             em.getTransaction().commit();
         } finally {
             em.close();
         }
+    }
+
+    @Override
+    public long getCount(String searchText) {
+        long res = 0;
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            //Todo to lower case, *search, search*, *search*
+            //Todo and for all fields and search book
+            FullTextEntityManager fullTextEm = Search.getFullTextEntityManager(em);
+            QueryBuilder qb = fullTextEm.getSearchFactory().buildQueryBuilder().forEntity(Book.class).get();
+            //, "year", "author.name","author.middleName", "author.lastName"
+            org.apache.lucene.search.Query q = qb.keyword().wildcard().onField("name").matching(searchText).createQuery();
+            FullTextQuery fullTextQuery = fullTextEm.createFullTextQuery(q, Book.class);
+            res = fullTextQuery.getResultSize();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return res;
+    }
+
+    @Override
+    public List<Book> searchForBook(String searchText, Pageable pageRequest) {
+        List<Book> res = null;
+
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            FullTextEntityManager fullTextEm = Search.getFullTextEntityManager(em);
+            QueryBuilder qb = fullTextEm.getSearchFactory().buildQueryBuilder().forEntity(Book.class).get();
+            org.apache.lucene.search.Query q = qb.keyword().onFields("name", "year", "author.name",
+                    "author.middleName", "author.lastName").matching(searchText).createQuery();
+            FullTextQuery fullTextQuery = fullTextEm.createFullTextQuery(q, Book.class);
+            int page = pageRequest.getPageNumber() + 1;
+            int size = pageRequest.getPageSize();
+            fullTextQuery.setFirstResult(page * size);
+            fullTextQuery.setMaxResults(size);
+            List list = fullTextQuery.getResultList();
+            res = new ArrayList<>();
+            for (Object object : list) {
+                res.add((Book) object);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        return res;
     }
 
     @Override

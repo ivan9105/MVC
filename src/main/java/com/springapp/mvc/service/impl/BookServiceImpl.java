@@ -60,7 +60,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public long getCount(String searchText) {
+        return bookDao.getCount(searchText);
+    }
+
+    @Override
+    public List<Book> searchForBook(String searchText, Pageable pageRequest) {
+        return bookDao.searchForBook(searchText, pageRequest);
+    }
+
+    @Override
     public List<Book> searchForBook(String searchText) {
         return bookDao.searchForBook(searchText);
+    }
+
+    @Override
+    public void indexBooks() {
+        bookDao.indexBooks();
     }
 }

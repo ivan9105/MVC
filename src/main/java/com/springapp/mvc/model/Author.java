@@ -1,8 +1,10 @@
 package com.springapp.mvc.model;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,23 +14,29 @@ import java.util.List;
 /**
  * Created by Иван on 11.10.2016.
  */
+@Indexed
 @Entity
 @Table(name = "test_authors")
+@Analyzer(impl = RussianAnalyzer.class)
 public class Author extends StandardEntity {
     @NotNull()
     @Size(min = 3, max = 50)
     @Column(name = "name")
+    @Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
     private String name;
 
     @Size(min = 3, max = 50)
     @Column(name = "middleName")
+    @Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
     private String middleName;
 
     @Size(min = 3, max = 50)
     @Column(name = "lastName")
+    @Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
     private String lastName;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @ContainedIn
     protected List<Book> books;
 
     public String getName() {

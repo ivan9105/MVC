@@ -6,6 +6,7 @@ import com.springapp.mvc.dto.PageableInfo;
 import com.springapp.mvc.model.Author;
 import com.springapp.mvc.model.Book;
 import com.springapp.mvc.service.BookService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -46,6 +47,7 @@ public class BooksController {
     public String getBooks(@RequestParam(value = "size", required = false) Integer size,
                            @RequestParam(value = "page", required = false) Integer page,
                            Model model) {
+        bookService.indexBooks();
         long count = bookService.getCount();
         if (size == null || size == 0) {
             size = 10;
@@ -69,6 +71,45 @@ public class BooksController {
         model.addAttribute("books", books);
         model.addAttribute("pageableInfo", pageableInfo);
         return "books/books";
+    }
+
+    @RequestMapping(value = "books", method = RequestMethod.POST)
+    public String getBooks(@RequestParam(value = "size", required = false) Integer size,
+                           @RequestParam(value = "page", required = false) Integer page,
+                           @RequestParam(value = "searchText", required = false) String searchText,
+                           Model model) {
+        long count;
+        try { //Todo remove it
+            //Todo common logic in one method
+            if (StringUtils.isNotEmpty(searchText)) {
+                count = bookService.getCount("*" + searchText + "*");
+            } else {
+                count = bookService.getCount();
+            }
+            if (size == null || size == 0) {
+                size = 10;
+            }
+            if (page == null) {
+                page = 1;
+            }
+            int pageCount = (int) Math.ceil((double) count / size);
+            PageableInfo pageableInfo = new PageableInfo();
+            pageableInfo.setSize(size);
+            pageableInfo.setPage(page);
+            pageableInfo.setLastValue(pageCount);
+            pageableInfo.setCurrentValue(page);
+
+            List<Book> books;
+            if (StringUtils.isNotEmpty(searchText)) {
+                books = bookService.searchForBook(searchText, new PageRequest(page - 1, size));
+            } else {
+                books = bookService.getBooks(new PageRequest(page - 1, size));
+            }
+            model.addAttribute("books", books);
+            model.addAttribute("pageableInfo", pageableInfo);
+        } catch (Exception ignore) {}
+//        return "books/books";
+        return "redirect:/books";
     }
 
     @RequestMapping(value = "books/add", method = RequestMethod.GET)

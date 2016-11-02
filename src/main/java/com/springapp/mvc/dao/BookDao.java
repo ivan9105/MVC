@@ -1,6 +1,7 @@
 package com.springapp.mvc.dao;
 
 import com.springapp.mvc.model.Book;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,5 +16,7 @@ public interface BookDao {
     void deleteBook(Book book);
     Book getBook(UUID id);
     void indexBooks();
+    long getCount(String searchText);
+    List<Book> searchForBook(String searchText, Pageable pageRequest);
     List<Book> searchForBook(String searchText);
 }

@@ -38,6 +38,20 @@
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
         <!-- spring based scanning for entity classes>-->
         <property name="packagesToScan" value="com.springapp.mvc.model"/>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.search.default.directory_provider">
+                    filesystem
+                </prop>
+                <prop key="hibernate.search.default.indexBase">
+                    <!-- use jdk directory by default-->
+                    .
+                </prop>
+                <prop key="hibernate.connection.useUnicode">true</prop>
+                <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
+                <prop key="hibernate.connection.charSet">UTF-8</prop>
+            </props>
+        </property>
     </bean>
 
     <!--  Transaction related configuration for working with database -->

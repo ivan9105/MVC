@@ -19,5 +19,8 @@ public interface BookService {
     void deleteBook(Book book);
     Book getBook(UUID id);
     long getCount();
+    long getCount(String searchText);
+    List<Book> searchForBook(String searchText, Pageable pageRequest);
     List<Book> searchForBook(String searchText);
+    void indexBooks();
 }
