@@ -125,6 +125,7 @@ public class BookDaoImpl implements BookDao {
         try {
             //Todo to lower case, *search, search*, *search*
             //Todo and for all fields and search book
+            //Todo wilcard multiple fixed from 5.2.0 Beta
             FullTextEntityManager fullTextEm = Search.getFullTextEntityManager(em);
             QueryBuilder qb = fullTextEm.getSearchFactory().buildQueryBuilder().forEntity(Book.class).get();
             //, "year", "author.name","author.middleName", "author.lastName"

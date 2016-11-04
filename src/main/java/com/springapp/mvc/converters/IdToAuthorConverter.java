@@ -2,7 +2,7 @@ package com.springapp.mvc.converters;
 
 import com.springapp.mvc.data.AuthorRepository;
 import com.springapp.mvc.model.Author;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 

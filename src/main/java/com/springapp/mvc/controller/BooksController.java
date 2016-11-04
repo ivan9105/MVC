@@ -6,7 +6,7 @@ import com.springapp.mvc.dto.PageableInfo;
 import com.springapp.mvc.model.Author;
 import com.springapp.mvc.model.Book;
 import com.springapp.mvc.service.BookService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;

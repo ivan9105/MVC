@@ -4,6 +4,7 @@ import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -31,13 +32,13 @@ public class Book extends StandardEntity {
     @Min(value = 1970)
     @Max(value = 2100)
     @Column(name = "year")
-    @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
+    @Field(index= Index.YES, analyze=Analyze.YES, store=Store.NO)
     protected Integer year;
 
     @NotNull()
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "author_id")
     @IndexedEmbedded
+    @JoinColumn(name = "author_id")
     protected Author author;
 
     public String getName() {
