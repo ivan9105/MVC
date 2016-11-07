@@ -21,6 +21,7 @@ public class FormEncodingSetterFilter implements Filter{
 
     public void doFilter(ServletRequest req, ServletResponse resp,
                          FilterChain chain) throws ServletException, IOException {
+        //FUI: set encoding in server application config
         String contentType = req.getContentType();
         if (contentType != null && contentType.startsWith(FILTERABLE_CONTENT_TYPE))
             req.setCharacterEncoding(encoding);

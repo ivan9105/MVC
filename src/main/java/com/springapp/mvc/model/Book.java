@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.search.bridge.builtin.IntegerBridge;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -33,6 +34,7 @@ public class Book extends StandardEntity {
     @Max(value = 2100)
     @Column(name = "year")
     @Field(index= Index.YES, analyze=Analyze.YES, store=Store.NO)
+    @FieldBridge(impl = IntegerBridge.class)
     protected Integer year;
 
     @NotNull()

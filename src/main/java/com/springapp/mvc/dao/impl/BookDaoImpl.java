@@ -123,13 +123,10 @@ public class BookDaoImpl implements BookDao {
         EntityManager em = getEntityManager();
         em.getTransaction().begin();
         try {
-            //Todo to lower case, *search, search*, *search*
-            //Todo and for all fields and search book
-            //Todo wilcard multiple fixed from 5.2.0 Beta
             FullTextEntityManager fullTextEm = Search.getFullTextEntityManager(em);
             QueryBuilder qb = fullTextEm.getSearchFactory().buildQueryBuilder().forEntity(Book.class).get();
-            //, "year", "author.name","author.middleName", "author.lastName"
-            org.apache.lucene.search.Query q = qb.keyword().wildcard().onField("name").matching(searchText).createQuery();
+            org.apache.lucene.search.Query q = qb.keyword().wildcard().onFields("name", "year", "author.name",
+                    "author.middleName", "author.lastName").matching("*" + searchText.toLowerCase() + "*").createQuery();
             FullTextQuery fullTextQuery = fullTextEm.createFullTextQuery(q, Book.class);
             res = fullTextQuery.getResultSize();
             em.getTransaction().commit();
@@ -148,10 +145,10 @@ public class BookDaoImpl implements BookDao {
         try {
             FullTextEntityManager fullTextEm = Search.getFullTextEntityManager(em);
             QueryBuilder qb = fullTextEm.getSearchFactory().buildQueryBuilder().forEntity(Book.class).get();
-            org.apache.lucene.search.Query q = qb.keyword().onFields("name", "year", "author.name",
-                    "author.middleName", "author.lastName").matching(searchText).createQuery();
+            org.apache.lucene.search.Query q = qb.keyword().wildcard().onFields("name", "year", "author.name",
+                    "author.middleName", "author.lastName").matching("*" + searchText.toLowerCase() + "*").createQuery();
             FullTextQuery fullTextQuery = fullTextEm.createFullTextQuery(q, Book.class);
-            int page = pageRequest.getPageNumber() + 1;
+            int page = pageRequest.getPageNumber();
             int size = pageRequest.getPageSize();
             fullTextQuery.setFirstResult(page * size);
             fullTextQuery.setMaxResults(size);

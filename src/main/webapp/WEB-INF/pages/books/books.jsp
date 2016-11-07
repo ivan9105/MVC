@@ -23,9 +23,9 @@
     <c:url var="addUrl" value="books/add"/>
     <c:url var="back" value="/crudMain"/>
     <c:if test="${!empty books}">
-        <form:form method="post"  action="${pageContext.request.contextPath}/books">
+        <form:form method="post" action="${pageContext.request.contextPath}/books">
             <p class="index">Фильтр: </p>
-            <input type="text" name="searchText" value="" class="bookInput" title="">
+            <input type="text" name="searchText" value="${searchText}" class="bookInput" title="">
             <input type="submit" value="Поиск" class="book"/>
         </form:form>
         <div style="height: 15px"></div>
@@ -62,11 +62,11 @@
             <c:url var="booksUrl" value="/books"/>
             <c:forEach begin="1" end="${pageableInfo.lastValue}" var="i">
                 <c:if test="${i eq pageableInfo.currentValue}">
-                    <a href="${booksUrl}?page=${i}&size=${pageableInfo.size}" class="pagination_"><c:out
+                    <a href="${booksUrl}?page=${i}&size=${pageableInfo.size}&searchText=${searchText}" class="pagination_"><c:out
                             value="${i}"/></a>
                 </c:if>
                 <c:if test="${i ne pageableInfo.currentValue}">
-                    <a href="${booksUrl}?page=${i}&size=${pageableInfo.size}" class="pagination"><c:out
+                    <a href="${booksUrl}?page=${i}&size=${pageableInfo.size}&searchText=${searchText}" class="pagination"><c:out
                             value="${i}"/></a>
                 </c:if>
             </c:forEach>

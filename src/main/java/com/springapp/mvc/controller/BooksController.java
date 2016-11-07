@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -46,9 +48,32 @@ public class BooksController {
     @RequestMapping(value = "books", method = RequestMethod.GET)
     public String getBooks(@RequestParam(value = "size", required = false) Integer size,
                            @RequestParam(value = "page", required = false) Integer page,
+                           @RequestParam(value = "searchText", required = false) String searchText,
                            Model model) {
-        bookService.indexBooks();
-        long count = bookService.getCount();
+        if (StringUtils.isEmpty(searchText)) {
+            //Todo
+            bookService.indexBooks();
+        }
+        initBooksResponse(size, page, searchText, model);
+        return "books/books";
+    }
+
+    @RequestMapping(value = "books", method = RequestMethod.POST)
+    public String searchBooks(@RequestParam(value = "size", required = false) Integer size,
+                              @RequestParam(value = "page", required = false) Integer page,
+                              @RequestParam(value = "searchText", required = false) String searchText,
+                              Model model) {
+        initBooksResponse(size, page, searchText, model);
+        return "books/books";
+    }
+
+    private void initBooksResponse(Integer size, Integer page, String searchText, Model model) {
+        long count;
+        if (StringUtils.isNotEmpty(searchText)) {
+            count = bookService.getCount(searchText);
+        } else {
+            count = bookService.getCount();
+        }
         if (size == null || size == 0) {
             size = 10;
         }
@@ -62,7 +87,12 @@ public class BooksController {
         pageableInfo.setLastValue(pageCount);
         pageableInfo.setCurrentValue(page);
 
-        List<Book> books = bookService.getBooks(new PageRequest(page - 1, size));
+        List<Book> books;
+        if (StringUtils.isNotEmpty(searchText)) {
+            books = bookService.searchForBook(searchText, new PageRequest(page - 1, size));
+        } else {
+            books = bookService.getBooks(new PageRequest(page - 1, size));
+        }
         for (Book book : books) {
             if (book.getName() != null && book.getName().length() > 50) {
                 book.setName(book.getName().substring(0, 47) + "...");
@@ -70,46 +100,13 @@ public class BooksController {
         }
         model.addAttribute("books", books);
         model.addAttribute("pageableInfo", pageableInfo);
-        return "books/books";
-    }
-
-    @RequestMapping(value = "books", method = RequestMethod.POST)
-    public String getBooks(@RequestParam(value = "size", required = false) Integer size,
-                           @RequestParam(value = "page", required = false) Integer page,
-                           @RequestParam(value = "searchText", required = false) String searchText,
-                           Model model) {
-        long count;
-        try { //Todo remove it
-            //Todo common logic in one method
-            if (StringUtils.isNotEmpty(searchText)) {
-                count = bookService.getCount("*" + searchText + "*");
-            } else {
-                count = bookService.getCount();
+        if (StringUtils.isNotEmpty(searchText)) {
+            try {
+                searchText =  new String(searchText.getBytes("UTF-8"), Charset.forName("UTF-8"));
+            } catch (UnsupportedEncodingException ignore) {
             }
-            if (size == null || size == 0) {
-                size = 10;
-            }
-            if (page == null) {
-                page = 1;
-            }
-            int pageCount = (int) Math.ceil((double) count / size);
-            PageableInfo pageableInfo = new PageableInfo();
-            pageableInfo.setSize(size);
-            pageableInfo.setPage(page);
-            pageableInfo.setLastValue(pageCount);
-            pageableInfo.setCurrentValue(page);
-
-            List<Book> books;
-            if (StringUtils.isNotEmpty(searchText)) {
-                books = bookService.searchForBook(searchText, new PageRequest(page - 1, size));
-            } else {
-                books = bookService.getBooks(new PageRequest(page - 1, size));
-            }
-            model.addAttribute("books", books);
-            model.addAttribute("pageableInfo", pageableInfo);
-        } catch (Exception ignore) {}
-//        return "books/books";
-        return "redirect:/books";
+        }
+        model.addAttribute("searchText", searchText);
     }
 
     @RequestMapping(value = "books/add", method = RequestMethod.GET)
