@@ -14,6 +14,8 @@
         <li><a class="index" href="${pageContext.request.contextPath}/crudMain">Book catalog (Spring data jpa, JDBC)</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/api/weather/weather">GlobalWeather Web Service (http://www.webservicex.net/globalweather.asmx)</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/swagger-ui.html">Swagger</a></li>
+        <%--<li><a class="index" href="${pageContext.request.contextPath}/protected">Protected</a></li>--%>
+        <%--<li><a class="index" href="${pageContext.request.contextPath}/confidential">Confidential</a></li>--%>
     </ul>
 </div>
 </body>
