@@ -1,5 +1,6 @@
 package com.springapp.mvc.configuration;
 
+import com.springapp.mvc.configuration.security.CustomLoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,6 +27,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/protected").access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/confidential").access("hasRole('ROLE_SUPERADMIN')")
-                .and().formLogin().defaultSuccessUrl("/", false);
+                .and().formLogin().successHandler(new CustomLoginSuccessHandler("/security"));
     }
 }
