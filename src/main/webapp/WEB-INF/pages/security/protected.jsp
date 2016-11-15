@@ -22,7 +22,7 @@
     <c:url var="back" value="/security"/>
     <c:if test="${pageContext.request.userPrincipal.name != null}">
         <p>Вы зашли как : ${pageContext.request.userPrincipal.name}</p>
-        <c:url value="login?logout" var="logoutUrl"/>
+        <c:url value="logout" var="logoutUrl"/>
         <p><a class="index" href="${logoutUrl}">Выйти</a></p>
     </c:if>
     <div style="height: 30px"></div>

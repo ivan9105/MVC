@@ -7,13 +7,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Created by Иван on 09.11.2016.
  */
 @Configuration
 @EnableWebSecurity
-public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         //Todo make config in database
@@ -27,6 +28,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/protected").access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/confidential").access("hasRole('ROLE_SUPERADMIN')")
-                .and().formLogin().successHandler(new CustomLoginSuccessHandler("/security"));
+                .and().formLogin().loginPage("/login").successHandler(new CustomLoginSuccessHandler("/security"))
+                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/logout.done").deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true).and().csrf();
     }
 }

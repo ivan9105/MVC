@@ -24,6 +24,7 @@
         <form:select path="city" items="${data}" cssClass="bookInput"/>
         <div style="height: 30px"></div>
         <input type="submit" value="Submit" class="book">
+        <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
     </form:form>
 </div>
 </body>

@@ -101,7 +101,21 @@ h2.book {
     color: indianred;
 }
 
+.message {
+    font-family: "Arial", Times, serif;
+    color: #5692cd;
+}
+
 input[type=text].bookInput {
+    width: 70%;
+    padding: 9px 16px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #3a3a3a;
+    font-family: "Arial", Times, serif;
+}
+
+input[type=password].bookInput {
     width: 70%;
     padding: 9px 16px;
     margin: 8px 0;

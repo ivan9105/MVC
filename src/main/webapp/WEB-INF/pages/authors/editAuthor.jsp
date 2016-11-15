@@ -33,6 +33,7 @@
 
         <div style="height: 30px"></div>
         <input type="submit" value="Сохранить" class="book">
+        <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
     </form:form>
 </div>
 </body>
