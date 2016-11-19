@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin().loginPage("/login").successHandler(new CustomLoginSuccessHandler("/security"))
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/logout.done").deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true).and().csrf();
+                .invalidateHttpSession(true).and().csrf().and()
+        .exceptionHandling().accessDeniedPage("/403");
     }
 }

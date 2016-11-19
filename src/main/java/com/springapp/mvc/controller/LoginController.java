@@ -1,10 +1,13 @@
 package com.springapp.mvc.controller;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by Иван on 15.11.2016.
@@ -46,5 +49,12 @@ public class LoginController {
     public String adminPage(Model model) {
         model.addAttribute("title", "Spring Security 3.2.0");
         return "security/protected";
+    }
+
+    @RequestMapping(value = "/403", method = RequestMethod.GET)
+    public String accessDenied(HttpServletRequest request, Model model) {
+        String backUrl = request.getHeader(HttpHeaders.REFERER);
+        model.addAttribute("backUrl", backUrl);
+        return "security/403";
     }
 }
