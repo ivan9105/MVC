@@ -15,6 +15,7 @@
         <li><a class="index" href="${pageContext.request.contextPath}/api/weather/weather">GlobalWeather Web Service (http://www.webservicex.net/globalweather.asmx)</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/swagger-ui.html">Swagger</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/security">Security</a></li>
+        <%--<li><a class="index" href="${pageContext.request.contextPath}/testJms">JMS</a></li>--%>
     </ul>
 </div>
 </body>

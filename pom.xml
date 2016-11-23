@@ -25,46 +25,44 @@
             <artifactId>spring-core</artifactId>
             <version>4.1.1.RELEASE</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>4.1.1.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>4.1.1.RELEASE</version>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
             <version>2.1</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>4.1.1.RELEASE</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>4.1.1.RELEASE</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -87,7 +85,6 @@
             <artifactId>spring-security-config</artifactId>
             <version>${spring-security-version}</version>
         </dependency>
-
         <!-- JDBC -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -139,7 +136,6 @@
             <artifactId>spring-orm</artifactId>
             <version>4.1.1.RELEASE</version>
         </dependency>
-
         <!-- THYEMLEAF -->
         <dependency>
             <groupId>org.thymeleaf</groupId>
@@ -166,7 +162,6 @@
             <artifactId>aspectjrt</artifactId>
             <version>${org.aspectj-version}</version>
         </dependency>
-
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -209,14 +204,12 @@
             </exclusions>
             <scope>runtime</scope>
         </dependency>
-
         <!-- @Inject -->
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
         </dependency>
-
         <!-- Servlet API and JSTL -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -265,6 +258,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>2.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-broker</artifactId>
+            <version>5.13.3</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
