@@ -43,9 +43,15 @@ public class IntegrationController {
 
     @RequestMapping(value = "weather", method = RequestMethod.GET)
     public ModelAndView getCity() {
-        GetCitiesByCountryResponse response = weatherClient.getCitiesByCountry(COUNTRY_NAME_LAT);
-        Map<String, String> data = getData(response);
         ModelAndView view = new ModelAndView("integration/weather/cityPage");
+        GetCitiesByCountryResponse response = null;
+        try {
+            response = weatherClient.getCitiesByCountry(COUNTRY_NAME_LAT);
+        } catch (Exception e) {
+            view.addObject("error", e.getMessage());
+            return view;
+        }
+        Map<String, String> data = getData(response);
         view.addObject("data", data);
         view.addObject("table", new NewDataSet.Table());
         return view;
