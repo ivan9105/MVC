@@ -17,13 +17,7 @@ import java.util.Collections;
 public class MessagingConfig {
     private static final String DEFAULT_BROKER_URL = "tcp://localhost:5619";
     private static final String ORDER_QUEUE = "order-queue";
-    public static final String TRUSTED_PACKAGE = "com.websystique.springmvc";
-
-//    @Scope("singleton")
-//    @Bean
-//    public BrokerServiceBean broker() {
-//        return new BrokerServiceBean();
-//    }
+    public static final String TRUSTED_PACKAGE = "com.springapp.mvc";
 
     @Bean
     public ActiveMQConnectionFactory connectionFactory(){

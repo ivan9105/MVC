@@ -19,8 +19,9 @@ public class MessageReceiver {
 
     private static final String ORDER_RESPONSE_QUEUE = "mailbox";
 
-    @JmsListener(destination = ORDER_RESPONSE_QUEUE, containerFactory = "jmsListenerContainerFactory")
-    public void receiveMessage(MessageResponse messageResponse) throws JMSException {
+    @JmsListener(destination = ORDER_RESPONSE_QUEUE)
+    public void receiveMessage(final Message<MessageResponse> message) throws JMSException {
+        MessageResponse messageResponse = message.getPayload();
         System.out.println("Received <" + messageResponse + ">");
     }
 }
