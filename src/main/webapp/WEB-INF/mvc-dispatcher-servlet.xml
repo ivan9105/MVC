@@ -79,4 +79,32 @@
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
     <context:property-placeholder location="classpath:app.properties"/>
+
+    <!-- Jmx configuration -->
+    <bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean"/>
+
+    <bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+        <property name="beans">
+            <map>
+                <entry key="beans:name=jmxSampler" value-ref="jmxSampler"/>
+            </map>
+        </property>
+        <property name="server" ref="mbeanServer"/>
+    </bean>
+
+    <bean id="registry" class="org.springframework.remoting.rmi.RmiRegistryFactoryBean">
+        <property name="port" value="1399"/>
+    </bean>
+
+    <bean id="serverConnector"
+          class="org.springframework.jmx.support.ConnectorServerFactoryBean">
+        <property name="objectName" value="connector:name=rmi" />
+        <property name="serviceUrl"
+                  value="service:jmx:rmi://localhost/jndi/rmi://localhost:1399/jmxConnector" />
+        <property name="threaded" value="true" />
+        <property name="daemon" value="true" />
+        <property name="server" ref="mbeanServer"/>
+    </bean>
+
+    <bean id="jmxSampler" class="com.springapp.mvc.jmx.JmxSamplerBean" />
 </beans>
