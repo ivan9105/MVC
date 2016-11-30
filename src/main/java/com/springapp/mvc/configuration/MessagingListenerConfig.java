@@ -13,7 +13,7 @@ import javax.jms.ConnectionFactory;
  */
 @Configuration
 @EnableJms
-public class MessagingListenerConfiguration {
+public class MessagingListenerConfig {
     @Autowired
     private ConnectionFactory connectionFactory;
 
