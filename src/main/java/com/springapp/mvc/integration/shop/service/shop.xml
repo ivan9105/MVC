@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+    <!-- Integration sample -->
+    <int:gateway id="shop" service-interface="com.springapp.mvc.integration.shop.service.Shop"/>
+    <int:channel id="ordersChannel"/>
+    <int:splitter input-channel="ordersChannel" ref="orderSplitter"
+                  output-channel="orderItemsChannel"/>
+    <bean id="orderSplitter" class="com.springapp.mvc.integration.shop.service.OrderSplitter"/>
+    <int:channel id="orderItemsChannel"/>
+    <int:router input-channel="orderItemsChannel" ref="orderRouter" method="routeOrder"/>
+    <bean id="orderRouter" class="com.springapp.mvc.integration.shop.service.OrderItemRouter"/>
+    <int:channel id="bookItemsChannel">
+        <int:queue capacity="10"/>
+    </int:channel>
+    <int:service-activator input-channel="bookItemsChannel"
+                           ref="shopkeeper" method="processBooks" output-channel="processedItems"/>
+    <int:channel id="musicItemsChannel">
+        <int:queue capacity="10"/>
+    </int:channel>
+    <int:service-activator input-channel="musicItemsChannel"
+                           ref="shopkeeper" method="processMusic" output-channel="processedItems"/>
+    <int:channel id="softwareItemsChannel">
+        <int:queue capacity="10"/>
+    </int:channel>
+    <int:service-activator input-channel="softwareItemsChannel"
+                           ref="shopkeeper" method="processSoftware" output-channel="processedItems"/>
+    <bean id="shopkeeper" class="com.springapp.mvc.integration.shop.service.ShopKeeper"/>
+    <int:channel id="processedItems"/>
+    <int:aggregator input-channel="processedItems" method="prepareDelivery"
+                    output-channel="deliveries">
+        <bean class="com.springapp.mvc.integration.shop.service.OrderCompleter"/>
+    </int:aggregator>
+    <int:channel id="deliveries"/>
+    <int:poller id="poller" default="true" fixed-delay="1000"/>
+</beans>

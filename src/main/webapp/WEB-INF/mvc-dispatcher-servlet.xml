@@ -98,13 +98,13 @@
 
     <bean id="serverConnector"
           class="org.springframework.jmx.support.ConnectorServerFactoryBean">
-        <property name="objectName" value="connector:name=rmi" />
+        <property name="objectName" value="connector:name=rmi"/>
         <property name="serviceUrl"
-                  value="service:jmx:rmi://localhost/jndi/rmi://localhost:1399/jmxConnector" />
-        <property name="threaded" value="true" />
-        <property name="daemon" value="true" />
+                  value="service:jmx:rmi://localhost/jndi/rmi://localhost:1399/jmxConnector"/>
+        <property name="threaded" value="true"/>
+        <property name="daemon" value="true"/>
         <property name="server" ref="mbeanServer"/>
     </bean>
 
-    <bean id="jmxSampler" class="com.springapp.mvc.jmx.JmxSamplerBean" />
+    <bean id="jmxSampler" class="com.springapp.mvc.jmx.JmxSamplerBean"/>
 </beans>
