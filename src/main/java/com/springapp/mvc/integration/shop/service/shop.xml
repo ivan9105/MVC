@@ -29,7 +29,7 @@
     </int:channel>
     <int:service-activator input-channel="softwareItemsChannel"
                            ref="shopkeeper" method="processSoftware" output-channel="processedItems"/>
-    <bean id="shopkeeper" class="com.springapp.mvc.integration.shop.service.ShopKeeper"/>
+    <bean id="shopkeeper" class="com.springapp.mvc.integration.shop.service.ShopKeepManager"/>
     <int:channel id="processedItems"/>
     <int:aggregator input-channel="processedItems" method="prepareDelivery"
                     output-channel="deliveries">
