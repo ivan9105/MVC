@@ -13,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContext;
-import java.io.*;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -73,18 +75,13 @@ public class MainServiceImpl implements MainService {
         if (classLoader == null) {
             throw new RuntimeException("It's impossible");
         }
-        URL resource = classLoader.getResource("test_data/books.txt");
-        if (resource == null) {
-            throw new RuntimeException("file not found");
-        }
 
-        File file = new File(resource.getFile());
         try {
-            FileInputStream fileInputStream = new FileInputStream(file);
-            DataInputStream in = new DataInputStream(fileInputStream);
+            DataInputStream in = new DataInputStream(servletContext.getClassLoader().getResourceAsStream("test_data/books.txt"));
             BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
             result = IOUtils.toString(br);
-        } catch (IOException ignore) {
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getLocalizedMessage());
         }
         return result;
     }
