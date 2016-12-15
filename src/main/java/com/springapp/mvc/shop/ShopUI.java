@@ -19,7 +19,7 @@ import javax.servlet.annotation.WebServlet;
 @Theme("valo")
 @SpringUI(path = "main")
 @SuppressWarnings("serial")
-public class MyUI extends UI {
+public class ShopUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {

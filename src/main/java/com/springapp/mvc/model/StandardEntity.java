@@ -17,7 +17,7 @@ import java.util.UUID;
 public class StandardEntity implements Serializable {
     @Id
     @Type(type="uuid-char")
-    @Column(name="id")
+    @Column(name="ID")
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     protected UUID id;

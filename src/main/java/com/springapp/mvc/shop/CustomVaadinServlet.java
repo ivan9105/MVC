@@ -13,6 +13,6 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(urlPatterns = {"/vaadin/*", "/VAADIN/*"}, asyncSupported = true)
 @VaadinServletConfiguration(
         productionMode = false,
-        ui = MyUI.class)
-public class MyVaadinServlet extends SpringVaadinServlet {
+        ui = ShopUI.class)
+public class CustomVaadinServlet extends SpringVaadinServlet {
 }
