@@ -1,25 +1,21 @@
 package com.springapp.mvc.shop;
 
+import com.springapp.mvc.context.SpringContextHelper;
+import com.springapp.mvc.shop.category.CategoryLayout;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.spring.annotation.EnableVaadin;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.spring.server.SpringVaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.context.ContextLoaderListener;
-
-import javax.servlet.annotation.WebListener;
-import javax.servlet.annotation.WebServlet;
 
 @Theme("valo")
 @SpringUI(path = "main")
 @SuppressWarnings("serial")
 public class ShopUI extends UI {
+    private SpringContextHelper contextHelper;
 
     @Override
     protected void init(VaadinRequest request) {
@@ -27,13 +23,28 @@ public class ShopUI extends UI {
         layout.setMargin(true);
         setContent(layout);
 
-        Button button = new Button("Click Me");
-        button.addClickListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                layout.addComponent(new Label("Thank you for clicking"));
+        contextHelper = new SpringContextHelper(VaadinServlet.getCurrent().getServletContext());
+        //Todo Command open window in new tab
+
+        MenuBar menuBar = new MenuBar();
+        layout.addComponent(menuBar);
+
+        final TabSheet tabSheet = new TabSheet();
+        layout.addComponent(tabSheet);
+
+        MenuBar.MenuItem items = menuBar.addItem("Item management", null);
+        items.addItem("Items", null);
+        items.addItem("Items Generator", null);
+        MenuBar.MenuItem categories = menuBar.addItem("Categories", new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                //Todo tab closable, tab name
+                TabSheet.Tab tab = tabSheet.addTab(new CategoryLayout(contextHelper));
+                tab.setClosable(true);
             }
         });
-        layout.addComponent(button);
+        MenuBar.MenuItem info = menuBar.addItem("Info", null);
     }
+
 
 }
