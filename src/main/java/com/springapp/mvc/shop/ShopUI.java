@@ -24,7 +24,6 @@ public class ShopUI extends UI {
         setContent(layout);
 
         contextHelper = new SpringContextHelper(VaadinServlet.getCurrent().getServletContext());
-        //Todo Command open window in new tab
 
         MenuBar menuBar = new MenuBar();
         layout.addComponent(menuBar);
@@ -38,8 +37,8 @@ public class ShopUI extends UI {
         MenuBar.MenuItem categories = menuBar.addItem("Categories", new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                //Todo tab closable, tab name
                 TabSheet.Tab tab = tabSheet.addTab(new CategoryLayout(contextHelper));
+                tab.setCaption("Categories");
                 tab.setClosable(true);
             }
         });

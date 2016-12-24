@@ -7,5 +7,7 @@
     <session-factory>
         <mapping class="com.springapp.mvc.model.Book"/>
         <mapping class="com.springapp.mvc.model.Author"/>
+        <mapping class="com.springapp.mvc.model.shop.Item"/>
+        <mapping class="com.springapp.mvc.model.shop.Category"/>
     </session-factory>
 </hibernate-configuration>

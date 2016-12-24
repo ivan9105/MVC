@@ -14,8 +14,6 @@ import org.apache.commons.logging.LogFactory;
  */
 @SpringUI
 public class CategoryForm extends FormLayout {
-    private Log log = LogFactory.getLog(CategoryForm.class);
-
     private CategoryPagingRepository repository;
 
     private Button okButton = new Button("OK", new Button.ClickListener() {
@@ -68,12 +66,12 @@ public class CategoryForm extends FormLayout {
         repository.save(category);
         String msg = String.format("Saved '%s'.", category.getName());
         Notification.show(msg, Notification.Type.TRAY_NOTIFICATION);
-        layout.getList().select(null);
+        layout.switchForm(false);
     }
 
     private void cancel(Button.ClickEvent cancel) {
         Notification.show("Cancelled", Notification.Type.TRAY_NOTIFICATION);
-        layout.getList().select(null);
+        layout.switchForm(false);
     }
 
     public void edit(Category category) {
