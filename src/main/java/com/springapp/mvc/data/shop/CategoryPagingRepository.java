@@ -13,6 +13,6 @@ import java.util.UUID;
  */
 public interface CategoryPagingRepository extends PagingAndSortingRepository<Category, UUID> {
     @Query(value = "select c from Category c " +
-            "where c.name LIKE CONCAT('%',:text,'%') or c.description LIKE CONCAT('%',:text,'%')", nativeQuery = true)
+            "where c.name LIKE CONCAT('%',:text,'%') or c.description LIKE CONCAT('%',:text,'%')")
     List<Category> findAll(@Param("text") String text);
 }
