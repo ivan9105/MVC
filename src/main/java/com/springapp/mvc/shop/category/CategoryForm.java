@@ -1,84 +1,60 @@
 package com.springapp.mvc.shop.category;
 
-import com.springapp.mvc.data.shop.CategoryPagingRepository;
+import com.springapp.mvc.model.StandardEntity;
 import com.springapp.mvc.model.shop.Category;
-import com.vaadin.event.ShortcutAction;
+import com.springapp.mvc.shop.base.AbstractForm;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * Created by Иван on 17.12.2016.
  */
 @SpringUI
-public class CategoryForm extends FormLayout {
-    private CategoryPagingRepository repository;
-
-    private Button okButton = new Button("OK", new Button.ClickListener() {
-        @Override
-        public void buttonClick(Button.ClickEvent event) {
-            save(event);
-        }
-    });
-
-    private Button cancelButton = new Button("Cancel", new Button.ClickListener() {
-        @Override
-        public void buttonClick(Button.ClickEvent event) {
-            cancel(event);
-        }
-    });
-
+public class CategoryForm extends AbstractForm {
     private TextField nameField = new TextField("Name");
     private TextArea descriptionField = new TextArea("Description");
 
-    private Category category;
-    private CategoryLayout layout;
+    public CategoryForm(PagingAndSortingRepository repository, com.springapp.mvc.shop.base.AbstractLayout layout) {
+        super(repository, layout);
 
-    public CategoryForm(CategoryPagingRepository repository, CategoryLayout layout) {
         configureComponents();
         buildLayout();
-
-        this.repository = repository;
-        this.layout = layout;
     }
 
-    private void configureComponents() {
-        okButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        okButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        setVisible(false);
+    @Override
+    protected void buildLayout() {
+        super.buildLayout();
+        addComponents(nameField, descriptionField);
     }
 
-    private void buildLayout() {
-        setSizeUndefined();
-        setMargin(true);
-
-        HorizontalLayout actions = new HorizontalLayout(okButton, cancelButton);
-        actions.setSpacing(true);
-
-        addComponents(actions, nameField, descriptionField);
-    }
-
-    private void save(Button.ClickEvent event) {
+    @Override
+    protected void save(Button.ClickEvent event) {
+        Category category = (Category) item;
         category.setName(nameField.getValue());
         category.setDescription(descriptionField.getValue());
         repository.save(category);
         String msg = String.format("Saved '%s'.", category.getName());
         Notification.show(msg, Notification.Type.TRAY_NOTIFICATION);
-        layout.switchForm(false);
+        layout.switchForm(false, true);
     }
 
-    private void cancel(Button.ClickEvent cancel) {
+    @Override
+    protected void cancel(Button.ClickEvent cancel) {
         Notification.show("Cancelled", Notification.Type.TRAY_NOTIFICATION);
-        layout.switchForm(false);
+        layout.switchForm(false, false);
     }
 
-    public void edit(Category category) {
-        this.category = category;
-        if (category != null) {
-            nameField.setValue(category.getName());
-            descriptionField.setValue(category.getDescription());
+    @Override
+    public void edit(StandardEntity item) {
+        this.item = item;
+        Category category = (Category) item;
+        if (item != null) {
+            nameField.setValue(category.getName() != null ? category.getName() : "");
+            descriptionField.setValue(category.getDescription() != null ? category.getDescription() : "");
             nameField.focus();
         }
         setVisible(category != null);
