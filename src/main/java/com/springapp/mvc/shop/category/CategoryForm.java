@@ -1,5 +1,6 @@
 package com.springapp.mvc.shop.category;
 
+import com.springapp.mvc.context.SpringContextHelper;
 import com.springapp.mvc.model.StandardEntity;
 import com.springapp.mvc.model.shop.Category;
 import com.springapp.mvc.shop.base.AbstractForm;
@@ -18,8 +19,9 @@ public class CategoryForm extends AbstractForm {
     private TextField nameField = new TextField("Name");
     private TextArea descriptionField = new TextArea("Description");
 
-    public CategoryForm(PagingAndSortingRepository repository, com.springapp.mvc.shop.base.AbstractLayout layout) {
-        super(repository, layout);
+    public CategoryForm(PagingAndSortingRepository repository, com.springapp.mvc.shop.base.AbstractLayout layout,
+                        SpringContextHelper helper) {
+        super(repository, layout, helper);
 
         configureComponents();
         buildLayout();

@@ -1,5 +1,6 @@
 package com.springapp.mvc.shop.base;
 
+import com.springapp.mvc.context.SpringContextHelper;
 import com.springapp.mvc.model.StandardEntity;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.spring.annotation.SpringUI;
@@ -15,6 +16,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 @SpringUI
 public abstract class AbstractForm extends FormLayout {
     protected PagingAndSortingRepository repository;
+    protected SpringContextHelper helper;
 
     protected Button okButton = new Button("OK", new Button.ClickListener() {
         @Override
@@ -33,9 +35,10 @@ public abstract class AbstractForm extends FormLayout {
     protected StandardEntity item;
     protected AbstractLayout layout;
 
-    public AbstractForm(PagingAndSortingRepository repository, AbstractLayout layout) {
+    public AbstractForm(PagingAndSortingRepository repository, AbstractLayout layout, SpringContextHelper helper) {
         this.repository = repository;
         this.layout = layout;
+        this.helper = helper;
     }
 
     protected void buildLayout() {

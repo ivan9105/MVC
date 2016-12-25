@@ -19,9 +19,11 @@ public abstract class AbstractLayout extends VerticalLayout {
 
     protected PagingAndSortingRepository repository;
     protected AbstractForm form;
+    protected SpringContextHelper helper;
 
     protected AbstractLayout(SpringContextHelper contextHelper, Class repositoryCls) {
         this.repository = (PagingAndSortingRepository) contextHelper.getBean(repositoryCls);
+        this.helper = contextHelper;
 
         initForm();
         configureComponents();
@@ -85,5 +87,10 @@ public abstract class AbstractLayout extends VerticalLayout {
 
     protected abstract void refresh(String filterText);
 
-    public abstract void switchForm(boolean visible, boolean refresh);
+    public void switchForm(boolean visible, boolean refresh) {
+        form.setVisible(visible);
+        if (refresh) {
+            refresh(filter.getValue());
+        }
+    }
 }

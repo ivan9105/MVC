@@ -34,7 +34,7 @@ public class CategoryLayout extends AbstractLayout {
 
     @Override
     protected void initForm() {
-        this.form = new CategoryForm(repository, this);
+        this.form = new CategoryForm(repository, this, helper);
     }
 
     @Override
@@ -72,13 +72,5 @@ public class CategoryLayout extends AbstractLayout {
             items.add(next);
         }
         list.setContainerDataSource(new BeanItemContainer<>(Category.class, items));
-    }
-
-    @Override
-    public void switchForm(boolean visible, boolean refresh) {
-        form.setVisible(visible);
-        if (refresh) {
-            refresh(filter.getValue());
-        }
     }
 }
