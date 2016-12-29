@@ -4,6 +4,7 @@ import com.springapp.mvc.context.SpringContextHelper;
 import com.springapp.mvc.shop.category.CategoryLayout;
 import com.springapp.mvc.shop.command.ShopCommand;
 import com.springapp.mvc.shop.item.ItemLayout;
+import com.springapp.mvc.shop.user.UserLayout;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -45,7 +46,7 @@ public class ShopUI extends UI {
 
         items.addItem("Items Generator", null);
 
-        MenuBar.MenuItem categories = menuBar.addItem("Categories", new ShopCommand("Categories", tabSheet) {
+        menuBar.addItem("Categories", new ShopCommand("Categories", tabSheet) {
             @Override
             protected void addTab() {
                 TabSheet.Tab tab = tabSheet.addTab(new CategoryLayout(contextHelper));
@@ -54,6 +55,15 @@ public class ShopUI extends UI {
             }
         });
 
-        MenuBar.MenuItem info = menuBar.addItem("Info", null);
+        menuBar.addItem("Users", new ShopCommand("Users", tabSheet) {
+            @Override
+            protected void addTab() {
+                TabSheet.Tab tab = tabSheet.addTab(new UserLayout(contextHelper));
+                tab.setCaption("Users");
+                tab.setClosable(true);
+            }
+        });
+
+        menuBar.addItem("Info", null);
     }
 }
