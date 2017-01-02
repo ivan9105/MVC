@@ -4,6 +4,7 @@ import com.springapp.mvc.context.SpringContextHelper;
 import com.springapp.mvc.data.shop.CategoryPagingRepository;
 import com.springapp.mvc.model.StandardEntity;
 import com.springapp.mvc.model.shop.Category;
+import com.springapp.mvc.service.ShopCategoryService;
 import com.springapp.mvc.shop.base.AbstractForm;
 import com.vaadin.data.Property;
 import com.vaadin.spring.annotation.SpringUI;
@@ -23,6 +24,8 @@ public class CategoryForm extends AbstractForm {
     private ComboBox categoryField = new ComboBox("Category");
     private List<Category> categories = new ArrayList<>();
     private int level;
+    private ShopCategoryService shopCategoryService;
+    private boolean parentChanged = false;
 
     public CategoryForm(PagingAndSortingRepository repository, com.springapp.mvc.shop.base.AbstractLayout layout,
                         SpringContextHelper helper) {
@@ -30,6 +33,8 @@ public class CategoryForm extends AbstractForm {
 
         configureComponents();
         buildLayout();
+
+        this.shopCategoryService = (ShopCategoryService) helper.getBean(ShopCategoryService.class);
     }
 
     @Override
@@ -37,13 +42,7 @@ public class CategoryForm extends AbstractForm {
         super.buildLayout();
         addComponents(nameField, descriptionField, categoryField);
 
-        CategoryPagingRepository categoryRepository = (CategoryPagingRepository)
-                helper.getBean(CategoryPagingRepository.class);
-        Iterable<Category> iterable = categoryRepository.findAll();
-        for (Category category : iterable) {
-            categories.add(category);
-        }
-        categoryField.addItems(categories);
+        refreshCategoryField();
         categoryField.setNullSelectionAllowed(true);
         categoryField.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
@@ -57,8 +56,19 @@ public class CategoryForm extends AbstractForm {
                         level = parent.getLevel() + 1;
                     }
                 }
+                parentChanged = true;
             }
         });
+    }
+
+    private void refreshCategoryField() {
+        CategoryPagingRepository categoryRepository = (CategoryPagingRepository)
+                helper.getBean(CategoryPagingRepository.class);
+        Iterable<Category> iterable = categoryRepository.findAll();
+        for (Category category : iterable) {
+            categories.add(category);
+        }
+        categoryField.addItems(categories);
     }
 
     @Override
@@ -69,6 +79,9 @@ public class CategoryForm extends AbstractForm {
         category.setLevel(level);
         category.setParent((Category) categoryField.getValue());
         repository.save(category);
+        if (parentChanged) {
+            shopCategoryService.updateHierarchy(category);
+        }
         String msg = String.format("Saved '%s'.", category.getName());
         Notification.show(msg, Notification.Type.TRAY_NOTIFICATION);
         layout.switchForm(false, true);
@@ -89,6 +102,7 @@ public class CategoryForm extends AbstractForm {
             descriptionField.setValue(category.getDescription() != null ? category.getDescription() : "");
             level = category.getLevel() == null ? 0 : category.getLevel();
 
+            refreshCategoryField();
             categoryField.setValue(null);
             if (categories != null && categories.size() > 0 && category.getParent() != null) {
                 for (Category category_ : categories) {
