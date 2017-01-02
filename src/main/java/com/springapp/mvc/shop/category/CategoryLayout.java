@@ -28,6 +28,8 @@ public class CategoryLayout extends AbstractLayout {
         list.setColumnOrder("name", "description");
         list.removeColumn("id");
         list.removeColumn("items");
+        list.removeColumn("child");
+        list.removeColumn("level");
         list.setSelectionMode(Grid.SelectionMode.SINGLE);
         refresh(filter.getValue());
     }

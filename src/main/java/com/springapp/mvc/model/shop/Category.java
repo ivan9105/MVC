@@ -22,6 +22,17 @@ public class Category extends StandardEntity {
     @ContainedIn
     protected List<Item> items;
 
+    @Column(name = "LEVEL_")
+    private Integer level;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "PARENT_ID")
+    private Category parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @ContainedIn
+    protected List<Category> child;
+
     public String getName() {
         return name;
     }
@@ -44,6 +55,30 @@ public class Category extends StandardEntity {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public Category getParent() {
+        return parent;
+    }
+
+    public void setParent(Category parent) {
+        this.parent = parent;
+    }
+
+    public List<Category> getChild() {
+        return child;
+    }
+
+    public void setChild(List<Category> child) {
+        this.child = child;
     }
 
     @Override
