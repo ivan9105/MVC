@@ -12,16 +12,18 @@ import com.vaadin.ui.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Иван on 25.12.2016.
+ * Created by пїЅпїЅпїЅпїЅ on 25.12.2016.
  */
 public class ItemForm extends AbstractForm {
     private TextField nameField = new TextField("Name");
     private TextField countField = new TextField("Count");
     private TextArea descriptionField = new TextArea("Description");
+    private TextField priceField = new TextField("Price");
     private ComboBox categoryField = new ComboBox("Category");
     private List<Category> categories = new ArrayList<>();
 
@@ -35,7 +37,8 @@ public class ItemForm extends AbstractForm {
     @Override
     protected void buildLayout() {
         super.buildLayout();
-        addComponents(nameField, countField, descriptionField, categoryField);
+        addComponents(nameField, countField, descriptionField, priceField, categoryField);
+        descriptionField.setRows(5);
 
         CategoryPagingRepository categoryRepository = (CategoryPagingRepository)
                 helper.getBean(CategoryPagingRepository.class);
@@ -63,6 +66,25 @@ public class ItemForm extends AbstractForm {
                 }
             }
         });
+
+        priceField.addTextChangeListener(new FieldEvents.TextChangeListener() {
+            @Override
+            public void textChange(FieldEvents.TextChangeEvent event) {
+                String text = event.getText();
+                if (StringUtils.isNotEmpty(text)) {
+                    if (text.matches(".*[^.\\d].*")) {
+                        String stringValue = text.replaceAll(",", ".").replaceAll("[^,.\\d]", "");
+                        if (StringUtils.isNotEmpty(stringValue)) {
+                            BigDecimal decimalValue = new BigDecimal(stringValue);
+                            priceField.setValue(decimalValue.toString());
+                        }
+                    } else if (text.toCharArray()[0] == '0') {
+                        BigDecimal decimalValue = new BigDecimal(text);
+                        countField.setValue(decimalValue.toString());
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -72,6 +94,7 @@ public class ItemForm extends AbstractForm {
         item_.setCount(StringUtils.isNotEmpty(countField.getValue()) ? Integer.valueOf(countField.getValue()) : 0);
         item_.setDescription(descriptionField.getValue());
         item_.setCategory((Category) categoryField.getValue());
+        item_.setPrice(new BigDecimal(priceField.getValue()));
         repository.save(item_);
         String msg = String.format("Saved '%s'.", item_.getName());
         Notification.show(msg, Notification.Type.TRAY_NOTIFICATION);
@@ -91,6 +114,7 @@ public class ItemForm extends AbstractForm {
         if (item != null) {
             nameField.setValue(item_.getName() != null ? item_.getName() : "");
             descriptionField.setValue(item_.getDescription() != null ? item_.getDescription() : "");
+            priceField.setValue(item_.getPrice() != null ? item_.getPrice().toString() : "0");
 
             if (categories != null && categories.size() > 0 && item_.getCategory() != null) {
                 for (Category category : categories) {
