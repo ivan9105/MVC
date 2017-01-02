@@ -37,6 +37,33 @@ public class ShopCategoryServiceBean implements ShopCategoryService {
         }
     }
 
+    @Override
+    public void removeHierarchy(Category category) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            Category reload = (Category) em.createQuery("from Category c " +
+                    "where c.id = :cId")
+                    .setParameter("cId", category.getId()).getSingleResult();
+            if (reload != null) {
+                em.remove(reload);
+                removeChild(reload.getChild(), em);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
+    private void removeChild(List<Category> child, EntityManager em) {
+        if (child != null && child.size() > 0) {
+            for (Category category : child) {
+                em.remove(category);
+                removeChild(category.getChild(), em);
+            }
+        }
+    }
+
     private void updateChild(List<Category> child, int parentLevel, EntityManager em) {
         if (child != null && child.size() > 0) {
             for (Category category : child) {

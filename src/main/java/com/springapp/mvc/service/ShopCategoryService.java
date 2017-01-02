@@ -9,4 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface ShopCategoryService {
     void updateHierarchy(Category category);
+
+    void removeHierarchy(Category category);
 }

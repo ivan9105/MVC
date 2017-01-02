@@ -3,6 +3,7 @@ package com.springapp.mvc.shop.category;
 import com.springapp.mvc.context.SpringContextHelper;
 import com.springapp.mvc.data.shop.CategoryPagingRepository;
 import com.springapp.mvc.model.shop.Category;
+import com.springapp.mvc.service.ShopCategoryService;
 import com.springapp.mvc.shop.base.AbstractLayout;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
@@ -16,8 +17,11 @@ import java.util.List;
  * Created by ���� on 18.12.2016.
  */
 public class CategoryLayout extends AbstractLayout {
+    private ShopCategoryService shopCategoryService;
+
     public CategoryLayout(SpringContextHelper contextHelper) {
         super(contextHelper, CategoryPagingRepository.class);
+        shopCategoryService = (ShopCategoryService) contextHelper.getBean(ShopCategoryService.class);
     }
 
     @Override
@@ -56,7 +60,7 @@ public class CategoryLayout extends AbstractLayout {
     @Override
     protected void doRemove(Button.ClickEvent event) {
         Category category = (Category) list.getSelectedRow();
-        ((CategoryPagingRepository) repository).delete(category);
+        shopCategoryService.removeHierarchy(category);
         refresh(null);
     }
 
