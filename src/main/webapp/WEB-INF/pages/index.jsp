@@ -16,7 +16,7 @@
         <li><a class="index" href="${pageContext.request.contextPath}/swagger-ui.html">Swagger</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/security">Security</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/testJms">JMS</a></li>
-        <li><a class="index" href="${pageContext.request.contextPath}/vaadin/main">VAADIN Shop</a></li>
+        <li><a class="index" href="${pageContext.request.contextPath}/vaadin/main">VAADIN Admin Page Shop</a></li>
     </ul>
 </div>
 </body>

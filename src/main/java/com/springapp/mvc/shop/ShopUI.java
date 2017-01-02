@@ -1,6 +1,7 @@
 package com.springapp.mvc.shop;
 
 import com.springapp.mvc.context.SpringContextHelper;
+import com.springapp.mvc.service.ShopLoginService;
 import com.springapp.mvc.shop.category.CategoryLayout;
 import com.springapp.mvc.shop.command.ShopCommand;
 import com.springapp.mvc.shop.item.ItemLayout;
@@ -12,6 +13,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
+import org.apache.commons.lang3.StringUtils;
 
 @Theme("valo")
 @SpringUI(path = "main")
@@ -23,6 +25,7 @@ public class ShopUI extends UI {
     private SpringContextHelper contextHelper;
     private VerticalLayout screensLayout;
     private VerticalLayout loginLayout;
+    private ShopLoginService shopLoginService;
 
     @Override
     protected void init(VaadinRequest request) {
@@ -40,13 +43,13 @@ public class ShopUI extends UI {
         loginFieldsLayout.setMargin(new MarginInfo(true, true, true, false));
         loginFieldsLayout.setSizeUndefined();
 
-        TextField loginField = new TextField("User:");
+        final TextField loginField = new TextField("User:");
         loginField.setWidth("300px");
         loginField.setRequired(true);
         loginField.setInputPrompt("Input login value");
         loginField.setInvalidAllowed(false);
 
-        PasswordField passwordField = new PasswordField("Password:");
+        final PasswordField passwordField = new PasswordField("Password:");
         passwordField.setWidth("300px");
         passwordField.setRequired(true);
         passwordField.setValue("");
@@ -55,8 +58,30 @@ public class ShopUI extends UI {
         Button loginButton = new Button("Login", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                //Todo check login + trusted logic
-                setContent(screensLayout);
+                StringBuilder sb = new StringBuilder();
+
+                String login = loginField.getValue();
+                String password = passwordField.getValue();
+
+                if (StringUtils.isEmpty(login)) {
+                    sb.append("Login field must be filled").append("\n");
+                }
+
+
+                if (StringUtils.isEmpty(password)) {
+                    sb.append("Password field must be filled").append("\n");
+                }
+
+                if (sb.length() == 0 && !isTrusted(login, password)
+                        && !shopLoginService.checkLogin(login, password)) {
+                    sb.append("Incorrect login or password").append("\n");
+                }
+
+                if (sb.length() == 0) {
+                    setContent(screensLayout);
+                } else {
+                    Notification.show(sb.toString(), Notification.Type.TRAY_NOTIFICATION);
+                }
             }
         });
 
@@ -67,6 +92,12 @@ public class ShopUI extends UI {
         loginLayout.setComponentAlignment(loginFieldsLayout, Alignment.MIDDLE_CENTER);
         loginLayout.setStyleName(Reindeer.LAYOUT_BLUE);
         setContent(loginLayout);
+
+        shopLoginService = (ShopLoginService) contextHelper.getBean(ShopLoginService.class);
+    }
+
+    private boolean isTrusted(String login, String password) {
+        return StringUtils.equals(TRUSTED_LOGIN, login) && StringUtils.equals(TRUSTED_PASSWORD, password);
     }
 
     private void initScreensLayout() {

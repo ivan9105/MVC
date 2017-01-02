@@ -9,5 +9,6 @@
         <mapping class="com.springapp.mvc.model.Author"/>
         <mapping class="com.springapp.mvc.model.shop.Item"/>
         <mapping class="com.springapp.mvc.model.shop.Category"/>
+        <mapping class="com.springapp.mvc.model.shop.User"/>
     </session-factory>
 </hibernate-configuration>
