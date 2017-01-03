@@ -23,7 +23,10 @@ import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/")
@@ -51,7 +54,6 @@ public class BooksController {
                            @RequestParam(value = "searchText", required = false) String searchText,
                            Model model) {
         if (StringUtils.isEmpty(searchText)) {
-            //Todo
             bookService.indexBooks();
         }
         initBooksResponse(size, page, searchText, model);

@@ -1,6 +1,8 @@
 package com.springapp.mvc.service.impl;
 
 import com.springapp.mvc.model.shop.Category;
+import com.springapp.mvc.rest.dto.DtoConverter;
+import com.springapp.mvc.rest.dto.shop.CategoryDto;
 import com.springapp.mvc.service.ShopCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +56,39 @@ public class ShopCategoryServiceBean implements ShopCategoryService {
             em.getTransaction().commit();
         } finally {
             em.close();
+        }
+    }
+
+    @Override
+    public List<CategoryDto> getCategoriesDto(HttpServletRequest request) {
+        List<CategoryDto> res = new ArrayList<>();
+
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            List list = em.createQuery("from Category c " +
+                    "where c.parent is null").getResultList();
+            for (Object object : list) {
+                Category category = (Category) object;
+                CategoryDto dto = DtoConverter.toCategoryDto(category, request);
+                fillChild(dto, request, category.getChild());
+                res.add(dto);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        return res;
+    }
+
+    private void fillChild(CategoryDto mainDto, HttpServletRequest request, List<Category> child) {
+        if (child != null && child.size() > 0) {
+            for (Category category : child) {
+                CategoryDto dto = DtoConverter.toCategoryDto(category, request);
+                mainDto.getChild().add(dto);
+                fillChild(dto, request, category.getChild());
+            }
         }
     }
 
