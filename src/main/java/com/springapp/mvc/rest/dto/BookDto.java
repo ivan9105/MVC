@@ -3,7 +3,7 @@ package com.springapp.mvc.rest.dto;
 /**
  * Created by Иван on 10.10.2016.
  */
-public class BookDto extends BaseDto{
+public class BookDto extends BaseDto {
     private String id;
     private String name;
     private Integer year;

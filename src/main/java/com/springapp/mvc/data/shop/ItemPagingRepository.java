@@ -15,4 +15,7 @@ public interface ItemPagingRepository extends PagingAndSortingRepository<Item, U
     @Query(value = "select i from Item i " +
             "where i.name LIKE CONCAT('%',:text,'%') or i.description LIKE CONCAT('%',:text,'%')")
     List<Item> findAll(@Param("text") String text);
+
+    @Query(value = "select i from Item i where i.category.id = :categoryId")
+    List<Item> findAll(@Param("categoryId") UUID categoryId);
 }
