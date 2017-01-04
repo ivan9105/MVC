@@ -107,4 +107,11 @@
     </bean>
 
     <bean id="jmxSampler" class="com.springapp.mvc.jmx.JmxSamplerBean"/>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/api/**"/>
+            <bean class="com.springapp.mvc.interceptors.TimeInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>
