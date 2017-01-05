@@ -26,7 +26,20 @@ ItemClass.fromJson = function (json) {
     return new ItemClass(obj.id, obj.name, obj.description, obj.count, obj.price, obj.categoryId)
 }
 
-function getCategories() {
+function getCategories(host) {
+    var xmlHttpRequest = new XMLHttpRequest();
+    xmlHttpRequest.open("GET", host + "/api/shop/categories", true);
+    xmlHttpRequest.onload = function() {
+        var result = [];
+        var json = xmlHttpRequest.responseText;
+        var obj = JSON.parse(json);
+        var length = obj['data'].length;
+        for (i = 0; i < length; i++) {
 
+        }
+        //Todo create function callback when init menu, send CategoryClass array use array.push
+    }
+    xmlHttpRequest.send(null);
 }
+//getCategories("http://localhost:8080");
 
