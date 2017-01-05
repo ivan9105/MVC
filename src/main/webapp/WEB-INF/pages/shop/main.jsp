@@ -5,9 +5,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <spring:url value="/resources/bootstrap/js/bootstrap.min.js" var="bootstrapJs"/>
 <spring:url value="/resources/jquery.js" var="jquery"/>
+<spring:url value="/resources/img/cart.gif" var="cart"/>
 <html>
 <head>
-    <title>Javastudy.ru MVC_HTML5_Angular</title>
+    <title>Shop</title>
     <spring:url value="/resources/bootstrap/css/bootstrap.css" var="bootstrap"/>
     <link href="${bootstrap}" rel="stylesheet"/>
 </head>
@@ -22,73 +23,18 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <%--<a class="navbar-brand" href="index.html">Start Bootstrap</a>--%>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="about.html">About</a>
+                    <a href="login_.html">Login</a>
                 </li>
                 <li>
-                    <a href="services.html">Lessons</a>
+                    <a href="registration.html">Registration</a>
                 </li>
                 <li>
-                    <a href="contact.html">Contact</a>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorial<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="portfolio-1-col.html">Lesson 1</a>
-                        </li>
-                        <li>
-                            <a href="portfolio-2-col.html">Lesson 2</a>
-                        </li>
-                        <li>
-                            <a href="portfolio-3-col.html">Lesson 3</a>
-                        </li>
-                        <li>
-                            <a href="portfolio-4-col.html">Lesson 5</a>
-                        </li>
-                        <li>
-                            <a href="portfolio-item.html">Lesson 5</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Blog <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="blog-home-1.html">Blog Home 1</a>
-                        </li>
-                        <li>
-                            <a href="blog-home-2.html">Blog Home 2</a>
-                        </li>
-                        <li>
-                            <a href="blog-post.html">Blog Post</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Other Pages <b
-                            class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="full-width.html">Full Width Page</a>
-                        </li>
-                        <li>
-                            <a href="sidebar.html">Sidebar Page</a>
-                        </li>
-                        <li>
-                            <a href="faq.html">FAQ</a>
-                        </li>
-                        <li>
-                            <a href="404.html">404</a>
-                        </li>
-                        <li>
-                            <a href="pricing.html">Pricing Table</a>
-                        </li>
-                    </ul>
+                    <a href="cart.html"><img src="${cart}"/></a>
                 </li>
             </ul>
         </div>
@@ -135,7 +81,6 @@
 </header>
 <!-- Page Content -->
 <div class="container">
-    <%--Todo remove all menu add registration, card, get from over magazione DNS--%>
     <%--Todo create js with objects and functions get data from server--%>
     <%--TOdo add tree menu js--%>
     <%--<!-- Marketing Icons Section -->--%>
