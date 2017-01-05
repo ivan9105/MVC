@@ -17,6 +17,7 @@
         <li><a class="index" href="${pageContext.request.contextPath}/security">Security</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/testJms">JMS</a></li>
         <li><a class="index" href="${pageContext.request.contextPath}/vaadin/main">VAADIN Admin Page Shop</a></li>
+        <li><a class="index" href="${pageContext.request.contextPath}/shop">Shop sample (bootstrap, JS)</a></li>
     </ul>
 </div>
 </body>
