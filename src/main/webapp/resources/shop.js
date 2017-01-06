@@ -66,5 +66,31 @@ var initMenu = function initTreeMenu(categories) {
     }
 }
 
-//getCategories("http://localhost:8080", initMenu);
+function getItems(host, categoryId, callback) {
+    var xmlHttpRequest = new XMLHttpRequest();
+    if (categoryId != 'null') {
+        xmlHttpRequest.open("GET", host + "/api/shop/categories", true);
+    } else {
+        xmlHttpRequest.open("GET", host + "/api/shop/categoryItems?categoryId=" + categoryId, true);
+    }
+    xmlHttpRequest.onload = function () {
+        var result = [];
+        var json = xmlHttpRequest.responseText;
+        var obj = JSON.parse(json);
+        var length = obj['data'].length;
+        for (i = 0; i < length; i++) {
+            result.push(ItemClass.fromObject(obj['data'][i]));
+        }
+        callback(result);
+    }
+    xmlHttpRequest.send(null);
+}
 
+var initTable = function initTable(items) {
+    for (i = 0; i < items.length; i++) {
+        console.log(items[i]);
+    }
+}
+
+//getItems("", "05d8a44b-e144-4f78-9fd4-c4b73a57379b", initTable);
+//getCategories("http://localhost:8080", initMenu);
