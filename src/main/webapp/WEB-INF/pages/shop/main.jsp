@@ -10,7 +10,9 @@
 <head>
     <title>Shop</title>
     <spring:url value="/resources/bootstrap/css/bootstrap.css" var="bootstrap"/>
+    <spring:url value="/resources/jsp.css" var="jsp"/>
     <link href="${bootstrap}" rel="stylesheet"/>
+    <link href="${jsp}" rel="stylesheet"/>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -33,9 +35,9 @@
                 <li>
                     <a href="registration.html">Registration</a>
                 </li>
-                <li>
-                    <a href="cart.html"><img src="${cart}"/></a>
-                </li>
+                <%--<li>--%>
+                <%--<a href="cart.html"><img src="${cart}"/></a>--%>
+                <%--</li>--%>
             </ul>
         </div>
     </div>
@@ -80,9 +82,21 @@
     </a>
 </header>
 <!-- Page Content -->
-<div class="container">
-    <%--Todo create js with objects and functions get data from server--%>
-    <%--TOdo add tree menu js--%>
+<div class="container" style="margin-top: 90px">
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="margin-left: -90px;">
+        <div class="list-group">
+            <a href="#" class="list-group-item active">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+            <a href="#" class="list-group-item">Link</a>
+        </div>
+    </div>
     <%--<!-- Marketing Icons Section -->--%>
     <%--<div class="row">--%>
     <%--<div class="col-lg-12">--%>
@@ -209,16 +223,11 @@
     <%--</div>--%>
     <%--</div>--%>
 
-    <%--<hr>--%>
-
-    <%--<!-- Footer -->--%>
-    <%--<footer>--%>
-    <%--<div class="row">--%>
-    <%--<div class="col-lg-12">--%>
-    <%--<p>Copyright © Your Website 2014</p>--%>
-    <%--</div>--%>
-    <%--</div>--%>
-    <%--</footer>--%>
+    <hr>
+    <!-- Footer -->
+    <div class="footer">
+        <p>Copyright © Shop Sample <strong>2017</strong></p>
+    </div>
 </div>
 
 <script src="${bootstrapJs}"></script>

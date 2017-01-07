@@ -63,6 +63,9 @@ function getCategories(host, callback) {
 var initMenu = function initTreeMenu(categories) {
     for (i = 0; i < categories.length; i++) {
         console.log(categories[i]);
+        //Todo get categories with level 0 and fill right box blocks img + nam
+        //Todo when on ... event show div by coordinate show div with tree menu
+        //Todo logo box
     }
 }
 

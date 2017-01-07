@@ -172,7 +172,7 @@ a:hover.small, a:active.small {
     color: #000000;
 }
 
-ul.index li{
+ul.index li {
     margin: 10px;
 }
 
@@ -212,4 +212,14 @@ a:link.pagination_, a:visited.pagination_ {
 
 a:hover.pagination_, a:active.pagination_ {
     color: #af574d;
+}
+
+.footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: #efefef;
+    text-align: center;
 }
