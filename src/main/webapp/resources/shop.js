@@ -61,11 +61,21 @@ function getCategories(host, callback) {
 }
 
 var initMenu = function initTreeMenu(categories) {
-    for (i = 0; i < categories.length; i++) {
-        console.log(categories[i]);
-        //Todo get categories with level 0 and fill right box blocks img + nam
-        //Todo when on ... event show div by coordinate show div with tree menu
-        //Todo logo box
+    var categoryMenu = document.getElementById('categoryMenu');
+    var first = false;
+    if (categoryMenu != 'null') {
+        for (i = 0; i < categories.length; i++) {
+            var category = categories[i];
+            if (category.level == '0') {
+                console.log(category);
+                if (!first) {
+                    $("div#categoryMenu").append('<a href="#" class="list-group-item active">' + category.name + '</a>');
+                    first = true;
+                } else {
+                    $("div#categoryMenu").append('<a href="#" class="list-group-item">' + category.name + '</a>');
+                }
+            }
+        }
     }
 }
 
@@ -95,5 +105,8 @@ var initTable = function initTable(items) {
     }
 }
 
+function fillMenu() {
+    getCategories("http://localhost:8080", initMenu);
+}
 //getItems("", "05d8a44b-e144-4f78-9fd4-c4b73a57379b", initTable);
 //getCategories("http://localhost:8080", initMenu);
