@@ -49,12 +49,27 @@ function categoryMOver(href) {
     href.className = "list-group-item active";
     var categoryMenu = document.getElementById('categoryMenu');
     if (categoryMenu != 'null') {
+        $("div#popupMenu").remove();
         var coords = getPopupMenuCoords(categoryMenu);
         var x = coords[0];
         var y = coords[1];
         console.log("x: " + x + ", y: " + y);
-        //Todo context menu sample for create tree menu div
+        var div = $('<div id="popupMenu" onmouseout="removePopupMenu()" class="container">').css({
+            "position": "absolute",
+            "left": x + "px",
+            "top": y + "px",
+            "width": "30%",
+            "height": "70%",
+            "background-color": "white",
+            "border": "1px solid black"
+        });
+        $(document.body).append(div);
     }
+}
+
+function removePopupMenu() {
+    $("div#popupMenu").remove();
+    categoryMOut()
 }
 
 function getPopupMenuCoords(element) {
@@ -72,8 +87,8 @@ function getPopupMenuCoords(element) {
     var top = rect.top + scrollTop - clientTop;
     var left = rect.left + scrollLeft - clientLeft;
 
-    res.push(Math.round(top));
     res.push(Math.round(left) + Math.round(rect.width));
+    res.push(Math.round(top));
     return res;
 }
 
@@ -99,21 +114,20 @@ function getCategories(host, callback) {
 
 var initMenu = function initTreeMenu(categories) {
     var categoryMenu = document.getElementById('categoryMenu');
-    var first = false;
     if (categoryMenu != 'null') {
         for (i = 0; i < categories.length; i++) {
             var category = categories[i];
             if (category.level == '0') {
                 console.log(category);
-                if (!first) {
-                    $("div#categoryMenu").append('<a href="#" onmouseover="categoryMOver(this)" onmouseout="categoryMOut()" class="list-group-item active">' + category.name + '</a>');
-                    first = true;
-                } else {
-                    $("div#categoryMenu").append('<a href="#" onmouseover="categoryMOver(this)" onmouseout="categoryMOut()" class="list-group-item">' + category.name + '</a>');
-                }
+                $("div#categoryMenu").append('<a href="#" onmouseover="categoryMOver(this)" onmouseout="logMouseOut()" class="list-group-item">' + category.name + '</a>');
             }
         }
     }
+}
+
+function logMouseOut() {
+    //Todo check frequency mouse out
+    //Todo fix bug with out from selected category when on show popup, create log cursor position mechanism
 }
 
 function getItems(host, categoryId, callback) {
