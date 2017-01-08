@@ -44,6 +44,43 @@ ItemClass.toString = function () {
         ",\nCount: " + this.count + ",\nPrice: " + this.price + ",\nCategoryId: " + this.categoryId;
 }
 
+function categoryMOver(href) {
+    $("div#categoryMenu").children().attr("class", "list-group-item");
+    href.className = "list-group-item active";
+    var categoryMenu = document.getElementById('categoryMenu');
+    if (categoryMenu != 'null') {
+        var coords = getPopupMenuCoords(categoryMenu);
+        var x = coords[0];
+        var y = coords[1];
+        console.log("x: " + x + ", y: " + y);
+        //Todo context menu sample for create tree menu div
+    }
+}
+
+function getPopupMenuCoords(element) {
+    var res = [];
+
+    var rect = element.getBoundingClientRect();
+    var body = document.body;
+    var documentElement = document.documentElement;
+
+    var scrollTop = window.pageYOffset || documentElement.scrollTop || body.scrollTop;
+    var scrollLeft = window.pageXOffset || documentElement.scrollLeft || body.scrollLeft;
+    var clientTop = documentElement.clientTop || body.clientTop || 0;
+    var clientLeft = documentElement.clientLeft || body.clientLeft || 0;
+
+    var top = rect.top + scrollTop - clientTop;
+    var left = rect.left + scrollLeft - clientLeft;
+
+    res.push(Math.round(top));
+    res.push(Math.round(left) + Math.round(rect.width));
+    return res;
+}
+
+function categoryMOut() {
+    $("div#categoryMenu").children().attr("class", "list-group-item");
+}
+
 function getCategories(host, callback) {
     var xmlHttpRequest = new XMLHttpRequest();
     xmlHttpRequest.open("GET", host + "/api/shop/categories", true);
@@ -69,10 +106,10 @@ var initMenu = function initTreeMenu(categories) {
             if (category.level == '0') {
                 console.log(category);
                 if (!first) {
-                    $("div#categoryMenu").append('<a href="#" class="list-group-item active">' + category.name + '</a>');
+                    $("div#categoryMenu").append('<a href="#" onmouseover="categoryMOver(this)" onmouseout="categoryMOut()" class="list-group-item active">' + category.name + '</a>');
                     first = true;
                 } else {
-                    $("div#categoryMenu").append('<a href="#" class="list-group-item">' + category.name + '</a>');
+                    $("div#categoryMenu").append('<a href="#" onmouseover="categoryMOver(this)" onmouseout="categoryMOut()" class="list-group-item">' + category.name + '</a>');
                 }
             }
         }

@@ -89,7 +89,7 @@
     </a>
 </header>
 <!-- Page Content -->
-<div class="container" style="margin-top: 90px">
+<div class="container" style="margin-top: 95px">
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="margin-left: -90px;">
         <div id="categoryMenu" class="list-group">
         </div>
