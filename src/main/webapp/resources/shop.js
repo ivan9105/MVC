@@ -1,3 +1,11 @@
+var cx;
+var cy;
+
+document.onmousemove = function (e) {
+    cx = e.pageX;
+    cy = e.pageY;
+}
+
 var CategoryClass = function (id, name, description, level, parentId, child_) {
     this.id = id;
     this.name = name;
@@ -44,17 +52,27 @@ ItemClass.toString = function () {
         ",\nCount: " + this.count + ",\nPrice: " + this.price + ",\nCategoryId: " + this.categoryId;
 }
 
+function popupMOut() {
+    $("div#popupMenu").remove();
+    $("div#categoryMenu").children().attr("class", "list-group-item");
+}
+
+function popupMOver() {
+}
+
+function categoryMOut() {
+}
+
 function categoryMOver(href) {
     $("div#categoryMenu").children().attr("class", "list-group-item");
     href.className = "list-group-item active";
     var categoryMenu = document.getElementById('categoryMenu');
     if (categoryMenu != 'null') {
         $("div#popupMenu").remove();
-        var coords = getPopupMenuCoords(categoryMenu);
-        var x = coords[0];
-        var y = coords[1];
-        console.log("x: " + x + ", y: " + y);
-        var div = $('<div id="popupMenu" onmouseout="removePopupMenu()" class="container">').css({
+        var coords = getCoords(categoryMenu);
+        var x = coords[1][0];
+        var y = coords[1][1];
+        var div = $('<div id="popupMenu" onmouseover="popupMOver()" onmouseout="popupMOut()" class="container">').css({
             "position": "absolute",
             "left": x + "px",
             "top": y + "px",
@@ -67,12 +85,7 @@ function categoryMOver(href) {
     }
 }
 
-function removePopupMenu() {
-    $("div#popupMenu").remove();
-    categoryMOut()
-}
-
-function getPopupMenuCoords(element) {
+function getCoords(element) {
     var res = [];
 
     var rect = element.getBoundingClientRect();
@@ -87,13 +100,11 @@ function getPopupMenuCoords(element) {
     var top = rect.top + scrollTop - clientTop;
     var left = rect.left + scrollLeft - clientLeft;
 
-    res.push(Math.round(left) + Math.round(rect.width));
-    res.push(Math.round(top));
+    res.push([Math.round(left), Math.round(top)]);
+    res.push([Math.round(left) + Math.round(rect.width), Math.round(top)]);
+    res.push([Math.round(left), Math.round(top) + Math.round(rect.height)]);
+    res.push([Math.round(left) + Math.round(rect.width), Math.round(top) + Math.round(rect.height)]);
     return res;
-}
-
-function categoryMOut() {
-    $("div#categoryMenu").children().attr("class", "list-group-item");
 }
 
 function getCategories(host, callback) {
@@ -119,15 +130,18 @@ var initMenu = function initTreeMenu(categories) {
             var category = categories[i];
             if (category.level == '0') {
                 console.log(category);
-                $("div#categoryMenu").append('<a href="#" onmouseover="categoryMOver(this)" onmouseout="logMouseOut()" class="list-group-item">' + category.name + '</a>');
+                $("div#categoryMenu").append('<a href="#" onmouseover="categoryMOver(this)" onmouseout="categoryMOut()" class="list-group-item">' + category.name + '</a>');
             }
         }
     }
 }
 
-function logMouseOut() {
-    //Todo check frequency mouse out
-    //Todo fix bug with out from selected category when on show popup, create log cursor position mechanism
+function logMousePosition(message) {
+    if (message != 'null') {
+        console.log(message + " x: " + cx + ", y: " + cy);
+    } else {
+        console.log("Mouse out x: " + cx + ", y: " + cy);
+    }
 }
 
 function getItems(host, categoryId, callback) {
