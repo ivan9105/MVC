@@ -1,5 +1,7 @@
 var cx;
 var cy;
+var categoryRect = null;
+var showPopup = false;
 
 document.onmousemove = function (e) {
     cx = e.pageX;
@@ -55,6 +57,7 @@ ItemClass.toString = function () {
 function popupMOut() {
     $("div#popupMenu").remove();
     $("div#categoryMenu").children().attr("class", "list-group-item");
+    showPopup = false;
 }
 
 function popupMOver() {
@@ -82,6 +85,7 @@ function categoryMOver(href) {
             "border": "1px solid black"
         });
         $(document.body).append(div);
+        showPopup = true;
     }
 }
 
@@ -105,6 +109,21 @@ function getCoords(element) {
     res.push([Math.round(left), Math.round(top) + Math.round(rect.height)]);
     res.push([Math.round(left) + Math.round(rect.width), Math.round(top) + Math.round(rect.height)]);
     return res;
+}
+
+function getRect(element) {
+    var res = [];
+    var coords = getCoords(element);
+    res.push(coords[0][0]);//x1
+    res.push(coords[0][1]);//y1
+    res.push(coords[3][0]);//x2
+    res.push(coords[3][1]);///y2
+    return res;
+}
+
+function cursorInRect(element) {
+    var r = getRect(element);
+    return cx >= r[0] && cx <= r[2] && cy >= r[1] && cy <= r[3];
 }
 
 function getCategories(host, callback) {
@@ -134,6 +153,7 @@ var initMenu = function initTreeMenu(categories) {
             }
         }
     }
+    categoryRect = getRect(categoryMenu)
 }
 
 function logMousePosition(message) {
@@ -173,5 +193,18 @@ var initTable = function initTable(items) {
 function fillMenu() {
     getCategories("http://localhost:8080", initMenu);
 }
+
+function onMouseMenuWrapper(e) {
+    var x = e.clientX;
+    var y = e.clientY;
+
+    if (showPopup && categoryRect != 'null') {
+        if (x < categoryRect[0] || y < categoryRect[1] ||
+            (x >= categoryRect[0] && x <= categoryRect[2] && y > categoryRect[3])) {
+            popupMOut();
+        }
+    }
+}
+
 //getItems("", "05d8a44b-e144-4f78-9fd4-c4b73a57379b", initTable);
 //getCategories("http://localhost:8080", initMenu);

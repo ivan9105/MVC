@@ -89,13 +89,15 @@
     </a>
 </header>
 <!-- Page Content -->
-<div class="container" style="margin-top: 95px">
+<div class="container" style="margin-top: 90px; padding-top: 5px;">
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="margin-left: -90px;">
-        <div id="categoryMenu" class="list-group">
+        <div id="menuWrapper" style="padding: 5px;" onmousemove="onMouseMenuWrapper(event)">
+            <div id="categoryMenu" class="list-group">
+            </div>
         </div>
     </div>
 
-    <div class="row row-offcanvas row-offcanvas-right">
+    <div class="row row-offcanvas row-offcanvas-right" style="padding: 5px;">
         <div class="col-xs-12 col-sm-9">
             <div class="jumbotron">
                 <h1>Content</h1>
