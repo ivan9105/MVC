@@ -206,5 +206,72 @@ function onMouseMenuWrapper(e) {
     }
 }
 
+function initTreeMenu(parent) {
+    var arr = {};
+    var ddTreeMenu = {};
+
+    ddTreeMenu.closefolder = "img/closed.gif";
+    ddTreeMenu.openfolder = "img/open.gif";
+
+    ddTreeMenu.createTree = function (treeId, enablePersist, persistDays) {
+        var ulTags = document.getElementById(treeId).getElementsByTagName("ul");
+        if (typeof arr[treeId] == "undefined") {
+            arr[treeId] = (enablePersist == true && ddTreeMenu.getCookie(treeId) != "") ? ddTreeMenu.getCookie(treeId).split(",") : "";
+        }
+
+        for (var i = 0; i < ulTags.length; i++) {
+            //Todo
+        }
+        //Todo
+    }
+
+    ddTreeMenu.buildSubTree = function(treeId, ulElement, index) {
+        //Todo
+    }
+
+    ddTreeMenu.getCookie = function (name) {
+        var regExp = new RegExp(name + "=[^;]+", "i");
+        if (document.cookie.match(regExp)) {
+            return document.cookie.match(regExp)[0].split("=")[1];
+        }
+        return "";
+    }
+
+    ddTreeMenu.setCookie = function (name, value, days) {
+        var expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + parseInt(days));
+        document.cookie = name + "=" + value + "; expires=" + expirationDate.toGMTString() + "; path=/";
+    }
+
+    ddTreeMenu.contains = function (arr, value) {
+        var found = false;
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == value) {
+                found = true;
+                arr.shift();
+                break;
+            }
+        }
+        return found;
+    }
+
+    ddTreeMenu.preventPropagate = function (event) {
+        if (typeof event != "undefined") {
+            event.stopPropagation();
+        } else {
+            event.cancelBubble = true;
+        }
+    }
+
+    ddTreeMenu.doTask = function (target, functionRef, taskType) {
+        var taskType = (window.addEventListener) ? taskType : "on" + taskType;
+        if (target.addEventListener) {
+            target.addEventListener(taskType, functionRef, false);
+        } else if (target.attachEvent) {
+            target.attachEvent(taskType, functionRef);
+        }
+    }
+}
+
 //getItems("", "05d8a44b-e144-4f78-9fd4-c4b73a57379b", initTable);
 //getCategories("http://localhost:8080", initMenu);
