@@ -12,12 +12,15 @@
     <title>Shop</title>
     <spring:url value="/resources/bootstrap/css/bootstrap.css" var="bootstrap"/>
     <spring:url value="/resources/jsp.css" var="jsp"/>
+    <spring:url value="/resources/shop.css" var="shopCss"/>
     <link href="${bootstrap}" rel="stylesheet"/>
     <link href="${jsp}" rel="stylesheet"/>
+    <link href="${shopCss}" rel="stylesheet"/>
     <script src="${shopJs}"></script>
 </head>
 <script>
     window.onload = function () {
+//        Todo fill on load menu div
         fillMenu();
     };
 </script>

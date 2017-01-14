@@ -6,7 +6,7 @@ var showPopup = false;
 document.onmousemove = function (e) {
     cx = e.pageX;
     cy = e.pageY;
-}
+};
 
 var CategoryClass = function (id, name, description, level, parentId, child_) {
     this.id = id;
@@ -15,21 +15,21 @@ var CategoryClass = function (id, name, description, level, parentId, child_) {
     this.level = level;
     this.parentId = parentId;
     this.child_ = child_;
-}
+};
 
 CategoryClass.fromJson = function (json) {
     var obj = JSON.parse(json);
     return new CategoryClass(obj.id, obj.name, obj.description, obj.level, obj.parentId, obj.child_);
-}
+};
 
 CategoryClass.fromObject = function (obj) {
     return new CategoryClass(obj.id, obj.name, obj.description, obj.level, obj.parentId, obj.child_);
-}
+};
 
 CategoryClass.toString = function () {
     return "Id: " + this.id + ",\nName: " + this.name + ",\nDescription: " + this.description +
         ",\nLevel: " + this.level + ",\nParentId: " + this.parentId;
-}
+};
 
 var ItemClass = function (id, name, description, count, price, categoryId) {
     this.id = id;
@@ -38,23 +38,24 @@ var ItemClass = function (id, name, description, count, price, categoryId) {
     this.count = count;
     this.price = price;
     this.categoryId = categoryId;
-}
+};
 
 ItemClass.fromJson = function (json) {
     var obj = JSON.parse(json);
     return new ItemClass(obj.id, obj.name, obj.description, obj.count, obj.price, obj.categoryId)
-}
+};
 
 ItemClass.fromObject = function (obj) {
     return new ItemClass(obj.id, obj.name, obj.description, obj.count, obj.price, obj.categoryId)
-}
+};
 
 ItemClass.toString = function () {
     return "Id: " + this.id + ",\nName: " + this.name + ",\nDescription: " + this.description +
         ",\nCount: " + this.count + ",\nPrice: " + this.price + ",\nCategoryId: " + this.categoryId;
-}
+};
 
 function popupMOut() {
+    //Todo check rect bug
     $("div#popupMenu").remove();
     $("div#categoryMenu").children().attr("class", "list-group-item");
     showPopup = false;
@@ -84,6 +85,35 @@ function categoryMOver(href) {
             "background-color": "white",
             "border": "1px solid black"
         });
+        //Todo fill dynamic
+        var treeMenu = $('<a href="javascript:ddtreemenu.flatten(\'treemenu1\', \'expand\')">Expand All</a> ' +
+            '| <a href="javascript:ddtreemenu.flatten(\'treemenu1\', \'contact\')">Contact All</a>' +
+            '<div style="border: 1px solid black">' +
+            '<ul id="treemenu1" class="treeview">' +
+            '<li>Item 1</li>' +
+            '<li>Item 2</li>' +
+            '<li>Folder 1' +
+            '<ul>' +
+            '<li>Sub Item 1.1</li>' +
+            '<li>Sub Item 1.2</li>' +
+            '</ul>' +
+            '</li>' +
+            '<li>Item 3</li>' +
+            '<li>Folder 2' +
+            '<ul>' +
+            '<li>Sub Item 2.1</li>' +
+            '<li>Folder 2.1 ' +
+            '<ul>' +
+            '<li>Sub Item 2.1.1</li>' +
+            '<li>Sub Item 2.1.2</li>' +
+            '</ul>' +
+            '</li>' +
+            '</ul>' +
+            '</li>' +
+            '<li>Item 4</li>' +
+            '</ul>' +
+            '</div>');
+        div.append(treeMenu);
         $(document.body).append(div);
         showPopup = true;
     }
@@ -134,18 +164,18 @@ function getCategories(host, callback) {
         var json = xmlHttpRequest.responseText;
         var obj = JSON.parse(json);
         var length = obj['data'].length;
-        for (i = 0; i < length; i++) {
+        for (var i = 0; i < length; i++) {
             result.push(CategoryClass.fromObject(obj['data'][i]));
         }
         callback(result);
-    }
+    };
     xmlHttpRequest.send(null);
 }
 
 var initMenu = function initTreeMenu(categories) {
     var categoryMenu = document.getElementById('categoryMenu');
     if (categoryMenu != 'null') {
-        for (i = 0; i < categories.length; i++) {
+        for (var i = 0; i < categories.length; i++) {
             var category = categories[i];
             if (category.level == '0') {
                 console.log(category);
@@ -154,7 +184,7 @@ var initMenu = function initTreeMenu(categories) {
         }
     }
     categoryRect = getRect(categoryMenu)
-}
+};
 
 function logMousePosition(message) {
     if (message != 'null') {
@@ -176,19 +206,19 @@ function getItems(host, categoryId, callback) {
         var json = xmlHttpRequest.responseText;
         var obj = JSON.parse(json);
         var length = obj['data'].length;
-        for (i = 0; i < length; i++) {
+        for (var i = 0; i < length; i++) {
             result.push(ItemClass.fromObject(obj['data'][i]));
         }
         callback(result);
-    }
+    };
     xmlHttpRequest.send(null);
 }
 
 var initTable = function initTable(items) {
-    for (i = 0; i < items.length; i++) {
+    for (var i = 0; i < items.length; i++) {
         console.log(items[i]);
     }
-}
+};
 
 function fillMenu() {
     getCategories("http://localhost:8080", initMenu);
@@ -220,10 +250,16 @@ function initTreeMenu(parent) {
         }
 
         for (var i = 0; i < ulTags.length; i++) {
-            //Todo
+            ddTreeMenu.buildSubTree(treeId, ulTags[i], i);
         }
-        //Todo
-    }
+
+        if (enablePersist == true) {
+            var days = (typeof persistDays == "undefined") ? 1 : parseInt(persistDays);
+            ddTreeMenu.doTask(window, function () {
+                ddTreeMenu.rememberState(treeId, days);
+            }, "unload");
+        }
+    };
 
     ddTreeMenu.buildSubTree = function (treeId, ulElement, index) {
         ulElement.parentNode.className = "submenu";
@@ -253,12 +289,12 @@ function initTreeMenu(parent) {
                 ulElement.parentNode.style.backgroundImage = "url(" + ddTreeMenu.closefolder + ")";
             }
             ddTreeMenu.preventPropagate(event);
-        }
+        };
 
         ulElement.onclick = function (event) {
             ddTreeMenu.preventPropagate(event);
         }
-    }
+    };
 
     ddTreeMenu.expandSubTree = function (treeId, ulElement) {
         var rootNode = document.getElementById(treeId);
@@ -273,7 +309,33 @@ function initTreeMenu(parent) {
             }
             currentNode = currentNode.parentNode;
         }
-    }
+    };
+
+    ddTreeMenu.flatten = function (treeId, action) {
+        var ulTags = document.getElementById(treeId).getElementsByTagName("UL");
+        for (var i = 0; i < ulTags.length; i++) {
+            ulTags[i].style.display = (action == "expand") ? "block" : "none";
+            var relValue = (action == "expand") ? "open" : "closed";
+            ulTags[i].setAttribute("rel", relValue);
+            ulTags[i].parentNode.style.backgroundImage = (action == "expand") ? "url(" + ddTreeMenu.openfolder + ")" : "url(" + ddTreeMenu.closefolder + ")";
+        }
+    };
+
+    ddTreeMenu.rememberState = function (treeId, days) {
+        var ulTags = document.getElementById(treeId).getElementsByTagName("UL");
+        var opened = [];
+        for (var i = 0; i < ulTags.length; i++) {
+            if (ulTags[i].getAttribute("rel") == "open") {
+                opened[opened.length] = i;
+            }
+        }
+
+        if (opened.length == 0) {
+            opened[0] = "none open";
+        }
+
+        ddTreeMenu.setCookie(treeId, opened.join(","), days);
+    };
 
     ddTreeMenu.getCookie = function (name) {
         var regExp = new RegExp(name + "=[^;]+", "i");
@@ -281,13 +343,13 @@ function initTreeMenu(parent) {
             return document.cookie.match(regExp)[0].split("=")[1];
         }
         return "";
-    }
+    };
 
     ddTreeMenu.setCookie = function (name, value, days) {
         var expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + parseInt(days));
         document.cookie = name + "=" + value + "; expires=" + expirationDate.toGMTString() + "; path=/";
-    }
+    };
 
     ddTreeMenu.contains = function (arr, value) {
         var found = false;
@@ -299,7 +361,7 @@ function initTreeMenu(parent) {
             }
         }
         return found;
-    }
+    };
 
     ddTreeMenu.preventPropagate = function (event) {
         if (typeof event != "undefined") {
@@ -307,7 +369,7 @@ function initTreeMenu(parent) {
         } else {
             event.cancelBubble = true;
         }
-    }
+    };
 
     ddTreeMenu.doTask = function (target, functionRef, taskType) {
         var taskType_ = (window.addEventListener) ? taskType : "on" + taskType;
