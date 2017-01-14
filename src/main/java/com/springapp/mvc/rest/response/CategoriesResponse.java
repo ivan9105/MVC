@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.springapp.mvc.rest.dto.shop.CategoryDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
 public class CategoriesResponse {
     @JsonProperty("data")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<CategoryDto> categories;
+    private List<CategoryDto> categories = new ArrayList<>();
 
     public List<CategoryDto> getCategories() {
         return categories;

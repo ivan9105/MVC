@@ -15,4 +15,7 @@ public interface CategoryPagingRepository extends PagingAndSortingRepository<Cat
     @Query(value = "select c from Category c " +
             "where c.name LIKE CONCAT('%',:text,'%') or c.description LIKE CONCAT('%',:text,'%')")
     List<Category> findAll(@Param("text") String text);
+
+    @Query(value = "select c from Category c where c.level = 0")
+    List<Category> findRoots();
 }

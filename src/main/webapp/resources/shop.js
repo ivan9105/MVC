@@ -156,9 +156,9 @@ function cursorInRect(element) {
     return cx >= r[0] && cx <= r[2] && cy >= r[1] && cy <= r[3];
 }
 
-function getCategories(host, callback) {
+function getRootCategories(host, callback) {
     var xmlHttpRequest = new XMLHttpRequest();
-    xmlHttpRequest.open("GET", host + "/api/shop/categories", true);
+    xmlHttpRequest.open("GET", host + "/api/shop/rootCategories", true);
     xmlHttpRequest.onload = function () {
         var result = [];
         var json = xmlHttpRequest.responseText;
@@ -221,7 +221,7 @@ var initTable = function initTable(items) {
 };
 
 function fillMenu() {
-    getCategories("http://localhost:8080", initMenu);
+    getRootCategories("http://localhost:8080", initMenu);
 }
 
 function onMouseMenuWrapper(e) {
@@ -382,4 +382,4 @@ function initTreeMenu(parent) {
 }
 
 //getItems("", "05d8a44b-e144-4f78-9fd4-c4b73a57379b", initTable);
-//getCategories("http://localhost:8080", initMenu);
+//getRootCategories("http://localhost:8080", initMenu);

@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Иван on 02.01.2017.
@@ -60,14 +62,20 @@ public class ShopCategoryServiceBean implements ShopCategoryService {
     }
 
     @Override
-    public List<CategoryDto> getCategoriesDto(HttpServletRequest request) {
+    public List<CategoryDto> getCategoriesDto(UUID id, HttpServletRequest request) {
         List<CategoryDto> res = new ArrayList<>();
 
         EntityManager em = getEntityManager();
         em.getTransaction().begin();
         try {
-            List list = em.createQuery("from Category c " +
-                    "where c.parent is null").getResultList();
+            Query query = em.createQuery("from Category c " +
+                            "where " +
+                            (id == null ? "c.parent is null" : "c.id = :id")
+            );
+            if (id != null) {
+                query.setParameter("id", id);
+            }
+            List list = query.getResultList();
             for (Object object : list) {
                 Category category = (Category) object;
                 CategoryDto dto = DtoConverter.toCategoryDto(category, request);

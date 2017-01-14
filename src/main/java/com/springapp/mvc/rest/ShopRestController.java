@@ -59,7 +59,7 @@ public class ShopRestController {
                                             String hierarchy, HttpServletRequest request) {
         CategoriesResponse response = new CategoriesResponse();
         if (hierarchy != null && Boolean.parseBoolean(hierarchy)) {
-            response.setCategories(shopCategoryService.getCategoriesDto(request));
+            response.setCategories(shopCategoryService.getCategoriesDto(null, request));
         } else {
             Iterable<Category> categories = categoryRepository.findAll();
             response.setCategories(new ArrayList<CategoryDto>());
@@ -67,6 +67,24 @@ public class ShopRestController {
                 response.getCategories().add(DtoConverter.toCategoryDto(category, request));
             }
         }
+        return response;
+    }
+
+    @RequestMapping(value = "rootCategories", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public CategoriesResponse getRootCategories(HttpServletRequest request) {
+        CategoriesResponse response = new CategoriesResponse();
+        Iterable<Category> categories = categoryRepository.findRoots();
+        for (Category category : categories) {
+            response.getCategories().add(DtoConverter.toCategoryDto(category, request));
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "childCategories", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public CategoriesResponse getChild(@RequestParam(value = "id", required = true) String id,
+                                       HttpServletRequest request) {
+        CategoriesResponse response = new CategoriesResponse();
+        response.setCategories(shopCategoryService.getCategoriesDto(UUID.fromString(id), request));
         return response;
     }
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Иван on 02.01.2017.
@@ -16,5 +17,5 @@ public interface ShopCategoryService {
 
     void removeHierarchy(Category category);
 
-    List<CategoryDto> getCategoriesDto(HttpServletRequest request);
+    List<CategoryDto> getCategoriesDto(UUID id, HttpServletRequest request);
 }
