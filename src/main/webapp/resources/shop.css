@@ -13,8 +13,6 @@
 
 .treeview li.submenu {
     background: white url(img/closed.gif) no-repeat left 1px;
-    cursor: hand !important;
-    cursor: pointer !important;
 }
 
 .treeview li.submenu ul {
@@ -23,4 +21,12 @@
 
 .treeview .submenu ul li {
     cursor: default;
+}
+
+.treeview .closed {
+    background: white url(img/closed.gif) no-repeat left 1px;
+}
+
+.treeview .open {
+    background: white url(img/open.gif) no-repeat left 1px;
 }

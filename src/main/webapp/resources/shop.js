@@ -2,6 +2,7 @@ var cx;
 var cy;
 var categoryRect = null;
 var showPopup = false;
+var ddTreeMenu = {};
 
 document.onmousemove = function (e) {
     cx = e.pageX;
@@ -130,6 +131,8 @@ function categoryMOver(href) {
         div.append(treeMenu);
         $(document.body).append(div);
         showPopup = true;
+
+        ddTreeMenu.createTree("treeMenu_", true, 600);
     }
 }
 
@@ -186,7 +189,7 @@ function getRootCategories(host, callback) {
     xmlHttpRequest.send(null);
 }
 
-var initMenu = function initTreeMenu(categories) {
+var initMenu = function initRootMenu(categories) {
     var categoryMenu = document.getElementById('categoryMenu');
     if (categoryMenu != 'null') {
         for (var i = 0; i < categories.length; i++) {
@@ -236,6 +239,7 @@ var initTable = function initTable(items) {
 
 function fillMenu() {
     getRootCategories("http://localhost:8080", initMenu);
+    initTreeMenuBuilder();
 }
 
 function onMouseMenuWrapper(e) {
@@ -251,12 +255,8 @@ function onMouseMenuWrapper(e) {
     }
 }
 
-function initTreeMenu(parent) {
+function initTreeMenuBuilder() {
     var arr = {};
-    var ddTreeMenu = {};
-
-    ddTreeMenu.closefolder = "img/closed.gif";
-    ddTreeMenu.openfolder = "img/open.gif";
 
     ddTreeMenu.createTree = function (treeId, enablePersist, persistDays) {
         var ulTags = document.getElementById(treeId).getElementsByTagName("ul");
@@ -282,7 +282,7 @@ function initTreeMenu(parent) {
             if (ddTreeMenu.contains(arr[treeId], index)) {
                 ulElement.setAttribute("rel", "open");
                 ulElement.style.display = "block";
-                ulElement.parentNode.style.backgroundImage = "url(" + ddTreeMenu.openfolder + ")";
+                ddTreeMenu.switchState(ulElement.parentNode, true);
             } else {
                 ulElement.setAttribute("rel", "closed");
             }
@@ -297,11 +297,11 @@ function initTreeMenu(parent) {
             if (submenu.getAttribute("rel") == "closed") {
                 submenu.style.display = "block";
                 submenu.setAttribute("rel", "open");
-                ulElement.parentNode.style.backgroundImage = "url(" + ddTreeMenu.openfolder + ")";
+                ddTreeMenu.switchState(ulElement.parentNode, true);
             } else if (submenu.getAttribute("rel") == "open") {
                 submenu.style.display = "none";
                 submenu.setAttribute("rel", "closed");
-                ulElement.parentNode.style.backgroundImage = "url(" + ddTreeMenu.closefolder + ")";
+                ddTreeMenu.switchState(ulElement.parentNode, false);
             }
             ddTreeMenu.preventPropagate(event);
         };
@@ -315,12 +315,12 @@ function initTreeMenu(parent) {
         var rootNode = document.getElementById(treeId);
         var currentNode = ulElement;
         currentNode.style.display = "block";
-        currentNode.parentNode.style.backgroundImage = "url(" + ddTreeMenu.openfolder + ")";
+        ddTreeMenu.switchState(currentNode.parentNode, true);
         while (currentNode != rootNode) {
             if (currentNode.tagName == "UL") {
                 currentNode.style.display = "block";
                 currentNode.setAttribute("rel", "open");
-                currentNode.parentNode.style.backgroundImage = "url(" + ddTreeMenu.openfolder + ")";
+                ddTreeMenu.switchState(currentNode.parentNode, true);
             }
             currentNode = currentNode.parentNode;
         }
@@ -332,7 +332,11 @@ function initTreeMenu(parent) {
             ulTags[i].style.display = (action == "expand") ? "block" : "none";
             var relValue = (action == "expand") ? "open" : "closed";
             ulTags[i].setAttribute("rel", relValue);
-            ulTags[i].parentNode.style.backgroundImage = (action == "expand") ? "url(" + ddTreeMenu.openfolder + ")" : "url(" + ddTreeMenu.closefolder + ")";
+            if (action == "expand") {
+                ddTreeMenu.switchState(ulTags[i].parentNode, true);
+            } else {
+                ddTreeMenu.switchState(ulTags[i].parentNode, false);
+            }
         }
     };
 
@@ -392,6 +396,26 @@ function initTreeMenu(parent) {
             target.addEventListener(taskType_, functionRef, false);
         } else if (target.attachEvent) {
             target.attachEvent(taskType_, functionRef);
+        }
+    }
+
+    ddTreeMenu.switchState = function (element, open) {
+        if (open) {
+            if (element.className.indexOf("closed") != -1) {
+                element.className = element.className.replace(/closed/g, "open");
+            } else if (element.className.length == 0) {
+                element.className += "open";
+            } else {
+                element.className = "open";
+            }
+        } else {
+            if (element.className.indexOf("open") != -1) {
+                element.className = element.className.replace(/open/g, "closed");
+            } else if (element.className.length == 0) {
+                element.className += "closed";
+            } else {
+                element.className = "closed";
+            }
         }
     }
 }
