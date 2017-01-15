@@ -16,6 +16,7 @@
     <link href="${bootstrap}" rel="stylesheet"/>
     <link href="${jsp}" rel="stylesheet"/>
     <link href="${shopCss}" rel="stylesheet"/>
+    <script src="${jquery}"></script>
     <script src="${shopJs}"></script>
 </head>
 <script>
@@ -243,6 +244,5 @@
 </div>
 
 <script src="${bootstrapJs}"></script>
-<script src="${jquery}"></script>
 </body>
 </html>

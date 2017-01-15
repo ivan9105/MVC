@@ -54,11 +54,25 @@ ItemClass.toString = function () {
         ",\nCount: " + this.count + ",\nPrice: " + this.price + ",\nCategoryId: " + this.categoryId;
 };
 
-function popupMOut() {
-    //Todo check rect bug
-    $("div#popupMenu").remove();
+function removePopup(popupMenu) {
+    popupMenu.remove();
     $("div#categoryMenu").children().attr("class", "list-group-item");
     showPopup = false;
+}
+
+function popupMOut(e) {
+    var popupMenu = document.getElementById("popupMenu");
+    if (e != 'null' && e != 'undefined') {
+        var target = e.relatedTarget;
+        while (target.parentNode != null && target != popupMenu) {
+            target = target.parentNode;
+        }
+        if (target != popupMenu && target.parentNode != popupMenu) {
+            removePopup(popupMenu);
+        }
+    } else {
+        removePopup(popupMenu);
+    }
 }
 
 function popupMOver() {
@@ -76,7 +90,7 @@ function categoryMOver(href) {
         var coords = getCoords(categoryMenu);
         var x = coords[1][0];
         var y = coords[1][1];
-        var div = $('<div id="popupMenu" onmouseover="popupMOver()" onmouseout="popupMOut()" class="container">').css({
+        var div = $('<div id="popupMenu" onmouseover="popupMOver()" onmouseout="popupMOut(event)" class="container">').css({
             "position": "absolute",
             "left": x + "px",
             "top": y + "px",
@@ -86,10 +100,10 @@ function categoryMOver(href) {
             "border": "1px solid black"
         });
         //Todo fill dynamic
-        var treeMenu = $('<a href="javascript:ddtreemenu.flatten(\'treemenu1\', \'expand\')">Expand All</a> ' +
-            '| <a href="javascript:ddtreemenu.flatten(\'treemenu1\', \'contact\')">Contact All</a>' +
-            '<div style="border: 1px solid black">' +
-            '<ul id="treemenu1" class="treeview">' +
+        var treeMenu = $('<div id="menuDiv" style="border: 1px solid black">' +
+            '<a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'expand\')">Expand All</a> ' +
+            '| <a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'contact\')">Contact All</a>' +
+            '<ul id="treeMenu_" class="treeview">' +
             '<li>Item 1</li>' +
             '<li>Item 2</li>' +
             '<li>Folder 1' +
@@ -231,7 +245,8 @@ function onMouseMenuWrapper(e) {
     if (showPopup && categoryRect != 'null') {
         if (x < categoryRect[0] || y < categoryRect[1] ||
             (x >= categoryRect[0] && x <= categoryRect[2] && y > categoryRect[3])) {
-            popupMOut();
+            var popupMenu = $("div#popupMenu");
+            removePopup(popupMenu);
         }
     }
 }
@@ -278,7 +293,7 @@ function initTreeMenu(parent) {
         }
 
         ulElement.parentNode.onclick = function (event) {
-            var submenu = this.getElementsByTagName("UL")[0]; //Todo check
+            var submenu = this.getElementsByTagName("UL")[0];
             if (submenu.getAttribute("rel") == "closed") {
                 submenu.style.display = "block";
                 submenu.setAttribute("rel", "open");
