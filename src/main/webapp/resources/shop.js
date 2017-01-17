@@ -82,6 +82,46 @@ function popupMOver() {
 function categoryMOut() {
 }
 
+var createSubMenu = function createSubMenu(result, div) {
+    for (var i = 0; i < result.length; i++) {
+        var obj = result[i];
+        console.log(obj);
+    }
+    /*
+     //Todo fill dynamic
+     var treeMenu = $('<div id="menuDiv" style="border: 1px solid black">' +
+     '<a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'expand\')">Expand All</a> ' +
+     '| <a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'contact\')">Contact All</a>' +
+     '<ul id="treeMenu_" class="treeview">' +
+     '<li>Item 1</li>' +
+     '<li>Item 2</li>' +
+     '<li>Folder 1' +
+     '<ul>' +
+     '<li>Sub Item 1.1</li>' +
+     '<li>Sub Item 1.2</li>' +
+     '</ul>' +
+     '</li>' +
+     '<li>Item 3</li>' +
+     '<li>Folder 2' +
+     '<ul>' +
+     '<li>Sub Item 2.1</li>' +
+     '<li>Folder 2.1 ' +
+     '<ul>' +
+     '<li>Sub Item 2.1.1</li>' +
+     '<li>Sub Item 2.1.2</li>' +
+     '</ul>' +
+     '</li>' +
+     '</ul>' +
+     '</li>' +
+     '<li>Item 4</li>' +
+     '</ul>' +
+     '</div>');
+     div.append(treeMenu);
+     */
+
+    ddTreeMenu.createTree("treeMenu_", true, 600);
+}
+
 function categoryMOver(href) {
     $("div#categoryMenu").children().attr("class", "list-group-item");
     href.className = "list-group-item active";
@@ -100,39 +140,11 @@ function categoryMOver(href) {
             "background-color": "white",
             "border": "1px solid black"
         });
-        //Todo fill dynamic
-        var treeMenu = $('<div id="menuDiv" style="border: 1px solid black">' +
-            '<a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'expand\')">Expand All</a> ' +
-            '| <a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'contact\')">Contact All</a>' +
-            '<ul id="treeMenu_" class="treeview">' +
-            '<li>Item 1</li>' +
-            '<li>Item 2</li>' +
-            '<li>Folder 1' +
-            '<ul>' +
-            '<li>Sub Item 1.1</li>' +
-            '<li>Sub Item 1.2</li>' +
-            '</ul>' +
-            '</li>' +
-            '<li>Item 3</li>' +
-            '<li>Folder 2' +
-            '<ul>' +
-            '<li>Sub Item 2.1</li>' +
-            '<li>Folder 2.1 ' +
-            '<ul>' +
-            '<li>Sub Item 2.1.1</li>' +
-            '<li>Sub Item 2.1.2</li>' +
-            '</ul>' +
-            '</li>' +
-            '</ul>' +
-            '</li>' +
-            '<li>Item 4</li>' +
-            '</ul>' +
-            '</div>');
-        div.append(treeMenu);
+
         $(document.body).append(div);
         showPopup = true;
 
-        ddTreeMenu.createTree("treeMenu_", true, 600);
+        getChildCategories("http://localhost:8080", href.getAttribute("rel"), div, createSubMenu);
     }
 }
 
@@ -189,6 +201,18 @@ function getRootCategories(host, callback) {
     xmlHttpRequest.send(null);
 }
 
+function getChildCategories(host, id, div, callback) {
+    var xmlHttpRequest = new XMLHttpRequest();
+    xmlHttpRequest.open("GET", host + "/api/shop/childCategories?id=" + id, true);
+    xmlHttpRequest.onload = function() {
+        var result = [];
+        var json = xmlHttpRequest.responseText;
+        var obj = JSON.parse(json);
+        callback(obj, div);
+    }
+    xmlHttpRequest.send(null);
+}
+
 var initMenu = function initRootMenu(categories) {
     var categoryMenu = document.getElementById('categoryMenu');
     if (categoryMenu != 'null') {
@@ -196,7 +220,8 @@ var initMenu = function initRootMenu(categories) {
             var category = categories[i];
             if (category.level == '0') {
                 console.log(category);
-                $("div#categoryMenu").append('<a href="#" onmouseover="categoryMOver(this)" onmouseout="categoryMOut()" class="list-group-item">' + category.name + '</a>');
+                $("div#categoryMenu").append('<a href="#" onmouseover="categoryMOver(this)" onmouseout="categoryMOut()" ' +
+                    'class="list-group-item" rel="' + category.id + '">' + category.name + '</a>');
             }
         }
     }
@@ -259,20 +284,23 @@ function initTreeMenuBuilder() {
     var arr = {};
 
     ddTreeMenu.createTree = function (treeId, enablePersist, persistDays) {
-        var ulTags = document.getElementById(treeId).getElementsByTagName("ul");
-        if (typeof arr[treeId] == "undefined") {
-            arr[treeId] = (enablePersist == true && ddTreeMenu.getCookie(treeId) != "") ? ddTreeMenu.getCookie(treeId).split(",") : "";
-        }
+        var treeElement = document.getElementById(treeId);
+        if (treeElement != 'null' && treeElement != 'undefined') {
+            var ulTags = treeElement.getElementsByTagName("ul");
+            if (typeof arr[treeId] == "undefined") {
+                arr[treeId] = (enablePersist == true && ddTreeMenu.getCookie(treeId) != "") ? ddTreeMenu.getCookie(treeId).split(",") : "";
+            }
 
-        for (var i = 0; i < ulTags.length; i++) {
-            ddTreeMenu.buildSubTree(treeId, ulTags[i], i);
-        }
+            for (var i = 0; i < ulTags.length; i++) {
+                ddTreeMenu.buildSubTree(treeId, ulTags[i], i);
+            }
 
-        if (enablePersist == true) {
-            var days = (typeof persistDays == "undefined") ? 1 : parseInt(persistDays);
-            ddTreeMenu.doTask(window, function () {
-                ddTreeMenu.rememberState(treeId, days);
-            }, "unload");
+            if (enablePersist == true) {
+                var days = (typeof persistDays == "undefined") ? 1 : parseInt(persistDays);
+                ddTreeMenu.doTask(window, function () {
+                    ddTreeMenu.rememberState(treeId, days);
+                }, "unload");
+            }
         }
     };
 
