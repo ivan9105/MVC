@@ -9,6 +9,25 @@ document.onmousemove = function (e) {
     cy = e.pageY;
 };
 
+function StringBuilder(value) {
+    this.strings = [];
+    this.append(value);
+}
+
+StringBuilder.prototype.append = function (value) {
+    if (value) {
+        this.strings.push(value);
+    }
+};
+
+StringBuilder.prototype.clear = function () {
+    this.strings.length = 0;
+};
+
+StringBuilder.prototype.toString = function () {
+    return this.strings.join("");
+}
+
 var CategoryClass = function (id, name, description, level, parentId, child_) {
     this.id = id;
     this.name = name;
@@ -83,16 +102,39 @@ function categoryMOut() {
 }
 
 var createSubMenu = function createSubMenu(result, div) {
-    for (var i = 0; i < result.length; i++) {
-        var obj = result[i];
-        console.log(obj);
+    var sb = new StringBuilder();
+    sb.append('<div id="menuDiv" style="border: 1px solid black">');
+    sb.append('<a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'expand\')">Expand All</a> ');
+    sb.append('| <a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'contact\')">Contact All</a>');
+    sb.append('<ul id="treeMenu_" class="treeview">');
+
+    for (var i = 0; i < result.data.length; i++) {
+        var obj = result.data[i];
+        if (obj.child == 'null' || obj.child == 'undefined' || obj.child.length == 0) {
+            sb.append('<li>' + obj.name + '</li>');
+        } else {
+            sb.append('<li>' + obj.name);
+            fillSubMenuList(obj.child, sb);
+            sb.append('</li>')
+        }
     }
+
+    sb.append('</ul>');
+    sb.append('</div>');
+
+    var treeMenu = $(sb.toString());
+    div.add(treeMenu);
+    console.log(sb.toString());
+    /*
+    //TOdo check it and convert into tag
+     <div id="menuDiv" style="border: 1px solid black">
+     <a href="javascript:ddTreeMenu.flatten('treeMenu_', 'expand')">Expand All</a>
+     | <a href="javascript:ddTreeMenu.flatten('treeMenu_', 'contact')">Contact All</a>
+     <ul id="treeMenu_" class="treeview"><li>Комплектующие для ПК<ul><li>Аксессуары для накопителей<ul><li>Док-станции для накопителей</li><li>Внешние боксы для накопителей</li></ul></li><li>Салазки для накопителей</li><li>Процессоры</li><li>Блоки питания</li><li>Видеокарты</li><li>SSD накопители</li><li>Жесткие диски 3.5</li></ul></li></ul></div>
+     */
     /*
      //Todo fill dynamic
-     var treeMenu = $('<div id="menuDiv" style="border: 1px solid black">' +
-     '<a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'expand\')">Expand All</a> ' +
-     '| <a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'contact\')">Contact All</a>' +
-     '<ul id="treeMenu_" class="treeview">' +
+     var treeMenu = $('' +
      '<li>Item 1</li>' +
      '<li>Item 2</li>' +
      '<li>Folder 1' +
@@ -120,6 +162,21 @@ var createSubMenu = function createSubMenu(result, div) {
      */
 
     ddTreeMenu.createTree("treeMenu_", true, 600);
+};
+
+function fillSubMenuList(result, sb) {
+    sb.append('<ul>');
+    for (var i = 0; i < result.length; i++) {
+        var obj = result[i];
+        if (obj.child == 'null' || obj.child == 'undefined' || obj.child.length == 0) {
+            sb.append('<li>' + obj.name + '</li>');
+        } else {
+            sb.append('<li>' + obj.name);
+            fillSubMenuList(obj.child, sb);
+            sb.append('</li>')
+        }
+    }
+    sb.append('</ul>');
 }
 
 function categoryMOver(href) {
@@ -204,7 +261,7 @@ function getRootCategories(host, callback) {
 function getChildCategories(host, id, div, callback) {
     var xmlHttpRequest = new XMLHttpRequest();
     xmlHttpRequest.open("GET", host + "/api/shop/childCategories?id=" + id, true);
-    xmlHttpRequest.onload = function() {
+    xmlHttpRequest.onload = function () {
         var result = [];
         var json = xmlHttpRequest.responseText;
         var obj = JSON.parse(json);
@@ -285,7 +342,7 @@ function initTreeMenuBuilder() {
 
     ddTreeMenu.createTree = function (treeId, enablePersist, persistDays) {
         var treeElement = document.getElementById(treeId);
-        if (treeElement != 'null' && treeElement != 'undefined') {
+        if (treeElement != 'null' && treeElement != 'undefined' && treeElement != null) {
             var ulTags = treeElement.getElementsByTagName("ul");
             if (typeof arr[treeId] == "undefined") {
                 arr[treeId] = (enablePersist == true && ddTreeMenu.getCookie(treeId) != "") ? ddTreeMenu.getCookie(treeId).split(",") : "";
