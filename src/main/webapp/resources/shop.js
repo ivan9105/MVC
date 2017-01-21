@@ -123,45 +123,9 @@ var createSubMenu = function createSubMenu(result, div) {
     sb.append('</div>');
 
     var treeMenu = $(sb.toString());
-    div.add(treeMenu);
-    console.log(sb.toString());
-    /*
-    //TOdo check it and convert into tag
-     <div id="menuDiv" style="border: 1px solid black">
-     <a href="javascript:ddTreeMenu.flatten('treeMenu_', 'expand')">Expand All</a>
-     | <a href="javascript:ddTreeMenu.flatten('treeMenu_', 'contact')">Contact All</a>
-     <ul id="treeMenu_" class="treeview"><li>Комплектующие для ПК<ul><li>Аксессуары для накопителей<ul><li>Док-станции для накопителей</li><li>Внешние боксы для накопителей</li></ul></li><li>Салазки для накопителей</li><li>Процессоры</li><li>Блоки питания</li><li>Видеокарты</li><li>SSD накопители</li><li>Жесткие диски 3.5</li></ul></li></ul></div>
-     */
-    /*
-     //Todo fill dynamic
-     var treeMenu = $('' +
-     '<li>Item 1</li>' +
-     '<li>Item 2</li>' +
-     '<li>Folder 1' +
-     '<ul>' +
-     '<li>Sub Item 1.1</li>' +
-     '<li>Sub Item 1.2</li>' +
-     '</ul>' +
-     '</li>' +
-     '<li>Item 3</li>' +
-     '<li>Folder 2' +
-     '<ul>' +
-     '<li>Sub Item 2.1</li>' +
-     '<li>Folder 2.1 ' +
-     '<ul>' +
-     '<li>Sub Item 2.1.1</li>' +
-     '<li>Sub Item 2.1.2</li>' +
-     '</ul>' +
-     '</li>' +
-     '</ul>' +
-     '</li>' +
-     '<li>Item 4</li>' +
-     '</ul>' +
-     '</div>');
-     div.append(treeMenu);
-     */
-
+    div.append(treeMenu);
     ddTreeMenu.createTree("treeMenu_", true, 600);
+    ddTreeMenu.flatten("treeMenu_", "expand");
 };
 
 function fillSubMenuList(result, sb) {

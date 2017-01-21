@@ -21,7 +21,7 @@
 </head>
 <script>
     window.onload = function () {
-//        Todo fill on load menu div
+        //Todo fill then load div
         fillMenu();
     };
 </script>
