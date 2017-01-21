@@ -4,19 +4,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <spring:url value="/resources/bootstrap/js/bootstrap.js" var="bootstrapJs"/>
-<spring:url value="/resources/jquery.js" var="jquery"/>
+<spring:url value="/resources/jquery.js" var="jqueryJs"/>
 <spring:url value="/resources/img/cart.gif" var="cart"/>
 <spring:url value="/resources/shop.js" var="shopJs"/>
 <html>
 <head>
     <title>Shop</title>
-    <spring:url value="/resources/bootstrap/css/bootstrap.css" var="bootstrap"/>
-    <spring:url value="/resources/jsp.css" var="jsp"/>
+    <spring:url value="/resources/bootstrap/css/bootstrap.css" var="bootstrapCss"/>
+    <spring:url value="/resources/jsp.css" var="jspCss"/>
     <spring:url value="/resources/shop.css" var="shopCss"/>
-    <link href="${bootstrap}" rel="stylesheet"/>
-    <link href="${jsp}" rel="stylesheet"/>
+    <link href="${bootstrapCss}" rel="stylesheet"/>
+    <link href="${jspCss}" rel="stylesheet"/>
     <link href="${shopCss}" rel="stylesheet"/>
-    <script src="${jquery}"></script>
+    <script src="${jqueryJs}"></script>
     <script src="${shopJs}"></script>
 </head>
 <script>

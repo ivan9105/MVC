@@ -23,10 +23,3 @@
     cursor: default;
 }
 
-.treeview .closed {
-    background: white url(img/closed.gif) no-repeat left 1px;
-}
-
-.treeview .open {
-    background: white url(img/open.gif) no-repeat left 1px;
-}
