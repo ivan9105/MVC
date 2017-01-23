@@ -70,7 +70,7 @@ public class ShopCategoryServiceBean implements ShopCategoryService {
         try {
             Query query = em.createQuery("from Category c " +
                             "where " +
-                            (id == null ? "c.parent is null" : "c.id = :id")
+                            (id == null ? "c.parent is null" : "c.parent.id = :id")
             );
             if (id != null) {
                 query.setParameter("id", id);

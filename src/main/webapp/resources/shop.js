@@ -103,17 +103,15 @@ function categoryMOut() {
 
 var createSubMenu = function createSubMenu(result, div) {
     var sb = new StringBuilder();
-    sb.append('<div id="menuDiv" style="border: 1px solid black">');
-    sb.append('<a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'expand\')">Expand All</a> ');
-    sb.append('| <a href="javascript:ddTreeMenu.flatten(\'treeMenu_\', \'contact\')">Contact All</a>');
+    sb.append('<div id="menuDiv" style="margin-left: -40px; margin-top:13px;">');
     sb.append('<ul id="treeMenu_" class="treeview">');
 
     for (var i = 0; i < result.data.length; i++) {
         var obj = result.data[i];
         if (obj.child == 'null' || obj.child == 'undefined' || obj.child.length == 0) {
-            sb.append('<li>' + obj.name + '</li>');
+            sb.append('<li class="treeCaptionRoot">' + obj.name + '</li>');
         } else {
-            sb.append('<li>' + obj.name);
+            sb.append('<li><p class="treeCaptionRoot withoutSpace">' + obj.name + '</p>');
             fillSubMenuList(obj.child, sb);
             sb.append('</li>')
         }
@@ -159,7 +157,7 @@ function categoryMOver(href) {
             "width": "30%",
             "height": "70%",
             "background-color": "white",
-            "border": "1px solid black"
+            "border": "1px solid #DDDDDD"
         });
 
         $(document.body).append(div);
@@ -376,15 +374,18 @@ function initTreeMenuBuilder() {
     };
 
     ddTreeMenu.flatten = function (treeId, action) {
-        var ulTags = document.getElementById(treeId).getElementsByTagName("UL");
-        for (var i = 0; i < ulTags.length; i++) {
-            ulTags[i].style.display = (action == "expand") ? "block" : "none";
-            var relValue = (action == "expand") ? "open" : "closed";
-            ulTags[i].setAttribute("rel", relValue);
-            if (action == "expand") {
-                ddTreeMenu.switchState(ulTags[i].parentNode, true);
-            } else {
-                ddTreeMenu.switchState(ulTags[i].parentNode, false);
+        var treeElement = document.getElementById(treeId);
+        if (treeElement != null && treeElement != 'null' && treeElement != 'undefined') {
+            var ulTags = treeElement.getElementsByTagName("UL");
+            for (var i = 0; i < ulTags.length; i++) {
+                ulTags[i].style.display = (action == "expand") ? "block" : "none";
+                var relValue = (action == "expand") ? "open" : "closed";
+                ulTags[i].setAttribute("rel", relValue);
+                if (action == "expand") {
+                    ddTreeMenu.switchState(ulTags[i].parentNode, true);
+                } else {
+                    ddTreeMenu.switchState(ulTags[i].parentNode, false);
+                }
             }
         }
     };
@@ -446,7 +447,7 @@ function initTreeMenuBuilder() {
         } else if (target.attachEvent) {
             target.attachEvent(taskType_, functionRef);
         }
-    }
+    };
 
     ddTreeMenu.switchState = function (element, open) {
         if (open) {

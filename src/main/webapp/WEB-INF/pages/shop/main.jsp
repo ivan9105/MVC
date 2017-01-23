@@ -13,9 +13,11 @@
     <spring:url value="/resources/bootstrap/css/bootstrap.css" var="bootstrapCss"/>
     <spring:url value="/resources/jsp.css" var="jspCss"/>
     <spring:url value="/resources/shop.css" var="shopCss"/>
+    <spring:url value="/resources/font-awesome/css/font-awesome.min.css" var="fontAwesomeCss"/>
     <link href="${bootstrapCss}" rel="stylesheet"/>
     <link href="${jspCss}" rel="stylesheet"/>
     <link href="${shopCss}" rel="stylesheet"/>
+    <link href="${fontAwesomeCss}" rel="stylesheet"/>
     <script src="${jqueryJs}"></script>
     <script src="${shopJs}"></script>
 </head>
