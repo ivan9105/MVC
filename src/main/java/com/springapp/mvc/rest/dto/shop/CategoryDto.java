@@ -13,6 +13,8 @@ public class CategoryDto extends BaseDto {
     private String description;
     private Integer level;
     private String parentId;
+    private Integer itemsCount = 0;
+    private CategoryDto parent;
     private List<CategoryDto> child;
 
     public String getId() {
@@ -61,5 +63,21 @@ public class CategoryDto extends BaseDto {
 
     public void setChild(List<CategoryDto> child) {
         this.child = child;
+    }
+
+    public Integer getItemsCount() {
+        return itemsCount;
+    }
+
+    public void setItemsCount(Integer itemsCount) {
+        this.itemsCount = itemsCount;
+    }
+
+    public CategoryDto getParent() {
+        return parent;
+    }
+
+    public void setParent(CategoryDto parent) {
+        this.parent = parent;
     }
 }

@@ -75,11 +75,12 @@ public class ShopCategoryServiceBean implements ShopCategoryService {
             if (id != null) {
                 query.setParameter("id", id);
             }
+
             List list = query.getResultList();
             for (Object object : list) {
                 Category category = (Category) object;
                 CategoryDto dto = DtoConverter.toCategoryDto(category, request);
-                fillChild(dto, request, category.getChild());
+                fillChild(dto, request, category.getChild(), em);
                 res.add(dto);
             }
             em.getTransaction().commit();
@@ -87,15 +88,42 @@ public class ShopCategoryServiceBean implements ShopCategoryService {
             em.close();
         }
 
+        for (CategoryDto categoryDto : res) {
+            categoryDto.setParent(null);
+            clearParent(categoryDto.getChild());
+        }
+
         return res;
     }
 
-    private void fillChild(CategoryDto mainDto, HttpServletRequest request, List<Category> child) {
+    private void clearParent(List<CategoryDto> child) {
+        if (child != null && !child.isEmpty()) {
+            for (CategoryDto categoryDto : child) {
+                categoryDto.setParent(null);
+                clearParent(categoryDto.getChild());
+            }
+        }
+    }
+
+    private void fillChild(CategoryDto mainDto, HttpServletRequest request, List<Category> child, EntityManager em) {
         if (child != null && child.size() > 0) {
             for (Category category : child) {
                 CategoryDto dto = DtoConverter.toCategoryDto(category, request);
+                dto.setParent(mainDto);
                 mainDto.getChild().add(dto);
-                fillChild(dto, request, category.getChild());
+                fillChild(dto, request, category.getChild(), em);
+            }
+        } else {
+            Query countQuery = em.createQuery("select count(i.id) from Item i where i.category.id = :cId");
+            countQuery.setParameter("cId", UUID.fromString(mainDto.getId()));
+            mainDto.setItemsCount(Integer.valueOf(String.valueOf(countQuery.getResultList().get(0))));
+
+            CategoryDto visitor = new CategoryDto();
+            visitor.setItemsCount(mainDto.getItemsCount());
+            visitor.setParent(mainDto.getParent());
+            while (visitor.getParent() != null) {
+                visitor.getParent().setItemsCount(visitor.getParent().getItemsCount() + visitor.getItemsCount());
+                visitor = visitor.getParent();
             }
         }
     }

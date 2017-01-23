@@ -3,6 +3,7 @@ var cy;
 var categoryRect = null;
 var showPopup = false;
 var ddTreeMenu = {};
+var selectedCategory = null;
 
 document.onmousemove = function (e) {
     cx = e.pageX;
@@ -108,6 +109,7 @@ var createSubMenu = function createSubMenu(result, div) {
 
     for (var i = 0; i < result.data.length; i++) {
         var obj = result.data[i];
+        //Todo create links with logic
         if (obj.child == 'null' || obj.child == 'undefined' || obj.child.length == 0) {
             sb.append('<li class="treeCaptionRoot" rel="root">' + obj.name + '</li>');
         } else {
