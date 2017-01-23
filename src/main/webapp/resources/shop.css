@@ -34,7 +34,17 @@
     color: #428BCA;
 }
 
+.countItems {
+    color: #FFB147;
+    margin-left: 7px;
+}
+
 .underline {
+    text-decoration: underline;
+}
+
+.underline .countItems {
+    color: #FFB147;
     text-decoration: underline;
 }
 

@@ -111,9 +111,9 @@ var createSubMenu = function createSubMenu(result, div) {
         var obj = result.data[i];
         //Todo create links with logic
         if (obj.child == 'null' || obj.child == 'undefined' || obj.child.length == 0) {
-            sb.append('<li class="treeCaptionRoot" rel="root">' + obj.name + '</li>');
+            sb.append('<li class="treeCaptionRoot" rel="root">' + obj.name + '<b class="countItems">' + obj.itemsCount + '</b></li>');
         } else {
-            sb.append('<li rel="root"><p class="treeCaptionRoot withoutSpace"><i class="fa fa-caret-down" style="margin-right: 3px;"/>' + obj.name + '</p>');
+            sb.append('<li rel="root"><p class="treeCaptionRoot withoutSpace"><i class="fa fa-caret-down" style="margin-right: 3px;"/>' + obj.name + '<b class="countItems">' + obj.itemsCount + '</b>' + '</p>');
             fillSubMenuList(obj.child, sb);
             sb.append('</li>')
         }
@@ -133,9 +133,9 @@ function fillSubMenuList(result, sb) {
     for (var i = 0; i < result.length; i++) {
         var obj = result[i];
         if (obj.child == 'null' || obj.child == 'undefined' || obj.child.length == 0) {
-            sb.append('<li>' + obj.name + '</li>');
+            sb.append('<li>' + obj.name + '<b class="countItems">' + obj.itemsCount + '</b></li>');
         } else {
-            sb.append('<li><i class="fa fa-caret-down" style="margin-right: 3px; "/>' + obj.name);
+            sb.append('<li><i class="fa fa-caret-down" style="margin-right: 3px; "/>' + obj.name + '<b class="countItems">' + obj.itemsCount + '</b>');
             fillSubMenuList(obj.child, sb);
             sb.append('</li>')
         }
