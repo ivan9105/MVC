@@ -26,7 +26,7 @@ StringBuilder.prototype.clear = function () {
 
 StringBuilder.prototype.toString = function () {
     return this.strings.join("");
-}
+};
 
 var CategoryClass = function (id, name, description, level, parentId, child_) {
     this.id = id;
@@ -109,9 +109,9 @@ var createSubMenu = function createSubMenu(result, div) {
     for (var i = 0; i < result.data.length; i++) {
         var obj = result.data[i];
         if (obj.child == 'null' || obj.child == 'undefined' || obj.child.length == 0) {
-            sb.append('<li class="treeCaptionRoot">' + obj.name + '</li>');
+            sb.append('<li class="treeCaptionRoot" rel="root">' + obj.name + '</li>');
         } else {
-            sb.append('<li><p class="treeCaptionRoot withoutSpace">' + obj.name + '</p>');
+            sb.append('<li rel="root"><p class="treeCaptionRoot withoutSpace"><i class="fa fa-caret-down" style="margin-right: 3px;"/>' + obj.name + '</p>');
             fillSubMenuList(obj.child, sb);
             sb.append('</li>')
         }
@@ -133,7 +133,7 @@ function fillSubMenuList(result, sb) {
         if (obj.child == 'null' || obj.child == 'undefined' || obj.child.length == 0) {
             sb.append('<li>' + obj.name + '</li>');
         } else {
-            sb.append('<li>' + obj.name);
+            sb.append('<li><i class="fa fa-caret-down" style="margin-right: 3px; "/>' + obj.name);
             fillSubMenuList(obj.child, sb);
             sb.append('</li>')
         }
@@ -228,7 +228,7 @@ function getChildCategories(host, id, div, callback) {
         var json = xmlHttpRequest.responseText;
         var obj = JSON.parse(json);
         callback(obj, div);
-    }
+    };
     xmlHttpRequest.send(null);
 }
 
@@ -450,25 +450,50 @@ function initTreeMenuBuilder() {
     };
 
     ddTreeMenu.switchState = function (element, open) {
+        var rel = element.getAttribute("rel");
+        var icon = null;
+        var paragraph = null;
+
+        var elementChild = element.childNodes;
+        for (var i = 0; i < elementChild.length; i++) {
+            if (elementChild[i].tagName == 'I') {
+                icon = elementChild[i];
+                break;
+            } else if (elementChild[i].tagName == 'P') {
+                paragraph = elementChild[i];
+            }
+        }
+
+        if (icon == null && paragraph != null) {
+            var paragraphChild = paragraph.childNodes;
+            for (var j = 0; j < paragraphChild.length; j++) {
+                if (paragraphChild[j].tagName == 'I') {
+                    icon = paragraphChild[j];
+                    break;
+                }
+            }
+        }
+
         if (open) {
-            if (element.className.indexOf("closed") != -1) {
+            if (element.className.indexOf("closed underline") != -1) {
+                element.className = element.className.replace(/closed underline/g, "open");
+            } else if (element.className.indexOf("closed") != -1) {
                 element.className = element.className.replace(/closed/g, "open");
             } else if (element.className.length == 0) {
                 element.className += "open";
             } else {
                 element.className = "open";
             }
+            icon.className = "fa fa-caret-down";
         } else {
             if (element.className.indexOf("open") != -1) {
-                element.className = element.className.replace(/open/g, "closed");
+                element.className = element.className.replace(/open/g, (rel == 'root' ? "closed underline" : "closed"));
             } else if (element.className.length == 0) {
-                element.className += "closed";
+                element.className += (rel == 'root' ? "closed underline" : "closed");
             } else {
-                element.className = "closed";
+                element.className = (rel == 'root' ? "closed underline" : "closed");
             }
+            icon.className = "fa fa-caret-up";
         }
     }
 }
-
-//getItems("", "05d8a44b-e144-4f78-9fd4-c4b73a57379b", initTable);
-//getRootCategories("http://localhost:8080", initMenu);

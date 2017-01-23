@@ -31,7 +31,14 @@
 }
 
 .treeview .closed {
+    color: #428BCA;
+}
+
+.underline {
+    text-decoration: underline;
 }
 
 .treeview .open {
+    color: #222222;
+    text-decoration: none;
 }
