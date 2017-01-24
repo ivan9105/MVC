@@ -4,7 +4,7 @@ var categoryRect = null;
 var showPopup = false;
 var ddTreeMenu = {};
 var selectedCategory = null;
-var tableSize = 30;
+var tableSize = 15;
 var host = "http://localhost:8080";
 
 document.onmousemove = function (e) {
@@ -282,11 +282,31 @@ function getItems(host, page, callback) {
 }
 
 var initTable = function initTable(items, currentPage, pageSize) {
-    for (var i = 0; i < items.length; i++) {
-        console.log(items[i]);
+    var itemsTable = document.getElementById('itemsTable');
+    var tbody = itemsTable.getElementsByTagName('TBODY')[0];
+    var tablePagination = document.getElementById('tablePagination');
+    var sb = new StringBuilder();
+
+    if (tbody != null && tbody != 'null' && tbody != 'undefined') {
+        for (var i = 0; i < items.length; i++) {
+            var row = tbody.insertRow(0);
+            var nameCell = row.insertCell(0);
+            var priceCell = row.insertCell(1);
+            var categoryCell = row.insertCell(2);
+            var countCell = row.insertCell(3);
+
+            nameCell.appendChild(document.createTextNode(items[i].name));
+            priceCell.appendChild(document.createTextNode(items[i].price));
+            categoryCell.appendChild(document.createTextNode(items[i].categoryName));
+            countCell.appendChild(document.createTextNode(items[i].count));
+        }
     }
-    console.log(currentPage);
-    console.log(pageSize);
+
+    if (tablePagination != null && tablePagination != 'null' && tablePagination != 'undefined') {
+        //from 1 to 5 ex. (... 2 3 4 5
+        tablePagination.className = 'center';
+
+    }
 };
 
 function fillMenu() {
