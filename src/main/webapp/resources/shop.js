@@ -12,6 +12,18 @@ document.onmousemove = function (e) {
     cy = e.pageY;
 };
 
+window.onscroll = function (e) {
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var sidebar = document.getElementById('sidebar');
+    if (sidebar != 'null' && sidebar != null && sidebar != 'undefined') {
+        sidebar.style.top = 95 + scrollTop + 'px';
+        var popup = document.getElementById('popupMenu');
+        if (popup != 'null' && popup != null && popup != 'undefined') {
+            popup.style.top = 100 + scrollTop + 'px';
+        }
+    }
+};
+
 function StringBuilder(value) {
     this.strings = [];
     this.append(value);
@@ -305,7 +317,6 @@ var initTable = function initTable(items, currentPage, pageSize) {
     if (tablePagination != null && tablePagination != 'null' && tablePagination != 'undefined') {
         //from 1 to 5 ex. (... 2 3 4 5
         tablePagination.className = 'center';
-
     }
 };
 

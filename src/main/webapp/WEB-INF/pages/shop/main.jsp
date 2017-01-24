@@ -58,9 +58,17 @@
 </nav>
 <!-- Page Content -->
 <div class="container" style="margin-top: 90px; padding-top: 5px;">
-    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="margin-left: -90px;">
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="position: absolute; left:25px;">
         <div id="menuWrapper" style="padding: 5px;" onmousemove="onMouseMenuWrapper(event)">
             <div id="categoryMenu" class="list-group">
+            </div>
+        </div>
+    </div>
+
+    <%--Fake--%>
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="_sidebar" role="navigation" style="margin-left: -90px;">
+        <div id="_menuWrapper" style="padding: 5px;" onmousemove="onMouseMenuWrapper(event)">
+            <div id="_categoryMenu" class="list-group">
             </div>
         </div>
     </div>
@@ -78,12 +86,12 @@
                 <hr/>
                 <table id="itemsTable" class="table table-striped">
                     <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                        </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                    </tr>
                     </thead>
                     <tbody>
                     </tbody>
