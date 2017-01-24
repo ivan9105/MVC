@@ -35,6 +35,7 @@ public class DtoConverter {
         res.setCount(item.getCount());
         res.setPrice(item.getPrice());
         res.setCategoryId(item.getCategory() != null ? item.getCategory().getId().toString() : "");
+        res.setCategoryName(item.getCategory() != null ? item.getCategory().getName() : "");
         res.setLinkDto(new LinkDto());
         res.getLinkDto().setRel("self");
         res.getLinkDto().setHref(ServletUtil.getRemoteAddr(request) + "/api/shop/item?id=" + res.getId());

@@ -11,6 +11,7 @@ import com.springapp.mvc.rest.response.CategoriesResponse;
 import com.springapp.mvc.rest.response.ItemsResponse;
 import com.springapp.mvc.service.ShopCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,13 +90,22 @@ public class ShopRestController {
     }
 
     @RequestMapping(value = "items", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public ItemsResponse getItems(HttpServletRequest request) {
+    public ItemsResponse getItems(HttpServletRequest request,
+                                  @RequestParam(value = "size", required = true) Integer size,
+                                  @RequestParam(value = "page", required = false) Integer page) {
         ItemsResponse response = new ItemsResponse();
-        Iterable<Item> items = itemRepository.findAll();
+        if (page == null || page == 0) {
+            page = 1;
+        }
+        Iterable<Item> items = itemRepository.findAll(new PageRequest(page - 1, size));
         response.setItems(new ArrayList<ItemDto>());
         for (Item item : items) {
             response.getItems().add(DtoConverter.toItemDto(item, request));
         }
+        response.setCurrentPage(page);
+        Long count = itemRepository.getCount();
+        response.setPageSize((int) Math.ceil(count/size));
+
         return response;
     }
 
@@ -116,13 +126,23 @@ public class ShopRestController {
 
     @RequestMapping(value = "categoryItems", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ItemsResponse getItemsByCategory(@RequestParam(value = "categoryId", required = true) String categoryId,
+                                            @RequestParam(value = "size", required = true) Integer size,
+                                            @RequestParam(value = "page", required = false) Integer page,
                                             HttpServletRequest request) {
         ItemsResponse response = new ItemsResponse();
-        List<Item> items = itemRepository.findAll(UUID.fromString(categoryId));
+        if (page == null || page == 0) {
+            page = 1;
+        }
+
+        List<Item> items = itemRepository.findAll(UUID.fromString(categoryId), new PageRequest(page - 1, size));
         response.setItems(new ArrayList<ItemDto>());
         for (Item item : items) {
             response.getItems().add(DtoConverter.toItemDto(item, request));
         }
+        response.setCurrentPage(page);
+        Long count = itemRepository.getCount(UUID.fromString(categoryId));
+        response.setPageSize((int) Math.ceil(count / size));
+
         return response;
     }
 }

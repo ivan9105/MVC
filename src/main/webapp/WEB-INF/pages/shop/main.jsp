@@ -25,6 +25,7 @@
     window.onload = function () {
         //Todo fill then load div
         fillMenu();
+        fillTable();
     };
 </script>
 <body>

@@ -4,6 +4,8 @@ var categoryRect = null;
 var showPopup = false;
 var ddTreeMenu = {};
 var selectedCategory = null;
+var tableSize = 30;
+var host = "http://localhost:8080";
 
 document.onmousemove = function (e) {
     cx = e.pageX;
@@ -52,27 +54,29 @@ CategoryClass.toString = function () {
         ",\nLevel: " + this.level + ",\nParentId: " + this.parentId;
 };
 
-var ItemClass = function (id, name, description, count, price, categoryId) {
+var ItemClass = function (id, name, description, count, price, categoryId, categoryName) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.count = count;
     this.price = price;
     this.categoryId = categoryId;
+    this.categoryName = categoryName;
 };
 
 ItemClass.fromJson = function (json) {
     var obj = JSON.parse(json);
-    return new ItemClass(obj.id, obj.name, obj.description, obj.count, obj.price, obj.categoryId)
+    return new ItemClass(obj.id, obj.name, obj.description, obj.count, obj.price, obj.categoryId, obj.categoryName)
 };
 
 ItemClass.fromObject = function (obj) {
-    return new ItemClass(obj.id, obj.name, obj.description, obj.count, obj.price, obj.categoryId)
+    return new ItemClass(obj.id, obj.name, obj.description, obj.count, obj.price, obj.categoryId, obj.categoryName)
 };
 
 ItemClass.toString = function () {
     return "Id: " + this.id + ",\nName: " + this.name + ",\nDescription: " + this.description +
-        ",\nCount: " + this.count + ",\nPrice: " + this.price + ",\nCategoryId: " + this.categoryId;
+        ",\nCount: " + this.count + ",\nPrice: " + this.price + ",\nCategoryId: " + this.categoryId +
+        ",\nCategoryName: " + this.categoryName;
 };
 
 function removePopup(popupMenu) {
@@ -165,7 +169,7 @@ function categoryMOver(href) {
         $(document.body).append(div);
         showPopup = true;
 
-        getChildCategories("http://localhost:8080", href.getAttribute("rel"), div, createSubMenu);
+        getChildCategories(host, href.getAttribute("rel"), div, createSubMenu);
     }
 }
 
@@ -257,13 +261,13 @@ function logMousePosition(message) {
     }
 }
 
-function getItems(host, categoryId, callback) {
+function getItems(host, page, callback) {
     var xmlHttpRequest = new XMLHttpRequest();
-    if (categoryId != 'null') {
-        xmlHttpRequest.open("GET", host + "/api/shop/categories", true);
-    } else {
-        xmlHttpRequest.open("GET", host + "/api/shop/categoryItems?categoryId=" + categoryId, true);
-    }
+    xmlHttpRequest.open("GET", host + "/api/shop/" + (selectedCategory == null ? "items" : "categoryItems")
+        + "?size=" + tableSize
+        + (page != null ? "&page=" + page : "")
+        + (selectedCategory != null ? "&categoryId=" + selectedCategory : "")
+        , true);
     xmlHttpRequest.onload = function () {
         var result = [];
         var json = xmlHttpRequest.responseText;
@@ -272,20 +276,26 @@ function getItems(host, categoryId, callback) {
         for (var i = 0; i < length; i++) {
             result.push(ItemClass.fromObject(obj['data'][i]));
         }
-        callback(result);
+        callback(result, obj['currentPage'], obj['pageSize']);
     };
     xmlHttpRequest.send(null);
 }
 
-var initTable = function initTable(items) {
+var initTable = function initTable(items, currentPage, pageSize) {
     for (var i = 0; i < items.length; i++) {
         console.log(items[i]);
     }
+    console.log(currentPage);
+    console.log(pageSize);
 };
 
 function fillMenu() {
-    getRootCategories("http://localhost:8080", initMenu);
+    getRootCategories(host, initMenu);
     initTreeMenuBuilder();
+}
+
+function fillTable() {
+    getItems(host, null, initTable)
 }
 
 function onMouseMenuWrapper(e) {

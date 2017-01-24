@@ -14,6 +14,7 @@ public class ItemDto extends BaseDto {
     private Integer count;
     private BigDecimal price;
     private String categoryId;
+    private String categoryName;
 
     public String getId() {
         return id;
@@ -61,5 +62,13 @@ public class ItemDto extends BaseDto {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

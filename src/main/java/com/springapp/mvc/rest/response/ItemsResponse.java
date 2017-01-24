@@ -13,6 +13,8 @@ public class ItemsResponse {
     @JsonProperty("data")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ItemDto> items;
+    private Integer currentPage;
+    private Integer pageSize;
 
     public List<ItemDto> getItems() {
         return items;
@@ -20,5 +22,21 @@ public class ItemsResponse {
 
     public void setItems(List<ItemDto> items) {
         this.items = items;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
     }
 }
