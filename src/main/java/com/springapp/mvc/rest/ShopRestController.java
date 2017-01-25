@@ -104,7 +104,7 @@ public class ShopRestController {
         }
         response.setCurrentPage(page);
         Long count = itemRepository.getCount();
-        response.setPageSize((int) Math.ceil(count/size));
+        response.setPageSize((int) Math.ceil(((double) Integer.valueOf(String.valueOf(count)) / size)));
 
         return response;
     }
@@ -141,7 +141,7 @@ public class ShopRestController {
         }
         response.setCurrentPage(page);
         Long count = itemRepository.getCount(UUID.fromString(categoryId));
-        response.setPageSize((int) Math.ceil(count / size));
+        response.setPageSize((int) Math.ceil(((double) Integer.valueOf(String.valueOf(count)) / size)));
 
         return response;
     }

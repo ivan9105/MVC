@@ -298,6 +298,13 @@ var initTable = function initTable(items, currentPage, pageSize) {
     var tbody = itemsTable.getElementsByTagName('TBODY')[0];
     var tablePagination = document.getElementById('tablePagination');
 
+    var rows = tbody.getElementsByTagName('TR');
+    var length = rows.length - 1;
+    while (length >= 0) {
+        tbody.removeChild(rows[length]);
+        length--;
+    }
+
     if (tbody != null && tbody != 'null' && tbody != 'undefined') {
         for (var i = 0; i < items.length; i++) {
             var row = tbody.insertRow(0);
@@ -314,16 +321,11 @@ var initTable = function initTable(items, currentPage, pageSize) {
     }
 
     if (tablePagination != null && tablePagination != 'null' && tablePagination != 'undefined') {
-        //Todo remove it
-        currentPage = 3;
-        pageSize = 8;
-
-
         var sb = new StringBuilder();
         sb.append('<ul class="pagination">');
         if (currentPage > 5) {
-            sb.append('<li><a href="#">&laquo;</a></li>');
-            sb.append('<li><a href="#">&larr;</a></li>');
+            sb.append('<li><a href="#" onclick="fillTable(' + 1 + ')">&laquo;</a></li>');
+            sb.append('<li><a href="#" onclick="fillTable(' + (currentPage - 1) + ')">&larr;</a></li>');
         }
 
         var min;
@@ -344,18 +346,24 @@ var initTable = function initTable(items, currentPage, pageSize) {
             min = minCount + 1;
             max = maxCount;
         }
+        if (max <= min) {
+            min = max - 4;
+        }
+        if (max > pageSize) {
+            max = pageSize;
+        }
 
         for (var j = min; j <= max; j++) {
             if (j == currentPage) {
-                sb.append('<li><a href="#" class="active">' + j + '</a></li>');
+                sb.append('<li><a href="#" class="active" onclick="fillTable(' + j + ')">' + j + '</a></li>');
             } else {
-                sb.append('<li><a href="#">' + j + '</a></li>');
+                sb.append('<li><a href="#" onclick="fillTable(' + j + ')">' + j + '</a></li>');
             }
         }
 
-        if (pageSize > 5) {
-            sb.append('<li><a href="#">&rarr;</a></li>');
-            sb.append('<li><a href="#">&raquo;</a></li>');
+        if (pageSize > 5 && pageSize >= min + 5) {
+            sb.append('<li><a href="#" onclick="fillTable(' + (currentPage + 1) + ')">&rarr;</a></li>');
+            sb.append('<li><a href="#" onclick="fillTable(' + pageSize + ')">&raquo;</a></li>');
         }
         sb.append('</ul>');
         tablePagination.innerHTML = sb.toString();
@@ -367,8 +375,8 @@ function fillMenu() {
     initTreeMenuBuilder();
 }
 
-function fillTable() {
-    getItems(host, null, initTable)
+function fillTable(page) {
+    getItems(host, page, initTable);
 }
 
 function onMouseMenuWrapper(e) {

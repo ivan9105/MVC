@@ -25,7 +25,7 @@
     window.onload = function () {
         //Todo fill then load div
         fillMenu();
-        fillTable();
+        fillTable(1);
     };
 </script>
 <body>
@@ -84,6 +84,7 @@
             <div style="margin:2px;">
                 <h2 style="color: #222222;">Items</h2>
                 <hr/>
+                <div id="tablePagination" class="center"></div>
                 <table id="itemsTable" class="table table-striped">
                     <thead>
                     <tr>
@@ -96,8 +97,6 @@
                     <tbody>
                     </tbody>
                 </table>
-
-                <div id="tablePagination" class="center"></div>
             </div>
         </div>
     </div>
