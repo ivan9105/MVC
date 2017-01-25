@@ -297,7 +297,6 @@ var initTable = function initTable(items, currentPage, pageSize) {
     var itemsTable = document.getElementById('itemsTable');
     var tbody = itemsTable.getElementsByTagName('TBODY')[0];
     var tablePagination = document.getElementById('tablePagination');
-    var sb = new StringBuilder();
 
     if (tbody != null && tbody != 'null' && tbody != 'undefined') {
         for (var i = 0; i < items.length; i++) {
@@ -315,8 +314,51 @@ var initTable = function initTable(items, currentPage, pageSize) {
     }
 
     if (tablePagination != null && tablePagination != 'null' && tablePagination != 'undefined') {
-        //from 1 to 5 ex. (... 2 3 4 5
-        tablePagination.className = 'center';
+        //Todo remove it
+        currentPage = 3;
+        pageSize = 8;
+
+
+        var sb = new StringBuilder();
+        sb.append('<ul class="pagination">');
+        if (currentPage > 5) {
+            sb.append('<li><a href="#">&laquo;</a></li>');
+            sb.append('<li><a href="#">&larr;</a></li>');
+        }
+
+        var min;
+        var max;
+        if (currentPage <= 5) {
+            min = 1;
+            max = 5;
+        } else {
+            var minCount = currentPage;
+            var maxCount = currentPage;
+            while (minCount % 5 != 0) {
+                minCount--;
+            }
+            while (maxCount % 5 != 0) {
+                maxCount++;
+            }
+
+            min = minCount + 1;
+            max = maxCount;
+        }
+
+        for (var j = min; j <= max; j++) {
+            if (j == currentPage) {
+                sb.append('<li><a href="#" class="active">' + j + '</a></li>');
+            } else {
+                sb.append('<li><a href="#">' + j + '</a></li>');
+            }
+        }
+
+        if (pageSize > 5) {
+            sb.append('<li><a href="#">&rarr;</a></li>');
+            sb.append('<li><a href="#">&raquo;</a></li>');
+        }
+        sb.append('</ul>');
+        tablePagination.innerHTML = sb.toString();
     }
 };
 

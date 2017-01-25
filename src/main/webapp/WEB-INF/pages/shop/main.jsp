@@ -90,14 +90,14 @@
                         <th>Name</th>
                         <th>Price</th>
                         <th>Category</th>
-                        <th>Price</th>
+                        <th>Count</th>
                     </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
 
-                <div id="tablePagination"></div>
+                <div id="tablePagination" class="center"></div>
             </div>
         </div>
     </div>
