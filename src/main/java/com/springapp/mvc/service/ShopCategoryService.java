@@ -18,4 +18,6 @@ public interface ShopCategoryService {
     void removeHierarchy(Category category);
 
     List<CategoryDto> getCategoriesDto(UUID id, HttpServletRequest request);
+
+    List<CategoryDto> getRootPath(UUID id, HttpServletRequest request);
 }

@@ -138,6 +138,58 @@ function getItems(host, page, callback) {
     xmlHttpRequest.send(null);
 }
 
+function getBreadCrumbs(host, callback) {
+    var xmlHttpRequest = new XMLHttpRequest();
+    if (selectedCategory != null) {
+        xmlHttpRequest.open("GET", host + "/api/shop/rootPath?categoryId=" + selectedCategory, true);
+        xmlHttpRequest.onload = function () {
+            var result = [];
+            var json = xmlHttpRequest.responseText;
+            var obj = JSON.parse(json);
+            var length = obj['data'].length;
+            for (var i = 0; i < length; i++) {
+                result.push(CategoryClass.fromObject(obj['data'][i]));
+            }
+            callback(result);
+        };
+        xmlHttpRequest.send(null);
+    } else {
+        callback(null);
+    }
+}
+
+function clickBreadCrumbItem(categoryId) {
+    selectedCategory = categoryId;
+    fillTable(1);
+}
+
+var initBreadCrumbs = function initBreadCrumbs(categories) {
+    var container = document.getElementById('breadcrumbs');
+    if (container != 'null' && container != 'undefined' && container != null) {
+        if (selectedCategory == null) {
+            container.style.visibility = 'hidden';
+        } else {
+            container.style.visibility = 'visible';
+            var sb = new StringBuilder();
+            sb.append('<a href="#" onclick="clickBreadCrumbItem(null)">Catalog</a>');
+            sb.append(' > ');
+            for (var i = 0; i < categories.length; i++) {
+                if (categories.length - 1 == i) {
+                    sb.append('<a href="#" onclick="clickBreadCrumbItem(\'' + categories[i].id + '\')">' + categories[i].name + '</a>');
+                } else {
+                    sb.append(categories[i].name);
+                    sb.append(' > ');
+                }
+            }
+            container.innerHTML = sb.toString();
+        }
+    }
+};
+
+function fillBreadCrumbs() {
+    getBreadCrumbs(host, initBreadCrumbs)
+}
+
 function fillTable(page) {
     getItems(host, page, initTable);
 }
@@ -303,6 +355,8 @@ function logMousePosition(message) {
 }
 
 var initTable = function initTable(items, currentPage, pageSize) {
+    fillBreadCrumbs();
+
     var itemsTable = document.getElementById('itemsTable');
     var tbody = itemsTable.getElementsByTagName('TBODY')[0];
     var tablePagination = document.getElementById('tablePagination');

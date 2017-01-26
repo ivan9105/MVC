@@ -145,4 +145,12 @@ public class ShopRestController {
 
         return response;
     }
+
+    @RequestMapping(value = "rootPath", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public CategoriesResponse getRootPath(@RequestParam(value = "categoryId", required = true) String categoryId,
+                                          HttpServletRequest request) {
+        CategoriesResponse response = new CategoriesResponse();
+        response.setCategories(shopCategoryService.getRootPath(UUID.fromString(categoryId), request));
+        return response;
+    }
 }

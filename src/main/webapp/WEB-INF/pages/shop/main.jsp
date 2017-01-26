@@ -84,6 +84,7 @@
             <div style="margin:2px;">
                 <h2 style="color: #222222;">Items</h2>
                 <hr/>
+                <div id="breadcrumbs" style="margin-bottom: 4px;"></div>
                 <div id="tablePagination" class="center"></div>
                 <table id="itemsTable" class="table table-striped">
                     <thead>

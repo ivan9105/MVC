@@ -12,9 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Иван on 02.01.2017.
@@ -92,6 +90,40 @@ public class ShopCategoryServiceBean implements ShopCategoryService {
             categoryDto.setParent(null);
             clearParent(categoryDto.getChild());
         }
+
+        return res;
+    }
+
+    @Override
+    public List<CategoryDto> getRootPath(UUID id, HttpServletRequest request) {
+        List<CategoryDto> res = new ArrayList<>();
+
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            Query query = em.createQuery("from Category c " +
+                    "where c.id = :id");
+            query.setParameter("id", id);
+            List result = query.getResultList();
+            if (!result.isEmpty()) {
+                Category category = (Category) result.get(0);
+                while (category.getParent() != null) {
+                    res.add(DtoConverter.toCategoryDto(category, request));
+                    category = category.getParent();
+                }
+            }
+
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+        Collections.sort(res, new Comparator<CategoryDto>() {
+            @Override
+            public int compare(CategoryDto category1, CategoryDto category2) {
+                return category1.getLevel().compareTo(category2.getLevel());
+            }
+        });
 
         return res;
     }
