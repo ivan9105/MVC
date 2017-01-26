@@ -48,6 +48,10 @@
     text-decoration: underline;
 }
 
+.treeview li a {
+    color: #222222;
+}
+
 .treeview .open {
     color: #222222;
     text-decoration: none;

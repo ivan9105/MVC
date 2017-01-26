@@ -99,7 +99,7 @@ function removePopup(popupMenu) {
 
 function popupMOut(e) {
     var popupMenu = document.getElementById("popupMenu");
-    if (e != 'null' && e != 'undefined') {
+    if (e != 'null' && e != 'undefined' && e != null) {
         var target = e.relatedTarget;
         while (target.parentNode != null && target != popupMenu) {
             target = target.parentNode;
@@ -118,6 +118,36 @@ function popupMOver() {
 function categoryMOut() {
 }
 
+function getItems(host, page, callback) {
+    var xmlHttpRequest = new XMLHttpRequest();
+    xmlHttpRequest.open("GET", host + "/api/shop/" + (selectedCategory == null ? "items" : "categoryItems")
+        + "?size=" + tableSize
+        + (page != null ? "&page=" + page : "")
+        + (selectedCategory != null ? "&categoryId=" + selectedCategory : "")
+        , true);
+    xmlHttpRequest.onload = function () {
+        var result = [];
+        var json = xmlHttpRequest.responseText;
+        var obj = JSON.parse(json);
+        var length = obj['data'].length;
+        for (var i = 0; i < length; i++) {
+            result.push(ItemClass.fromObject(obj['data'][i]));
+        }
+        callback(result, obj['currentPage'], obj['pageSize']);
+    };
+    xmlHttpRequest.send(null);
+}
+
+function fillTable(page) {
+    getItems(host, page, initTable);
+}
+
+function selectCategory(categoryId) {
+    selectedCategory = categoryId;
+    fillTable(1);
+    popupMOut(null);
+}
+
 var createSubMenu = function createSubMenu(result, div) {
     var sb = new StringBuilder();
     sb.append('<div id="menuDiv" style="margin-left: -40px; margin-top:13px;">');
@@ -125,9 +155,8 @@ var createSubMenu = function createSubMenu(result, div) {
 
     for (var i = 0; i < result.data.length; i++) {
         var obj = result.data[i];
-        //Todo create links with logic
         if (obj.child == 'null' || obj.child == 'undefined' || obj.child.length == 0) {
-            sb.append('<li class="treeCaptionRoot" rel="root">' + obj.name + '<b class="countItems">' + obj.itemsCount + '</b></li>');
+            sb.append('<li class="treeCaptionRoot" rel="root"><a href="#" onclick="selectCategory(\'' + obj.id + '\')">' + obj.name + '</a><b class="countItems">' + obj.itemsCount + '</b></li>');
         } else {
             sb.append('<li rel="root"><p class="treeCaptionRoot withoutSpace"><i class="fa fa-caret-down" style="margin-right: 3px;"/>' + obj.name + '<b class="countItems">' + obj.itemsCount + '</b>' + '</p>');
             fillSubMenuList(obj.child, sb);
@@ -149,7 +178,7 @@ function fillSubMenuList(result, sb) {
     for (var i = 0; i < result.length; i++) {
         var obj = result[i];
         if (obj.child == 'null' || obj.child == 'undefined' || obj.child.length == 0) {
-            sb.append('<li>' + obj.name + '<b class="countItems">' + obj.itemsCount + '</b></li>');
+            sb.append('<li><a href="#" onclick="selectCategory(\'' + obj.id + '\')">' + obj.name + '</a><b class="countItems">' + obj.itemsCount + '</b></li>');
         } else {
             sb.append('<li><i class="fa fa-caret-down" style="margin-right: 3px; "/>' + obj.name + '<b class="countItems">' + obj.itemsCount + '</b>');
             fillSubMenuList(obj.child, sb);
@@ -273,26 +302,6 @@ function logMousePosition(message) {
     }
 }
 
-function getItems(host, page, callback) {
-    var xmlHttpRequest = new XMLHttpRequest();
-    xmlHttpRequest.open("GET", host + "/api/shop/" + (selectedCategory == null ? "items" : "categoryItems")
-        + "?size=" + tableSize
-        + (page != null ? "&page=" + page : "")
-        + (selectedCategory != null ? "&categoryId=" + selectedCategory : "")
-        , true);
-    xmlHttpRequest.onload = function () {
-        var result = [];
-        var json = xmlHttpRequest.responseText;
-        var obj = JSON.parse(json);
-        var length = obj['data'].length;
-        for (var i = 0; i < length; i++) {
-            result.push(ItemClass.fromObject(obj['data'][i]));
-        }
-        callback(result, obj['currentPage'], obj['pageSize']);
-    };
-    xmlHttpRequest.send(null);
-}
-
 var initTable = function initTable(items, currentPage, pageSize) {
     var itemsTable = document.getElementById('itemsTable');
     var tbody = itemsTable.getElementsByTagName('TBODY')[0];
@@ -373,10 +382,6 @@ var initTable = function initTable(items, currentPage, pageSize) {
 function fillMenu() {
     getRootCategories(host, initMenu);
     initTreeMenuBuilder();
-}
-
-function fillTable(page) {
-    getItems(host, page, initTable);
 }
 
 function onMouseMenuWrapper(e) {
@@ -588,5 +593,5 @@ function initTreeMenuBuilder() {
             }
             icon.className = "fa fa-caret-up";
         }
-    }
+    };
 }
