@@ -49,16 +49,19 @@
                 <li>
                     <a href="registration.html">Registration</a>
                 </li>
-                <%--<li>--%>
-                <%--<a href="cart.html"><img src="${cart}"/></a>--%>
-                <%--</li>--%>
+                <li>
+                    <a href="cart.html">
+                        <div><i class="fa fa-cart-arrow-down" style="font-size: larger;"></i></div>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 <!-- Page Content -->
 <div class="container" style="margin-top: 90px; padding-top: 5px;">
-    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="position: absolute; left:25px;">
+    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation"
+         style="position: absolute; left:25px;">
         <div id="menuWrapper" style="padding: 5px;" onmousemove="onMouseMenuWrapper(event)">
             <div id="categoryMenu" class="list-group">
             </div>
@@ -81,10 +84,10 @@
                 <p>In this sample use: jquery, js, bootstrap, font-awesome</p>
             </div>
 
-            <div style="margin:2px;">
+            <div id="tableBox" style="margin:2px;">
                 <h2 style="color: #222222;">Items</h2>
                 <hr/>
-                <div id="breadcrumbs" style="margin-bottom: 4px;"></div>
+                <div id="breadcrumbs" style="margin-bottom: 7px; font-size: small;"></div>
                 <div id="tablePagination" class="center"></div>
                 <table id="itemsTable" class="table table-striped">
                     <thead>
@@ -98,6 +101,10 @@
                     <tbody>
                     </tbody>
                 </table>
+            </div>
+            <div id="itemDetailsBox" style="visibility: hidden;">
+                <div id="detailsBreadcrumbs" style="margin-bottom: 7px; font-size: small;"></div>
+                <%--TODO separate page--%>
             </div>
         </div>
     </div>

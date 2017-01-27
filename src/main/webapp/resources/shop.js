@@ -354,6 +354,35 @@ function logMousePosition(message) {
     }
 }
 
+function getItemDetails(host, id, callback) {
+    var xmlHttpRequest = new XMLHttpRequest();
+    xmlHttpRequest.open("GET", host + "/api/shop/item?id=" + id, true);
+    xmlHttpRequest.onload = function () {
+        var result = [];
+        var json = xmlHttpRequest.responseText;
+        var obj = JSON.parse(json);
+        var length = obj['data'].length;
+        for (var i = 0; i < length; i++) {
+            result.push(ItemClass.fromObject(obj['data'][i]));
+        }
+        callback(result);
+    };
+    xmlHttpRequest.send(null);
+}
+
+var fillItemDetails = function fillItemDetails(items) {
+    if (items.length > 0) {
+        var item = items[0];
+        var detailsBreadcrumbs = document.getElementById('detailsBreadcrumbs');
+        detailsBreadcrumbs.innerHTML = document.getElementById('breadcrumbs').innerHTML;
+        //Todo create separate page for product details
+    }
+};
+
+function itemDetails(id) {
+    getItemDetails(host, id, fillItemDetails);
+}
+
 var initTable = function initTable(items, currentPage, pageSize) {
     fillBreadCrumbs();
 
@@ -376,7 +405,16 @@ var initTable = function initTable(items, currentPage, pageSize) {
             var categoryCell = row.insertCell(2);
             var countCell = row.insertCell(3);
 
-            nameCell.appendChild(document.createTextNode(items[i].name));
+            var nameLink = document.createElement('a');
+            nameLink.href = "#";
+
+            var j = i;
+            nameLink.onclick = function () {
+                itemDetails(items[j].id);
+            };
+            nameLink.text = items[i].name;
+
+            nameCell.appendChild(nameLink);
             priceCell.appendChild(document.createTextNode(items[i].price));
             categoryCell.appendChild(document.createTextNode(items[i].categoryName));
             countCell.appendChild(document.createTextNode(items[i].count));
