@@ -195,9 +195,13 @@ function fillTable(page) {
 }
 
 function selectCategory(categoryId) {
-    selectedCategory = categoryId;
-    fillTable(1);
-    popupMOut(null);
+    if (window.location.href == (host + '/shop') || window.location.href == (host + '/shop#')) {
+        selectedCategory = categoryId;
+        fillTable(1);
+        popupMOut(null);
+    } else {
+        location.href = host + '/shop?cId=' + categoryId;
+    }
 }
 
 var createSubMenu = function createSubMenu(result, div) {
@@ -354,6 +358,7 @@ function logMousePosition(message) {
     }
 }
 
+//Todo
 function getItemDetails(host, id, callback) {
     var xmlHttpRequest = new XMLHttpRequest();
     xmlHttpRequest.open("GET", host + "/api/shop/item?id=" + id, true);
@@ -373,14 +378,12 @@ function getItemDetails(host, id, callback) {
 var fillItemDetails = function fillItemDetails(items) {
     if (items.length > 0) {
         var item = items[0];
-        var detailsBreadcrumbs = document.getElementById('detailsBreadcrumbs');
-        detailsBreadcrumbs.innerHTML = document.getElementById('breadcrumbs').innerHTML;
-        //Todo create separate page for product details
+    //    Todo
     }
 };
 
 function itemDetails(id) {
-    getItemDetails(host, id, fillItemDetails);
+    location.href = host + '/item?id=' + id;
 }
 
 var initTable = function initTable(items, currentPage, pageSize) {

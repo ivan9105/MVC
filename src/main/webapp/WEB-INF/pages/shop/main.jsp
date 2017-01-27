@@ -23,7 +23,10 @@
 </head>
 <script>
     window.onload = function () {
-        //Todo fill then load div
+        selectedCategory = '${cId}';
+        if (selectedCategory == '') {
+            selectedCategory = null;
+        }
         fillMenu();
         fillTable(1);
     };
@@ -101,10 +104,6 @@
                     <tbody>
                     </tbody>
                 </table>
-            </div>
-            <div id="itemDetailsBox" style="visibility: hidden;">
-                <div id="detailsBreadcrumbs" style="margin-bottom: 7px; font-size: small;"></div>
-                <%--TODO separate page--%>
             </div>
         </div>
     </div>
