@@ -358,7 +358,6 @@ function logMousePosition(message) {
     }
 }
 
-//Todo
 function getItemDetails(host, id, callback) {
     var xmlHttpRequest = new XMLHttpRequest();
     xmlHttpRequest.open("GET", host + "/api/shop/item?id=" + id, true);
@@ -384,6 +383,10 @@ var fillItemDetails = function fillItemDetails(items) {
 
 function itemDetails(id) {
     location.href = host + '/item?id=' + id;
+}
+
+function initItemDetails(id) {
+    getItemDetails(host, id, fillItemDetails);
 }
 
 var initTable = function initTable(items, currentPage, pageSize) {

@@ -108,6 +108,7 @@
         </div>
     </div>
 </div>
+<div id="footerSpace" style="border: 1px solid blanchedalmond; height: 25px;"></div>
 <div class="footer">
     <p>Copyright © Shop Sample <strong>2017</strong></p>
 </div>
