@@ -1,0 +1,226 @@
+Index: src/main/webapp/resources/app.properties
+===================================================================
+--- src/main/webapp/resources/app.properties	(revision 02e626708480993a9f39550f9276f7eb0c691b6e)
++++ src/main/resources/app.properties	(revision )
+@@ -1,2 +1,2 @@
+ host = http://localhost
+-port = 8080
+\ No newline at end of file
++port = 8081
+\ No newline at end of file
+Index: src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml	(revision 02e626708480993a9f39550f9276f7eb0c691b6e)
++++ src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml	(revision )
+@@ -45,7 +45,7 @@
+                 </prop>
+                 <prop key="hibernate.search.default.indexBase">
+                     <!-- use jdk directory by default-->
+-                    .
++                    /var/lucene/indexes
+                 </prop>
+                 <prop key="hibernate.connection.useUnicode">true</prop>
+                 <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
+@@ -80,33 +80,33 @@
+ 
+     <context:property-placeholder location="classpath:app.properties"/>
+ 
+-    <!-- Jmx configuration -->
+-    <bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean"/>
++    <!--&lt;!&ndash; Jmx configuration &ndash;&gt;-->
++    <!--<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean"/>-->
+ 
+-    <bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+-        <property name="beans">
+-            <map>
+-                <entry key="beans:name=jmxSampler" value-ref="jmxSampler"/>
+-            </map>
+-        </property>
+-        <property name="server" ref="mbeanServer"/>
+-    </bean>
++    <!--<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">-->
++        <!--<property name="beans">-->
++            <!--<map>-->
++                <!--<entry key="beans:name=jmxSampler" value-ref="jmxSampler"/>-->
++            <!--</map>-->
++        <!--</property>-->
++        <!--<property name="server" ref="mbeanServer"/>-->
++    <!--</bean>-->
+ 
+-    <bean id="registry" class="org.springframework.remoting.rmi.RmiRegistryFactoryBean">
+-        <property name="port" value="1399"/>
+-    </bean>
++    <!--<bean id="registry" class="org.springframework.remoting.rmi.RmiRegistryFactoryBean">-->
++        <!--<property name="port" value="1399"/>-->
++    <!--</bean>-->
+ 
+-    <bean id="serverConnector"
+-          class="org.springframework.jmx.support.ConnectorServerFactoryBean">
+-        <property name="objectName" value="connector:name=rmi"/>
+-        <property name="serviceUrl"
+-                  value="service:jmx:rmi://localhost/jndi/rmi://localhost:1399/jmxConnector"/>
+-        <property name="threaded" value="true"/>
+-        <property name="daemon" value="true"/>
+-        <property name="server" ref="mbeanServer"/>
+-    </bean>
++    <!--<bean id="serverConnector"-->
++          <!--class="org.springframework.jmx.support.ConnectorServerFactoryBean">-->
++        <!--<property name="objectName" value="connector:name=rmi"/>-->
++        <!--<property name="serviceUrl"-->
++                  <!--value="service:jmx:rmi://localhost/jndi/rmi://localhost:1399/jmxConnector"/>-->
++        <!--<property name="threaded" value="true"/>-->
++        <!--<property name="daemon" value="true"/>-->
++        <!--<property name="server" ref="mbeanServer"/>-->
++    <!--</bean>-->
+ 
+-    <bean id="jmxSampler" class="com.springapp.mvc.jmx.JmxSamplerBean"/>
++    <!--<bean id="jmxSampler" class="com.springapp.mvc.jmx.JmxSamplerBean"/>-->
+ 
+     <mvc:interceptors>
+         <mvc:interceptor>
+Index: src/main/webapp/resources/shop.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/resources/shop.js	(revision 02e626708480993a9f39550f9276f7eb0c691b6e)
++++ src/main/webapp/resources/shop.js	(revision )
+@@ -5,7 +5,7 @@
+ var ddTreeMenu = {};
+ var selectedCategory = null;
+ var tableSize = 15;
+-var host = "http://localhost:8080";
++var host = "http://localhost:8081";
+ 
+ document.onmousemove = function (e) {
+     cx = e.pageX;
+Index: src/main/java/com/springapp/mvc/rest/BooksRestController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/springapp/mvc/rest/BooksRestController.java	(revision 02e626708480993a9f39550f9276f7eb0c691b6e)
++++ src/main/java/com/springapp/mvc/rest/BooksRestController.java	(revision )
+@@ -6,7 +6,6 @@
+ import com.springapp.mvc.rest.dto.LinkDto;
+ import com.springapp.mvc.rest.response.BooksResponse;
+ import com.springapp.mvc.util.ServletUtil;
+-import com.sun.istack.internal.Nullable;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.web.bind.annotation.RequestMapping;
+ import org.springframework.web.bind.annotation.RequestMethod;
+@@ -69,8 +68,7 @@
+         return bookDto;
+     }
+ 
+-    @Nullable
+-    private UUID parseId(@Nullable String id) {
++    private UUID parseId(String id) {
+         if (id == null) {
+             return null;
+         }
+Index: src/main/java/com/springapp/mvc/jms/MessageReceiver.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/springapp/mvc/jms/MessageReceiver.java	(revision 02e626708480993a9f39550f9276f7eb0c691b6e)
++++ src/main/java/com/springapp/mvc/jms/MessageReceiver.java	(revision )
+@@ -15,11 +15,8 @@
+ public class MessageReceiver {
+     private static final String ORDER_RESPONSE_QUEUE = "mailbox";
+ 
+-    @Value("${host}")
+-    private String host;
+-
+-    @Value("${port}")
+-    private String port;
++    private String host = "http://localhost";
++    private String port = "8081";
+ 
+     @JmsListener(destination = ORDER_RESPONSE_QUEUE)
+     public void receiveMessage(final Message<MessageResponse> message) throws JMSException, InterruptedException {
+Index: src/main/java/com/springapp/mvc/jmx/JmxSamplerMBean.java
+===================================================================
+--- src/main/java/com/springapp/mvc/jmx/JmxSamplerMBean.java	(revision 02e626708480993a9f39550f9276f7eb0c691b6e)
++++ src/main/java/com/springapp/mvc/jmx/JmxSamplerMBean.java	(revision 02e626708480993a9f39550f9276f7eb0c691b6e)
+@@ -1,8 +0,0 @@
+-package com.springapp.mvc.jmx;
+-
+-/**
+- * Created by Иван on 28.11.2016.
+- */
+-public interface JmxSamplerMBean {
+-    void echo(String message);
+-}
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pom.xml	(revision 02e626708480993a9f39550f9276f7eb0c691b6e)
++++ pom.xml	(revision )
+@@ -353,6 +353,25 @@
+             <version>7.0.63</version>
+             <scope>provided</scope>
+         </dependency>
++
++        <dependency>
++            <groupId>com.sun.istack</groupId>
++            <artifactId>istack-commons-runtime</artifactId>
++            <version>2.2</version>
++        </dependency>
++
++        <dependency>
++            <groupId>com.sun.istack</groupId>
++            <artifactId>maven-istack-commons-plugin</artifactId>
++            <version>2.11</version>
++        </dependency>
++
++        <dependency>
++            <groupId>com.sun.istack</groupId>
++            <artifactId>istack-commons-runtime</artifactId>
++            <version>3.0.5</version>
++        </dependency>
++
+     </dependencies>
+ 
+     <build>
+Index: src/main/java/com/springapp/mvc/jmx/JmxSamplerBean.java
+===================================================================
+--- src/main/java/com/springapp/mvc/jmx/JmxSamplerBean.java	(revision 02e626708480993a9f39550f9276f7eb0c691b6e)
++++ src/main/java/com/springapp/mvc/jmx/JmxSamplerBean.java	(revision 02e626708480993a9f39550f9276f7eb0c691b6e)
+@@ -1,30 +0,0 @@
+-package com.springapp.mvc.jmx;
+-
+-import org.springframework.jmx.export.notification.NotificationPublisher;
+-import org.springframework.jmx.export.notification.NotificationPublisherAware;
+-
+-import javax.management.Notification;
+-
+-/**
+- * Created by Иван on 28.11.2016.
+- */
+-public class JmxSamplerBean implements JmxSamplerMBean, NotificationPublisherAware {
+-    private NotificationPublisher publisher;
+-    private int sequenceNumber;
+-
+-    @Override
+-    public void echo(String message) {
+-        Notification notification = new Notification(String.format("Echo: %s", message), this, 0,
+-                String.format("Id:%s", sequenceNumber));
+-        notification.setSequenceNumber(sequenceNumber++);
+-        notification.setUserData(message.hashCode());
+-        publisher.sendNotification(notification);
+-
+-        System.out.println(String.format("Echo: %s", message));
+-    }
+-
+-    @Override
+-    public void setNotificationPublisher(NotificationPublisher publisher) {
+-        this.publisher = publisher;
+-    }
+-}
